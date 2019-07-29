@@ -10,6 +10,9 @@ import imutils
 import time
 import cv2
 
+import face_detect
+from car_num_location import car_brand_detect
+
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--prototxt", required=False,
@@ -87,14 +90,27 @@ while True:
 
             class_name = CLASSES[idx]
             if class_name in NEED_CLASSES:
+                # 继续检测人脸
+                if class_name == 'persion':
+                    face_detect.face_detect(frame[startY: endY, startX, endX])
+                elif class_name == 'car':
+                    brand_region = car_brand_detect(frame[startY: endY, startX, endX])
+
+                    # 用绿线画出这些找到的轮廓
+                    for box in brand_region:
+                        x, y, w, h = box
+                        cv2.rectangle(frame, (x+startX, y+startY), (x+startX+w, y+startY+h))
+
                 # draw the prediction on the frame
                 label = "{}: {:.2f}%".format(class_name,
                                              confidence * 100)
                 cv2.rectangle(frame, (startX, startY), (endX, endY),
                               COLORS[idx], 2)
+                # 标注文字
                 y = startY - 15 if startY - 15 > 15 else startY + 15
                 cv2.putText(frame, label, (startX, y),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
+
 
     # show the output frame
     cv2.imshow("Frame", frame)
