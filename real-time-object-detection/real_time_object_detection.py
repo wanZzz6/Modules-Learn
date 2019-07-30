@@ -11,6 +11,8 @@ import time
 import cv2
 
 import face_detect
+from dynamic_detact import dynamic_area_detect
+from tracker import init_tracker
 from car_num_location import car_brand_detect
 
 # construct the argument parse and parse the arguments
@@ -32,61 +34,55 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
            "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
            "sofa", "train", "tvmonitor"]
 
+# 需要方框标注的类
 NEED_CLASSES = set(['car', 'person'])
 # NEED_CLASSES = set(CLASSES)
 
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
-# load our serialized model from disk
-print("[INFO] loading model...")
-net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
+# 保存跟踪器对象
+tracker_status = dict()
+tracker_id = set(range(30))
 
-# initialize the video stream, allow the cammera sensor to warmup,
-# and initialize the FPS counter
-print("[INFO] starting video stream...")
-video_file = 'test_video.flv'
-vs = VideoStream(0).start()
-# vs = VideoStream(src=1).start()
-time.sleep(2.0)
-fps = FPS().start()
+ignore_area = []
 
-# loop over the frames from the video stream
-start_time = time.time()
-while True:
-    # grab the frame from the threaded video stream and resize it
-    # to have a maximum width of 400 pixels
-    frame = vs.read()
-    if frame is None:
-        # if time.time() - start_time < 90000:
-        #     continue
-        exit('Video Input Error! 输入错误！')
-    frame = imutils.resize(frame, width=800)
 
-    # grab the frame dimensions and convert it to a blob
-    (h, w) = frame.shape[:2]
+def create_tracker(tracker_box, class_name):
+    tracker = init_tracker(frame, tracker_box)
+    tracker.id = tracker_id.pop()
+    tracker.box = tracker_box
+    tracker.CLASS = class_name
+    tracker_status[tracker.id] = tracker
+
+
+def target_detect(frame):
+    """目标检测"""
+    global net
     blob = cv2.dnn.blobFromImage(cv2.resize(frame, (300, 300)),
                                  0.007843, (300, 300), 127.5)
-
+    net.setInput(blob)
     # pass the blob through the network and obtain the detections and
     # predictions
-    net.setInput(blob)
     detections = net.forward()
+    return detections
 
+
+def handle_detections(detections, confidence=args["confidence"], x_offset=0, y_offset=0):
+    global frame
     # loop over the detections
     for i in np.arange(0, detections.shape[2]):
         # extract the confidence (i.e., probability) associated with
         # the prediction
-        confidence = detections[0, 0, i, 2]
+        conf = detections[0, 0, i, 2]
 
         # filter out weak detections by ensuring the `confidence` is
-        # greater than the minimum confidence
-        if confidence > args["confidence"]:
+        if conf > confidence:
             # extract the index of the class label from the
             # `detections`, then compute the (x, y)-coordinates of
             # the bounding box for the object
             idx = int(detections[0, 0, i, 1])
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-            (startX, startY, endX, endY) = box.astype("int")
+            startX, startY, endX, endY = box.astype("int")
 
             class_name = CLASSES[idx]
             if class_name in NEED_CLASSES:
@@ -97,31 +93,101 @@ while True:
                 elif class_name == 'car':
                     brand_region = car_brand_detect(frame[startY: endY, startX, endX])
 
-                    # 用绿线画出这些找到的轮廓
+                    # 用绿线画出车牌轮廓
                     for box in brand_region:
                         x, y, w, h = box
-                        cv2.rectangle(frame, (x+startX, y+startY), (x+startX+w, y+startY+h))
+                        cv2.rectangle(frame, (x + startX + x_offset, y + startY + y_offset),
+                                      (x + startX + x_offset + w, y + startY + y_offset + h))
 
                 # draw the prediction on the frame
                 label = "{}: {:.2f}%".format(class_name,
-                                             confidence * 100)
-                cv2.rectangle(frame, (startX, startY), (endX, endY),
+                                             conf * 100)
+                # 为每个目标创建跟踪器
+                tracker_box = (startX+x_offset, startY+y_offset, endX+x_offset-startX, endY+y_offset - startY)
+                ignore_area.append(tracker_box)
+                create_tracker(tracker_box, class_name)
+
+                cv2.rectangle(frame, (startX + x_offset, startY + y_offset), (endX + x_offset, endY + y_offset),
                               COLORS[idx], 2)
                 # 标注文字
-                y = startY - 15 if startY - 15 > 15 else startY + 15
+                y = startY+y_offset - 15 if startY+y_offset - 15 > 15 else startY+y_offset + 15
                 cv2.putText(frame, label, (startX, y),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
 
-
     # show the output frame
     cv2.imshow("Frame", frame)
-    key = cv2.waitKey(1) & 0xFF
+
+    # update the FPS counter
+    fps.update()
+
+
+############## start ##################
+
+# load our serialized model from disk
+print("[INFO] loading model...")
+net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
+
+# initialize the video stream, allow the cammera sensor to warmup,
+# and initialize the FPS counter
+print("[INFO] starting video stream...")
+video_file = 'test_video.flv'
+vs = VideoStream(video_file).start()
+# vs = VideoStream(src=1).start()
+time.sleep(2.0)
+fps = FPS().start()
+
+# loop over the frames from the video stream
+start_time = time.time()
+
+frame = vs.read()
+if frame is None:
+    exit('Video Input Error! 输入错误！')
+# grab the frame from the threaded video stream and resize it
+# to have a maximum width of 800 pixels
+frame = imutils.resize(frame, width=800)
+# grab the frame dimensions and convert it to a blob
+h, w = frame.shape[:2]
+
+detections = target_detect(frame)
+handle_detections(detections)
+
+# 后续帧
+while True:
+    frame = vs.read()
+    if frame is None:
+        exit('Video Input Error! 输入错误！')
+    # grab the frame from the threaded video stream and resize it
+    # to have a maximum width of 800 pixels
+    frame = imutils.resize(frame, width=800)
+    for tracker in tracker_status.values():
+        # Update tracker
+        ok, bbox = tracker.update(frame)
+        # print(ok, bbox)
+
+        if ok:
+            # Tracking success
+            p1 = (int(bbox[0]), int(bbox[1]))
+            p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
+            cv2.rectangle(frame, p1, p2, (255, 0, 0), 2, 1)
+        else:
+            # Tracking failure
+            # 更新跟踪器状态
+            tracker_status.pop(tracker.id)
+            tracker_id.add(tracker.id)
+            ignore_area.remove(tracker.box)
+
+    dynamic_area = dynamic_area_detect(frame, ignore_area)
+    for area in dynamic_area:
+        x, y, w, h = area
+        detections = target_detect(frame[y: y + h, x:x + w])
+        handle_detections(detections, x_offset=x, y_offset=y)
 
     # if the `q` key was pressed, break from the loop
+    key = cv2.waitKey(1) & 0xFF
     if key == ord("q"):
         break
 
-    # update the FPS counter
+    cv2.imshow("Frame", frame)
     fps.update()
 
 # stop the timer and display FPS information

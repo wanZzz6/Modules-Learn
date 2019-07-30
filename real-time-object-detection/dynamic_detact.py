@@ -15,22 +15,24 @@ def dynamic_area_detect(frame, ignore_area=[]):
     # 二值化阈值处理
     th = cv2.threshold(fg2, 244, 255, cv2.THRESH_BINARY)[1]
     for i in ignore_area:
-        pass
+        x, y, w, h = i
+        th[y: y+h, x:x+w] = 0
 
     # 形态学膨胀
     dilated = cv2.dilate(th, _es, iterations=2)
     contours, hier = cv2.findContours(dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    result = []
+    target_area = []
     for c in contours:
         if cv2.contourArea(c) > 500:
             # 该函数计算矩形的边界框
             (x, y, w, h) = cv2.boundingRect(c)
-            result.append((x, y, w, h))
+            target_area.append((x, y, w, h))
 
-    cv2.imshow("mog", fgmask)
-    cv2.imshow("thresh", th)
-    return result
+    # cv2.imshow("mog", fgmask)
+    # cv2.imshow("thresh", th)
+    print('Dynamic Arae Number: ', len(target_area))
+    return target_area
 
 
 if __name__ == '__main__':
