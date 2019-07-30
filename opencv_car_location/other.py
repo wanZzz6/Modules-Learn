@@ -60,7 +60,7 @@ def findPlateNumberRegion(img):
         width = abs(box[0][0] - box[2][0])
         # 车牌正常情况下长高比在2.7-5之间
         ratio = float(width) / float(height)
-        print(ratio)
+        print('ratio is:', ratio)
         if ratio > 5 or ratio < 2:
             continue
         region.append(box)
