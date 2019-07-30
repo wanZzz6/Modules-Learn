@@ -32,8 +32,8 @@ CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat",
            "dog", "horse", "motorbike", "person", "pottedplant", "sheep",
            "sofa", "train", "tvmonitor"]
 
-# NEED_CLASSES = set(['car', 'person'])
-NEED_CLASSES = set(CLASSES)
+NEED_CLASSES = set(['car', 'person'])
+# NEED_CLASSES = set(CLASSES)
 
 COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
@@ -45,7 +45,7 @@ net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
 # and initialize the FPS counter
 print("[INFO] starting video stream...")
 video_file = 'test_video.flv'
-vs = VideoStream(video_file).start()
+vs = VideoStream(0).start()
 # vs = VideoStream(src=1).start()
 time.sleep(2.0)
 fps = FPS().start()
@@ -57,8 +57,8 @@ while True:
     # to have a maximum width of 400 pixels
     frame = vs.read()
     if frame is None:
-        if time.time() - start_time < 90000:
-            continue
+        # if time.time() - start_time < 90000:
+        #     continue
         exit('Video Input Error! 输入错误！')
     frame = imutils.resize(frame, width=800)
 
@@ -91,8 +91,9 @@ while True:
             class_name = CLASSES[idx]
             if class_name in NEED_CLASSES:
                 # 继续检测人脸
-                if class_name == 'persion':
-                    face_detect.face_detect(frame[startY: endY, startX, endX])
+                if class_name == 'person':
+                    print('face location:', startY, endY, startX, endX)
+                    face_detect.face_detect(frame[startY: endY, startX: endX])
                 elif class_name == 'car':
                     brand_region = car_brand_detect(frame[startY: endY, startX, endX])
 
