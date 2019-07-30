@@ -79,7 +79,7 @@ if __name__ == '__main__':
     # bbox = cv2.selectROI(frame, False)
 
     # Initialize tracker with first frame and bounding box
-    multiTracker = init_tracker(frame)
+    multiTracker = init_tracker(frame, 'KCF')
 
     while True:
         # Read a new frame
@@ -89,7 +89,6 @@ if __name__ == '__main__':
 
         # Update tracker
         success, boxes = multiTracker.update(frame)
-        print(success)
 
         if success:
             # draw tracked objects
