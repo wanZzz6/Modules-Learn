@@ -55,7 +55,9 @@ def init_tracker(frame, box, tracker_type='KCF'):
 if __name__ == '__main__':
 
     # Read video
-    video = cv2.VideoCapture("chaplin.mp4")
+    # video = cv2.VideoCapture("chaplin.mp4")
+    # camera
+    video = cv2.VideoCapture(0)
 
     # Exit if video not opened.
     if not video.isOpened():
@@ -70,7 +72,8 @@ if __name__ == '__main__':
 
     # 单目标检测
     # 格式：左上角 x, y, w, h
-    bbox = (287, 23, 86, 320)
+    # bbox = (287, 23, 86, 320)
+    bbox = (231, 197, 160, 200)
 
     # Initialize tracker with first frame and bounding box
     tracker = init_tracker(frame, bbox)
@@ -114,6 +117,5 @@ if __name__ == '__main__':
         cv2.imshow("Tracking", frame)
 
         # Exit if ESC pressed
-        k = cv2.waitKey(1) & 0xff
-        if k == 27:
+        if cv2.waitKey(1) & 0xff == ord('q'):
             break

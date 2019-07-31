@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# 详细介绍：https://blog.csdn.net/weixin_41695564/article/details/79712393
 import os
 import cv2
 import numpy as np

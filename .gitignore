@@ -102,3 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+opencv_car_location/\.idea/
+
+real-time-object-detection/\.idea/
+
+real-time-object-detection/data/
