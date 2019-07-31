@@ -6,7 +6,7 @@ bs = cv2.createBackgroundSubtractorKNN(detectShadows=True)
 _es = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 4))
 
 
-def dynamic_area_detect(frame, ignore_area=[]):
+def dynamic_area_detect(frame, ignore_area=[], min_size=500, max_size=22000):
     """ignore_area： 忽略检测区域[[x, y, w, h]"""
     global bs
     fgmask = bs.apply(frame)
@@ -24,14 +24,15 @@ def dynamic_area_detect(frame, ignore_area=[]):
 
     target_area = []
     for c in contours:
-        if cv2.contourArea(c) > 500:
+        if min_size < cv2.contourArea(c) < max_size:
             # 该函数计算矩形的边界框
             (x, y, w, h) = cv2.boundingRect(c)
             target_area.append((x, y, w, h))
 
     # cv2.imshow("mog", fgmask)
-    # cv2.imshow("thresh", th)
+    cv2.imshow("thresh", th)
     print('Dynamic Arae Number: ', len(target_area))
+    print(target_area)
     return target_area
 
 
@@ -58,7 +59,7 @@ if __name__ == '__main__':
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 0), 2)
 
         cv2.imshow("detection", frame)
-        if cv2.waitKey(24) & 0xff == 27:
+        if cv2.waitKey(1) & 0xff == 27:
             break
     camera.release()
     cv2.destroyAllWindows()

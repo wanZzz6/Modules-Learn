@@ -1,13 +1,13 @@
 # USAGE
 # python real_time_object_detection.py --prototxt MobileNetSSD_deploy.prototxt.txt --model MobileNetSSD_deploy.caffemodel
 
-# import the necessary packages
+import time
+
 from imutils.video import VideoStream
 from imutils.video import FPS
 import numpy as np
 import argparse
 import imutils
-import time
 import cv2
 
 import face_detect
@@ -23,7 +23,7 @@ ap.add_argument("-p", "--prototxt", required=False,
 ap.add_argument("-m", "--model", required=False,
                 default='MobileNetSSD_deploy.caffemodel',
                 help="path to Caffe pre-trained model")
-ap.add_argument("-c", "--confidence", type=float, default=0.2,
+ap.add_argument("-c", "--confidence", type=float, default=0.45,
                 help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
@@ -42,17 +42,22 @@ COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 
 # 保存跟踪器对象
 tracker_status = dict()
-tracker_id = set(range(30))
+tracker_id_set = set(range(30))
 
 ignore_area = []
 
 
-def create_tracker(tracker_box, class_name):
-    tracker = init_tracker(frame, tracker_box)
-    tracker.id = tracker_id.pop()
-    tracker.box = tracker_box
-    tracker.CLASS = class_name
-    tracker_status[tracker.id] = tracker
+class Tracker:
+    def __init__(self, frame, box, class_name, label):
+        self.tracker = init_tracker(frame, box)
+        self.id = tracker_id_set.pop()
+        self.box = box  # 检测位置
+        self.label = str(self.id)  # 标注标签
+        self.class_name = class_name
+
+    def destroy(self):
+        tracker_id_set.add(self.id)
+        tracker_status.pop(self.id)
 
 
 def target_detect(frame):
@@ -68,7 +73,7 @@ def target_detect(frame):
 
 
 def handle_detections(detections, confidence=args["confidence"], x_offset=0, y_offset=0):
-    global frame
+    global frame, W, H
     # loop over the detections
     for i in np.arange(0, detections.shape[2]):
         # extract the confidence (i.e., probability) associated with
@@ -81,47 +86,57 @@ def handle_detections(detections, confidence=args["confidence"], x_offset=0, y_o
             # `detections`, then compute the (x, y)-coordinates of
             # the bounding box for the object
             idx = int(detections[0, 0, i, 1])
-            box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+            box = detections[0, 0, i, 3:7] * np.array([W, H, W, H])
             startX, startY, endX, endY = box.astype("int")
+            if startX < 0:
+                startX = 0
+            if startY < 0:
+                startY = 0
 
             class_name = CLASSES[idx]
             if class_name in NEED_CLASSES:
                 # 继续检测人脸
                 if class_name == 'person':
-                    print('face location:', startY, endY, startX, endX)
+                    print('face location:', startX, startY, endX, endY)
                     face_detect.face_detect(frame[startY: endY, startX: endX])
                 elif class_name == 'car':
-                    brand_region = car_brand_detect(frame[startY: endY, startX, endX])
+                    print('frame shape: ', frame.shape)
+                    print('startY, endY, startX, endX:', startY, endY, startX, endX)
+                    brand_region = car_brand_detect(frame[startY: endY, startX: endX])
 
                     # 用绿线画出车牌轮廓
-                    for box in brand_region:
-                        x, y, w, h = box
+                    for b_box in brand_region:
+                        x, y, w, h = b_box
                         cv2.rectangle(frame, (x + startX + x_offset, y + startY + y_offset),
                                       (x + startX + x_offset + w, y + startY + y_offset + h))
 
                 # draw the prediction on the frame
-                label = "{}: {:.2f}%".format(class_name,
-                                             conf * 100)
+                label = "{}: {:.2f}%".format(class_name, conf * 100)
                 # 为每个目标创建跟踪器
-                tracker_box = (startX+x_offset, startY+y_offset, endX+x_offset-startX, endY+y_offset - startY)
+                tracker_box = (startX + x_offset, startY + y_offset, endX + x_offset - startX, endY + y_offset - startY)
                 ignore_area.append(tracker_box)
-                create_tracker(tracker_box, class_name)
+                print('Create Tracker：', tracker_box)
+                tracker = Tracker(frame, tracker_box, class_name, label)
+                # tracker 状态管理
+                tracker_status[tracker.id] = tracker
 
                 cv2.rectangle(frame, (startX + x_offset, startY + y_offset), (endX + x_offset, endY + y_offset),
                               COLORS[idx], 2)
-                # 标注文字
-                y = startY+y_offset - 15 if startY+y_offset - 15 > 15 else startY+y_offset + 15
-                cv2.putText(frame, label, (startX, y),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
 
-    # show the output frame
-    cv2.imshow("Frame", frame)
+    ###########################################
+    # # 标注文字
+    # y = startY + y_offset - 15 if startY + y_offset - 15 > 15 else startY + y_offset + 15
+    # cv2.putText(frame, label, (startX, y),
+    #             cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
+
+    # # show the output frame
+    # cv2.imshow("Frame", frame)
 
     # update the FPS counter
     fps.update()
 
 
-############## start ##################
+###########################################
 
 # load our serialized model from disk
 print("[INFO] loading model...")
@@ -130,15 +145,14 @@ net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
 # initialize the video stream, allow the cammera sensor to warmup,
 # and initialize the FPS counter
 print("[INFO] starting video stream...")
-video_file = 'test_video.flv'
-vs = VideoStream(video_file).start()
+
+video_file = 'chaplin.mp4'
+vs = VideoStream(0).start()
 # vs = VideoStream(src=1).start()
 time.sleep(2.0)
 fps = FPS().start()
 
-# loop over the frames from the video stream
-start_time = time.time()
-
+# 第一帧
 frame = vs.read()
 if frame is None:
     exit('Video Input Error! 输入错误！')
@@ -146,10 +160,12 @@ if frame is None:
 # to have a maximum width of 800 pixels
 frame = imutils.resize(frame, width=800)
 # grab the frame dimensions and convert it to a blob
-h, w = frame.shape[:2]
+H, W = frame.shape[:2]
 
 detections = target_detect(frame)
 handle_detections(detections)
+
+time.sleep(4)
 
 # 后续帧
 while True:
@@ -159,9 +175,13 @@ while True:
     # grab the frame from the threaded video stream and resize it
     # to have a maximum width of 800 pixels
     frame = imutils.resize(frame, width=800)
+
+    fail_tracker = []
+    print('跟踪器数量：', len(tracker_status.keys()), tracker_status.keys())
+    # print('Ignore Area:', len(ignore_area))
     for tracker in tracker_status.values():
         # Update tracker
-        ok, bbox = tracker.update(frame)
+        ok, bbox = tracker.tracker.update(frame)
         # print(ok, bbox)
 
         if ok:
@@ -169,14 +189,21 @@ while True:
             p1 = (int(bbox[0]), int(bbox[1]))
             p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
             cv2.rectangle(frame, p1, p2, (255, 0, 0), 2, 1)
+            # 标注文字
+            cv2.putText(frame, tracker.label, p1,
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[tracker.id], 2)
         else:
             # Tracking failure
-            # 更新跟踪器状态
-            tracker_status.pop(tracker.id)
-            tracker_id.add(tracker.id)
+            # 收集失效跟踪器
+            fail_tracker.append(tracker.id)
             ignore_area.remove(tracker.box)
+    # 销毁失败跟踪器
+    for i in fail_tracker:
+        print('失效追踪器：', i)
+        tracker = tracker_status[i]
+        tracker.destroy()
 
-    dynamic_area = dynamic_area_detect(frame, ignore_area)
+    dynamic_area = dynamic_area_detect(frame, ignore_area, max_size=W * H * 0.4)
     for area in dynamic_area:
         x, y, w, h = area
         detections = target_detect(frame[y: y + h, x:x + w])
