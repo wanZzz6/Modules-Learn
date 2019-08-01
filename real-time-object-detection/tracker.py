@@ -1,5 +1,5 @@
-import cv2
 import sys
+import cv2
 
 trackerTypes = ['BOOSTING', 'MIL', 'KCF', 'TLD', 'MEDIANFLOW', 'GOTURN', 'MOSSE', 'CSRT']
 bboxes = []
@@ -55,7 +55,7 @@ def init_tracker(frame, box, tracker_type='KCF'):
 if __name__ == '__main__':
 
     # Read video
-    # video = cv2.VideoCapture("chaplin.mp4")
+    # video = cv2.VideoCapture(r"data\video\chaplin.mp4")
     # camera
     video = cv2.VideoCapture(0)
 

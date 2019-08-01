@@ -3,11 +3,11 @@
 
 import time
 
+import argparse
+import imutils
 from imutils.video import VideoStream
 from imutils.video import FPS
 import numpy as np
-import argparse
-import imutils
 import cv2
 
 import face_detect
@@ -88,10 +88,8 @@ def handle_detections(detections, confidence=args["confidence"], x_offset=0, y_o
             idx = int(detections[0, 0, i, 1])
             box = detections[0, 0, i, 3:7] * np.array([W, H, W, H])
             startX, startY, endX, endY = box.astype("int")
-            if startX < 0:
-                startX = 0
-            if startY < 0:
-                startY = 0
+            startX = 0 if startX < 0 else startX
+            startY = 0 if startY < 0 else startY
 
             class_name = CLASSES[idx]
             if class_name in NEED_CLASSES:
@@ -100,8 +98,6 @@ def handle_detections(detections, confidence=args["confidence"], x_offset=0, y_o
                     print('face location:', startX, startY, endX, endY)
                     face_detect.face_detect(frame[startY: endY, startX: endX])
                 elif class_name == 'car':
-                    print('frame shape: ', frame.shape)
-                    print('startY, endY, startX, endX:', startY, endY, startX, endX)
                     brand_region = car_brand_detect(frame[startY: endY, startX: endX])
 
                     # 用绿线画出车牌轮廓
@@ -123,7 +119,7 @@ def handle_detections(detections, confidence=args["confidence"], x_offset=0, y_o
                 cv2.rectangle(frame, (startX + x_offset, startY + y_offset), (endX + x_offset, endY + y_offset),
                               COLORS[idx], 2)
 
-    ###########################################
+###########################################
     # # 标注文字
     # y = startY + y_offset - 15 if startY + y_offset - 15 > 15 else startY + y_offset + 15
     # cv2.putText(frame, label, (startX, y),
@@ -146,9 +142,9 @@ net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
 # and initialize the FPS counter
 print("[INFO] starting video stream...")
 
-video_file = 'chaplin.mp4'
+video_file = r'data\video\chaplin.mp4'
 vs = VideoStream(0).start()
-# vs = VideoStream(src=1).start()
+# vs = VideoStream(video_file).start()
 time.sleep(2.0)
 fps = FPS().start()
 
