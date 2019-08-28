@@ -52,6 +52,9 @@ def findPlateNumberRegion(img):
 
 # 找出最有可能是车牌的位置，最接近宽高比例的框
 def getSatifyestBox(list_rate):
+    if len(list_rate) == 0:
+        print('未匹配到区域')
+        exit(0)
     for index, key in enumerate(list_rate):
         list_rate[index] = abs(key - 3)
     print(list_rate)
@@ -73,7 +76,6 @@ def getxyRate(cnt):
 
 
 def location(frame):
-
     # 转换成hsv模式图片
     hsv_img = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     # cv2.imshow("hsv_img", hsv_img)
@@ -103,7 +105,7 @@ def location(frame):
 
     # 进一步对图像进行处理，强化目标区域，弱化背景。
     ret, binary = cv2.threshold(sobel, 150, 255, cv2.THRESH_BINARY)
-    # cv2.imshow("binary", binary)
+    cv2.imshow("binary", binary)
     # cv2.waitKey(0)
 
     # 进行闭操作，闭操作可以将目标区域连成一个整体，便于后续轮廓的提取
@@ -112,19 +114,18 @@ def location(frame):
     # 进行开操作，去除细小噪点
     # eroded = cv2.erode(closed, None, iterations=1)
     # dilation = cv2.dilate(eroded, None, iterations=1)
-    # cv2.imshow("closed", closed)
+    cv2.imshow("closed", closed)
     # cv2.waitKey(0)
 
     # 查找并筛选符合条件的矩形区域
     region = findPlateNumberRegion(closed)
-    print(region)
+    print('目标区域', region)
     cv2.drawContours(img, [region], 0, (0, 255, 0), 2)
     cv2.imshow("img", img)
     cv2.waitKey(0)
 
 
 if __name__ == '__main__':
-
-    file = "car_pic/timg5.jpg"
+    file = "car_pic/2.jpg"
     img = cv2.imread(file)
     location(img)
