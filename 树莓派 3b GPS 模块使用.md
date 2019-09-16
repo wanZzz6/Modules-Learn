@@ -10,7 +10,7 @@
 
 [接线方式（串口版）](https://blog.csdn.net/qq_32384313/article/details/77745386)
 
-![](https://images0.cnblogs.com/blog/485996/201411/082008090659506.png)
+![接线方式](https://images0.cnblogs.com/blog/485996/201411/082008090659506.png)
 
 **引脚说明**
 
@@ -31,95 +31,86 @@
 
 > cat /dev/ttyUSB2
 
-## console 用法
+## 一、console 测试
 
 ### 命令行方式
 
 1. 安装 GPS 模块的包
 
-    > sudo apt-get update && sudo apt-get -y install gpsd gpsd-clients python-gps
+   > sudo apt-get update && sudo apt-get -y install gpsd gpsd-clients python-gps
 
 2. 启动 gps 服务并对其进行控制
 
-    - 开机启动: sudo systemctl enable gpsd.socket
-    - 启用服务: sudo systemctl start gpsd.socket
-    - 重启服务: sudo systemctl restart gpsd.socket
-    - 检查运行状态: sudo systemctl status gpsd.socket
+   - 开机启动: sudo systemctl enable gpsd.socket
+   - 启用服务: sudo systemctl start gpsd.socket
+   - 重启服务: sudo systemctl restart gpsd.socket
+   - 检查运行状态: sudo systemctl status gpsd.socket
 
 3. 修改配置文件（可选）
 
-    在 /dev/default/gpsd 中
+   在 /dev/default/gpsd 中
 
-    - 修改串口地址
+   - 修改串口地址
 
-        > DEVICES="/dev/ttyUSB2"
+     > DEVICES="/dev/ttyUSB2"
 
-    - 重启服务
+   - 重启服务
 
-        > sudo systemctl restart gpsd.socket
+     > sudo systemctl restart gpsd.socket
 
 4. 查看当前 GPS 信息
 
-    > sudo sgps [-s ] 5]
+   > sudo cgps [-s ] 5]
 
-### GPIO 连接需要额外修改配置（关闭蓝牙对硬件串口的使用）
+# 二、GPIO 连接需要额外修改配置（关闭蓝牙对硬件串口的使用）
 
-参考：https://blog.csdn.net/Veritaz/article/details/89815205
+参考教程：
 
-参考：https://blog.csdn.net/qq_32384313/article/details/77745907
+- https://blog.csdn.net/berryfish/article/details/60147631
+
+- https://blog.csdn.net/Veritaz/article/details/89815205
+
+- https://blog.csdn.net/qq_32384313/article/details/77745907
+
+## 原因
 
 **树莓派 3**上用户目前无法正常是使用 GPIO 中的 UART 串口(GPIO14&GPIO15),也就是说用户无论是想用串口来调试树莓派，还是想用 GPIO 中的串口来连接 GPS,蓝牙，XBEE 等等串口外设目前都是有问题的。
 
-原因是树莓派 CPU 内部有两个串口，一个是**硬件串口**(官方称为 PL011 UART)，一个是**迷你串口**(官方成为 mini-uart)。在树莓派 2B/B+这些老版树莓派上，官方设计时都是将“**硬件串口**”分配给 GPIO 的 UART(GPIO14&GPIO15)，因此可以独立调整串口的速率和模式。而树莓派 3 的设计上，官方在设计时将硬件串口分配给了新增的蓝牙模块上，而将一个没有时钟源，必须由内核提供时钟参考源的“**迷你串口**”分配给了 GPIO 的串口，这样以来由于内核的频率本身是变化的，就会导致“**迷你串口**”的速率不稳定，这样就出现了无法正常使用的情况。
+原因是树莓派 CPU 内部有两个串口，一个是**硬件串口**(官方称为 PL011 UART)，一个是**迷你串口**(官方成为 mini-uart)。在树莓派 2B/B+这些老版树莓派上，官方设计时都是将“**硬件串口**”分配给 GPIO 的 UART(GPIO14&GPIO15)，因此可以独立调整串口的速率和模式。而树莓派 3 的设计上，官方在设计时将硬件串口分配给了新增的蓝牙模块上，而将一个没有时钟源，必须由内核提供时钟参考源的“**迷你串口**”分配给了 GPIO 的串口，这样以来由于内核的频率本身是变化的，就会导致“**迷你串口**”的速率**不稳定**，这样就出现了无法正常使用的情况。
 
 目前解决方法就是，关闭蓝牙对**硬件串口**的使用，将硬件串口重新恢复给 GPIO 的串口使用，也就意味着树莓派 3 的**板载蓝牙和串口，两者是无法兼得的。**
 
-#### 精简版解决方案
+## 具体步骤
 
-方案一：
+### 1. 关闭板载蓝牙功能
 
-    1.  设置里打开硬件串口，关闭串口控制台调试
+首先，打开你的 Terminal，输入一下语句：
 
-    2.  sudo nano /boot/config.txt 加上 dtoverlay=pi3-miniuart-bt
+> sudo systemctl disable hciuart
 
-方案二：
+然后，编辑文档/lib/systemd/system/hciuart.service，命令如下：
 
-    1. 设置里打开硬件串口，关闭串口控制台调试
-    2. sudo nano /boot/config.txt 加上 dtoverlay=pi3-disable-bt
+> sudo nano /lib/systemd/system/hciuart.service
 
-#### 详细版
+将文档中所有的 "ttyAMA0"改成"ttyS0"，**总共要修改两处**，修改好以后保存退出。
 
-##### 先启用串口
+### 2.恢复串口使用并禁用控制台
 
-    > ls -l /dev
+首先，编辑文档 /boot/config.txt，命令如下:
 
-看到的应该只有 serial1 -> ttyAMA0
+> sudo nano /boot/config.txt
 
-然后在设置中启用串口，会发现 /dev 目录下变成了两个：
-serial0 -> ttyS0 和 serial1 ->ttyAMA0
-（ps. 设置中启用串口相当于在 /boot/config.txt 里面加上了一句 enable_uart=1
-）
-但是现在是不可使用的，因为树莓派上引出的 TX 和 RX 口(serial0)分配给了 ttyS0，我们想要的是 serial0 -> ttyAMA0
+在文档的末尾，添加语句：
 
-##### 禁用蓝牙
+> dtoverlay=pi3-miniuart-bt
 
-因为蓝牙也使用硬件串口，所以我们在 /boot/config.txt 里面加上
+#### 注意
 
-> dtoverlay=pi3-disable-bt
+该语句中的"pi3-miniuart-bt"是在文件夹 /boot/overlays 中可以找到的。如果没有，你可以下载一个"pi3-miniuart-bt-overlay"文件并将其拷贝至/boot/overlays 文件夹中，并且将上面的语句更改为： dtoverlay=pi3-miniuart-bt-overlay  即可，具体可以参考该作者：http://ukonline2000.com/?p=880
 
-ttyAMA0 得以释放，这时候树莓派也自动交换了 ttyAMA0 和 ttyS0，把 serial0 分配给了 ttyAMA0 。
+接着，我们编辑文档 /boot/cmdline.txt，命令如下：
 
-网上还有一种解决方案是 sudo nano /boot/config.txt 加上 dtoverlay=pi3-miniuart-bt 不再赘述
-
-##### 禁用控制台
-
-最后，硬件串口为原串口控制台使用，为避免冲突，在设置里禁用串口控制台
-如果非要用 bash 来禁用：
-
-```bash
-sudo systemctl stop serial-getty@ttyAMA0.service
-sudo systemctl disable serial-getty@ttyAMA0.service
-```
+> sudo nano /boot/cmdline.txt
 
 然后还需要删一个东西，把
 
@@ -129,7 +120,19 @@ sudo systemctl disable serial-getty@ttyAMA0.service
 
 > dwc_otg.lpm_enable=0 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait
 
-# 指令解析
+这里我们要注意：该替换内容是针对于设置通用串口的，这个内容实际上是关闭了 serial console，因为只有这样方可使串口变为通用，即可以使树莓派连接外部设备。如果你是想用串口连接、登录以及控制树莓派，则需要 enable seiral console，具体方法可以[参考博客](http://www.briandorey.com/post/Raspberry-Pi-3-UART-Boot-Overlay-Part-Two)
+
+最后，我们依次执行以下命令完成所有配置并重启：
+
+    sudo apt-get update
+
+    sudo apt-get upgrade
+
+    sudo reboot
+
+完成以上步骤后，我们现在可以通过`ttyAMA0`与外部设备进行连接了。
+
+# 三、指令解析
 
 ## NMEA-0183 协议简介
 
@@ -144,31 +147,31 @@ NMEA-0183 协议采用 ASCII 码来传递 GPS 定位信息，我们称之为帧�
 5. hh：校验和（check sum），\$与\*之间所有字符 ASCII 码的校验和（各字节做异或运算，得到校验和后，再转换 16 进制格式的 ASCII 字符）
 6. (CR)(LF)：帧结束，回车和换行符
 
-    ![](https://images0.cnblogs.com/blog/485996/201411/082016074569921.png)
+![demo](https://images0.cnblogs.com/blog/485996/201411/082016074569921.png)
 
--   每行开头 2 字母
+- 每行开头 2 字母
 
-    -   GN：全球导航卫星系统（GNSS-global navigationsatellite system）
-    -   BD：北斗导航卫星系统（COMPASS）
+  - GN：全球导航卫星系统（GNSS-global navigationsatellite system）
+  - BD：北斗导航卫星系统（COMPASS）
 
--   后续 3 个字母
+- 后续 3 个字母
 
-    -   GGA：GPS 定位信息时间、位置、定位数据
-    -   GLL：大地坐标信息，经纬度、UTC 时间和定位状态
+  - GGA：GPS 定位信息时间、位置、定位数据
+  - GLL：大地坐标信息，经纬度、UTC 时间和定位状态
 
-    -   GSA：当前卫星信息，接收机模式和卫星工作数据,包括位置和水平/竖直稀释精度等。稀释精度（Dilution of Precision）是个地理定位术语.一个接收器可以在同一时间得到许多颗卫星定位信息，但在精密定位上，只要四颗卫星讯号即已足够了
+  - GSA：当前卫星信息，接收机模式和卫星工作数据,包括位置和水平/竖直稀释精度等。稀释精度（Dilution of Precision）是个地理定位术语.一个接收器可以在同一时间得到许多颗卫星定位信息，但在精密定位上，只要四颗卫星讯号即已足够了
 
-    -   GSV：可见卫星信息，包括卫星 ID，海拔，仰角，方位角，信噪比（SNR）等
+  - GSV：可见卫星信息，包括卫星 ID，海拔，仰角，方位角，信噪比（SNR）等
 
-    -   RMC：推荐定位信息，日期，时间，位置，方向，速度数据。是最常用的一个消息
+  - RMC：推荐定位信息，日期，时间，位置，方向，速度数据。是最常用的一个消息
 
-    -   VTG：地面速度信息方位角与对地速度
+  - VTG：地面速度信息方位角与对地速度
 
-    -   MSS：信噪比(SNR),信号强度，频率，比特率
+  - MSS：信噪比(SNR),信号强度，频率，比特率
 
-    -   ZDA：时间（UTC）和日期数据
+  - ZDA：时间（UTC）和日期数据
 
-    UTC 时间即协调世界时，相当于本初子午线(0 度经线)上的时间，北京时间比 UTC 早 8 个小时
+  UTC 时间即协调世界时，相当于本初子午线(0 度经线)上的时间，北京时间比 UTC 早 8 个小时
 
 ## 指令讲解
 
@@ -188,8 +191,8 @@ NMEA-0183 协议采用 ASCII 码来传递 GPS 定位信息，我们称之为帧�
 (6) GPS 状态，0=未定位，1=非差分定位，2=差分定位；
 (7) 正在使用的用于定位的卫星数量（00~12）
 (8) HDOP 水平精确度因子（0.5~99.9）
-(9) 海拔高度（-9999.9 到 9999.9 米）
-(10) 大地水准面高度（-9999.9 到 9999.9 米）
+(9) 海拔高度（-9999.9 到 9999.9 米）+ 单位
+(10) 大地水准面高度（-9999.9 到 9999.9 米） + 单位
 (11) 差分时间（从最近一次接收到差分信号开始的秒数，非差分定位，此项为空）
 (12) 差分参考基站标号（0000 到 1023，首位 0 也将传送，非差分定位，此项为空)
 
@@ -197,7 +200,7 @@ NMEA-0183 协议采用 ASCII 码来传递 GPS 定位信息，我们称之为帧�
 
 \$GPGGA,023543.00,2308.28715,N,11322.09875,E,1,06,1.49,41.6,M,-5.3,M,,\*7D
 
-GGA 和 RMC 都会返回时间，GGA 的第一个参数<1>就是 UTC 时间，即协调世界时，格式为 hhmmss，要换算成北京时间只需要加上 8 小时即可；RMC 的<9>为 UTC 日期，格式为 ddmmyy（日月年）。下面列一条 RMC 返回的数据：
+GGA 和 RMC 都会返回时间，GGA 的第一个参数<1>就是 UTC 时间，即协调世界时，格式为 hhmmss，**要换算成北京时间只需要加上 8 小时**即可；RMC 的<9>为 UTC 日期，格式为 ddmmyy（日月年）。下面列一条 RMC 返回的数据：
 
 > \$GPRMC,125315.00,A,3853.70120,N,12133.61898,E,1.710,,081114,,,A\*7E
 
@@ -327,7 +330,7 @@ NMEA-0183 协议我们就介绍到这里，了解了该协议，我们就可以�
 
 ---
 
-# 使用 python 解析 GPS 数据
+# 三、使用 python 解析 GPS 数据
 
 ## pynmea2 输出实时经纬度信息
 
@@ -337,14 +340,14 @@ import pynmea2
 
 
 def parseGPS(string):
-    if string.find('GGA') > 0:
-        msg = pynmea2.parse(string)
-        print("Timestamp: %s -- Lat: %s %s -- Lon: %s %s -- Altitude: %s %s" %
-              (msg.timestamp, msg.lat, msg.lat_dir, msg.lon, msg.lon_dir,
-               msg.altitude, msg.altitude_units))
+   if string.find('GGA') > 0:  ## 推荐定位 RMC（时间信息更完整）
+       msg = pynmea2.parse(string)
+       print("Timestamp: %s -- Lat: %s %s -- Lon: %s %s -- Altitude: %s %s" %
+             (msg.timestamp, msg.lat, msg.lat_dir, msg.lon, msg.lon_dir,
+              msg.altitude, msg.altitude_units))
 
 
-serialPort = serial.Serial(get_com_devices()[0], 9600, timeout=0.5)
+serialPort = serial.Serial('/dev/ttyAMA0', 9600, timeout=0.5)
 
 # a = serialPort.read(300).decode()
 # print(a)
@@ -352,8 +355,8 @@ serialPort = serial.Serial(get_com_devices()[0], 9600, timeout=0.5)
 serialPort.flushInput()
 
 while True:
-    string = serialPort.readline().decode()
-    parseGPS(string)
+   string = serialPort.readline().decode()
+   parseGPS(string)
 ```
 
 ## gps 模块使用 (先开启 GPSD 服务， cgps -s)
