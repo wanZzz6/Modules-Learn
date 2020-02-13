@@ -10,8 +10,25 @@ Sublime 相对其他编辑器轻便、可扩展性强，你可以用来写任何
    [Sublime Text 3 documentation index](http://www.sublimetext.com/docs/3/)
    [Sublime Text Unofficial Documentation](https://sublime-text-unofficial-documentation.readthedocs.io/en/latest/)
 
-3. 激活码
+3. 激活
 
+**修改sublime text 3 二进制文件**：
+
+用十六进制编辑器打开文件：sublime_text.exe（大致位置在：X:\Program Files\Sublime Text 3），然后搜索“97 94 0D”，将其修改为“00 00 00”
+
+**修改host文件**
+
+- windows系统：C:\Windows\System32\drivers\etc\hosts
+- linux系统：/etc/hosts
+
+**添加 :**
+```
+# 屏蔽联网验证
+127.0.0.1 license.sublimehq.com
+127.0.0.1 www.sublimetext.com
+```
+
+**填写注册码**：
 ```a
 ZYNGA INC.
 50 User License
