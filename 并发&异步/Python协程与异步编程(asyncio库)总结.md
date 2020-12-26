@@ -43,11 +43,11 @@ asyncio.Task 用于实现协作式多任务的库，且 Task 对象不能用户�
 
 ### 最简单的异步 IO 示例
 
-_`- run_until_complete()`_
+- `run_until_complete()`
 
 阻塞调用，直到协程运行结束才返回。参数是 future，传入协程对象时内部会自动变为 future
 
-_- `asyncio.sleep()`_
+- `asyncio.sleep()`
 
 模拟 IO 操作，这样的休眠不会阻塞事件循环，前面加上 await 后会把控制权交给主事件循环，在休眠（IO 操作）结束后恢复这个协程。
 
@@ -142,14 +142,15 @@ loop.close()
 
 ![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/640-20201211235344189.png)
 
-*   第 2 种方案：通过 `add_done_callback()` 回调
+*   ❤️ 第 2 种方案：通过 `add_done_callback()` 回调, 回调函数第一个参数必须接收future，如果需要传入其他参数，可以用`偏函数`或者 contex参数传入一个`contextvars.Context`对象
     
 
 ```python
 import asyncio
+import functools
 
-def my_callback(future):
-    print('返回值：', future.result())
+def my_callback(name, future):
+    print(name, '返回值：', future.result())
 
 async def coroutine_example():
     await asyncio.sleep(1)
@@ -160,11 +161,10 @@ coro = coroutine_example()
 loop = asyncio.get_event_loop()
 
 task = loop.create_task(coro)
-task.add_done_callback(my_callback)
+task.add_done_callback(functools.partial(my_callback, 'test'))
 
 loop.run_until_complete(task)
 loop.close()
-
 ```
 
 输出如下：
@@ -175,7 +175,7 @@ loop.close()
 
 
 
-### 控制任务
+### 控制多任务
 
 通过 `asyncio.wait()` 可以控制多任务
 
@@ -276,7 +276,7 @@ loop.close()
 
 ### 相关函数介绍
 
-- `loop.call_soon__threadsafe()` ：与 `call_soon()` 类似，等待此函数返回后马上调用回调函数，返回值是一个 asyncio.Handle 对象，此对象内只有一个方法为 `cancel()` 方法，用来取消回调函数。
+- `loop.call_soon_threadsafe()` ：与 `call_soon()` 类似，等待此函数返回后马上调用回调函数，返回值是一个 asyncio.Handle 对象，此对象内只有一个方法为 `cancel()` 方法，用来取消回调函数。
 
 - `loop.call_soon()` ： 与 `call_soon_threadsafe()` 类似，`call_soon_threadsafe()` 是线程安全的
 
@@ -286,7 +286,7 @@ loop.close()
 
 ### 动态添加协程: 同步任务
 
-通过调用 `call_soon_threadsafe()` 函数，传入一个回调函数 callback 和一个位置参数
+通过调用 `loop.call_soon_threadsafe()` 函数，传入一个回调函数 callback 和一个位置参数
 
 注意：同步方式，**回调函数 thread_example() 为普通函数**
 
@@ -302,7 +302,6 @@ def thread_example(name):
     print('正在执行name:', name)
     return '返回结果：' + name
 
-
 new_loop = asyncio.new_event_loop()
 t = Thread(target=start_thread_loop, args=(new_loop,))
 t.start()
@@ -317,7 +316,6 @@ print('主线程不会阻塞')
 new_loop.call_soon_threadsafe(thread_example, 'Zarten3')
 
 print('继续运行中...')
-
 ```
 
 输出结果：
@@ -343,13 +341,17 @@ async def thread_example(name):
     await asyncio.sleep(1)
     return '返回结果：' + name
 
-
+def callback(future):
+    print('back', future.result())
+    
 new_loop = asyncio.new_event_loop()
-t = Thread(target= start_thread_loop, args=(new_loop,))
+t = Thread(target=start_thread_loop, args=(new_loop,))
 t.start()
 
 future = asyncio.run_coroutine_threadsafe(thread_example('Zarten1'), new_loop)
 print(future.result(timeout=None))  # 阻塞、等待timeout
+
+future.add_done_callback(callback) # 即使异步任务已经完成，也可以添加回调
 
 asyncio.run_coroutine_threadsafe(thread_example('Zarten2'), new_loop)
 
@@ -358,12 +360,11 @@ print('主线程不会阻塞')
 asyncio.run_coroutine_threadsafe(thread_example('Zarten3'), new_loop)
 
 print('继续运行中...')
-
 ```
 
 输出结果：
 
-![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/640.jpeg)
+![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/20201213171344.png)
 
 从上面 2 个例子中，当主线程运行完成后，由于子线程还没有退出，故主线程还没退出，等待子线程退出中。若要主线程退出时子线程也退出，可以设置子线程为守护线程 t.setDaemon(True)
 
@@ -407,11 +408,11 @@ async def thread_example(name):
 dq = deque()
 
 new_loop = asyncio.new_event_loop()
-loop_thread = Thread(target= start_thread_loop, args=(new_loop,))
+loop_thread = Thread(target=start_thread_loop, args=(new_loop,))
 loop_thread.setDaemon(True)
 loop_thread.start()
 
-consumer_thread = Thread(target= consumer)
+consumer_thread = Thread(target=consumer)
 consumer_thread.setDaemon(True)
 consumer_thread.start()
 
@@ -419,7 +420,6 @@ while True:
     i = random.randint(1, 10)
     dq.appendleft(str(i))
     time.sleep(2)
-
 ```
 
 输出结果：
@@ -452,8 +452,8 @@ from threading import Thread
 import redis
 
 def get_redis():
-    conn_pool = redis.ConnectionPool(host= '127.0.0.1')
-    return redis.Redis(connection_pool= conn_pool)
+    conn_pool = redis.ConnectionPool(host='127.0.0.1')
+    return redis.Redis(connection_pool=conn_pool)
 
 def start_thread_loop(loop):
     asyncio.set_event_loop(loop)
@@ -468,7 +468,7 @@ async def thread_example(name):
 redis_conn = get_redis()
 
 new_loop = asyncio.new_event_loop()
-loop_thread = Thread(target= start_thread_loop, args=(new_loop,))
+loop_thread = Thread(target=start_thread_loop, args=(new_loop,))
 loop_thread.setDaemon(True)
 loop_thread.start()
 
