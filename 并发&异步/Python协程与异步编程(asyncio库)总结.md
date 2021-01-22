@@ -105,7 +105,7 @@ loop.close()
 
 ![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/640.png)
 
-### 获取协程返回值
+### ❤️获取协程返回值
 
 有 2 种方案可以获取返回值。
 
