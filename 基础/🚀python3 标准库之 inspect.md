@@ -18,6 +18,7 @@ def module_level_function(arg1, arg2='default', *args, **kwargs):
     """This function is declared in the module."""
     local_variable = arg1 * 2
     return local_variable
+
 class A(object):
     """The A class."""
     def __init__(self, name):
@@ -25,7 +26,9 @@ class A(object):
     def get_name(self):
         "Returns the name of the instance."
         return self.name
+
 instance_of_a = A('sample_instance')
+
 class B(A):
     """This is the B class.
     It is derived from A.
@@ -49,6 +52,7 @@ class B(A):
 # inspect_getmembers_module.py
 import inspect
 import example
+
 for name, data in inspect.getmembers(example):
     if name.startswith('__'):
         continue
@@ -72,6 +76,7 @@ module_level_function : <function module_level_function at
 # inspect_getmembers_module_class.py
 import inspect
 import example
+
 for name, data in inspect.getmembers(example, inspect.isclass):
     print('{} : {!r}'.format(name, data))
 ```
@@ -94,6 +99,7 @@ B : <class 'example.B'>
 import inspect
 from pprint import pprint
 import example
+
 pprint(inspect.getmembers(example.A), width=65)
 ```
 
@@ -522,13 +528,17 @@ import inspect
 import example
 class C(object):
     pass
+
 class C_First(C, example.B):
     pass
+
 class B_First(example.B, C):
     pass
+
 print('B_First:')
 for c in inspect.getmro(B_First):
     print('  {}'.format(c.__name__))
+
 print()
 print('C_First:')
 for c in inspect.getmro(C_First):
@@ -564,6 +574,7 @@ C_First:
 # inspect_currentframe.py
 import inspect
 import pprint
+
 def recurse(limit, keyword='default', *, kwonly='must be named'):
     local_variable = '.' * limit
     keyword = 'changed value of argument'
@@ -577,6 +588,7 @@ def recurse(limit, keyword='default', *, kwonly='must be named'):
         return
     recurse(limit - 1)
     return local_variable
+
 if __name__ == '__main__':
     recurse(2)
 ```
@@ -614,6 +626,7 @@ locals:
 # inspect_stack.py
 import inspect
 import pprint
+
 def show_stack():
     for level in inspect.stack():
         print('{}[{}]\n  -> {}'.format(
@@ -623,6 +636,7 @@ def show_stack():
         ))
         pprint.pprint(level.frame.f_locals)
         print()
+
 def recurse(limit):
     local_variable = '.' * limit
     if limit <= 0:
@@ -630,6 +644,7 @@ def recurse(limit):
         return
     recurse(limit - 1)
     return local_variable
+
 if __name__ == '__main__':
     recurse(2)
 ```
