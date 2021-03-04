@@ -69,7 +69,7 @@ loop.run_until_complete(echo_server(stop))
 
 # 添加定时任务
 
-`loop.call_later()` 和 `loop.call_later` 的时间参数是浮点型的小数，单位：秒，本质上都是调用`call_at()`
+`loop.call_at()` 和 `loop.call_later` 的时间参数是浮点型的小数，单位：秒，本质上都是调用`call_at()`
 
 ```python
 import asyncio
@@ -165,3 +165,20 @@ loop.run_forever()
 然后你就能正常看到错误信息了
 
 ![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/20210120230439.png)
+
+# gather 和 wait 区别
+
+常见用法的区别见我的另一篇文章，这里主要说明其在执行过程中发生任务取消cancel()时的不同
+
+- wait的任务被取消，只是抛出`CancelledError`异常，
+
+
+
+
+
+
+
+
+
+
+

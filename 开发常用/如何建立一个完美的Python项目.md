@@ -99,7 +99,11 @@ max-complexity = 18
 select = B,C,E,F,W,T4
 ```
 
-现在我们可以运行 flake8 了，命令：`pipenv run flake8` 。
+现在我们可以运行 flake8 了，命令:
+
+```sh
+pipenv run flake8
+```
 
 使用 mypy 进行静态类型检查
 ----------------
@@ -323,8 +327,6 @@ pipenv run pre-commit install -t pre-push
 *   与 [projectionist 集成][12]的  [vim-test][13] 在文件保存上运行 pytest
     
 
-
-
 参考资料
 
 [1]: https://sourcery.ai/blog/python-best-practices/
@@ -338,5 +340,5 @@ pipenv run pre-commit install -t pre-push
 [9]: https://pre-commit.com/
 [10]: https://github.com/sourcery-ai/python-best-practices-cookiecutter
 [11]: https://github.com/dense-analysis/ale
-[12]:   https://github.com/janko/vim-test#projectionist-integration
+[12]: https://github.com/janko/vim-test#projectionist-integration
 [13]: https://github.com/janko/vim-test

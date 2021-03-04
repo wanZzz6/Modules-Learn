@@ -1,14 +1,8 @@
-> 原文地址 https://zhuanlan.zhihu.com/p/59621713
-
 异步 IO：就是发起一个 IO 操作（如：网络请求，文件读写等），这些操作一般是比较耗时的，不用等待它结束，可以继续做其他事情，结束时会发来通知。  
 
 ----------------------------------------------------------------------------
 
 协程：又称为微线程，在一个线程中执行，执行函数时可以随时中断，由程序（用户）自身控制，执行效率极高，与多线程比较，没有切换线程的开销和多线程锁机制。
-
-Python 中异步 IO 操作是通过 asyncio 来实现的。
-
-
 
 异步 IO（asyncio）
 --------------
@@ -21,7 +15,7 @@ Python 中异步 IO 操作是通过 asyncio 来实现的。
 
 Python3.8 之后 `@asyncio.coroutine` 装饰器就会被移除，推荐使用 `async` & `await` 关键字实现协程代码。
 
-### asyncio 中几个重要概念
+### 1. asyncio 中几个重要概念
 
 1. 事件循环
 
@@ -41,7 +35,7 @@ asyncio.Task 用于实现协作式多任务的库，且 Task 对象不能用户�
     
 *   `loop.create_task()` 或 `asyncio.ensure_future()`
 
-### 最简单的异步 IO 示例
+### 2. 最简单的异步 IO 示例
 
 - `run_until_complete()`
 
@@ -67,12 +61,11 @@ coro = coroutine_example()
 loop = asyncio.get_event_loop()
 loop.run_until_complete(coro)
 loop.close()
-
 ```
 
 上面输出：会暂停 1 秒，等待 `asyncio.sleep(1)` 返回后打印
 
-### 创建 Task
+## 创建 Task
 
 _`loop.create_task()`_:
 
@@ -96,7 +89,6 @@ print('运行情况：', task)
 loop.run_until_complete(task)
 print('再看下运行情况：', task)
 loop.close()
-
 ```
 
 输出结果：
@@ -105,12 +97,11 @@ loop.close()
 
 ![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/640.png)
 
-### ❤️获取协程返回值
+## ❤️获取协程返回值
 
 有 2 种方案可以获取返回值。
 
-*   第 1 种方案：通过 `task.result()`
-    
+### 方案一
 
 可通过调用 `task.result()` 方法来获取协程的返回值，**但是只有运行完毕后才能获取，若没有运行完毕，result() 方法不会阻塞去等待结果，而是抛出 `asyncio.InvalidStateError `错误**
 
@@ -135,15 +126,15 @@ loop.run_until_complete(task)
 print('再看下运行情况：', task)
 print('返回值：', task.result())
 loop.close()
-
 ```
 
 运行结果可以看到：只有 task 状态运行完成时才能捕获返回值
 
 ![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/640-20201211235344189.png)
 
-*   ❤️ 第 2 种方案：通过 `add_done_callback()` 回调, 回调函数第一个参数必须接收future，如果需要传入其他参数，可以用`偏函数`或者 contex参数传入一个`contextvars.Context`对象
-    
+### 方案二
+
+通过 `add_done_callback()` 回调, 回调函数第一个参数必须接收future，如果需要传入其他参数，可以用`偏函数`或者 contex参数传入一个`contextvars.Context`对象
 
 ```python
 import asyncio
@@ -170,46 +161,234 @@ loop.close()
 输出如下：
 
 ```
-返回值： zhihu ID: Zarten
+test 返回值： zhihu ID: Zarten
 ```
 
+## ❤️控制多任务
+
+通过 `asyncio.wait()`和 `asyncio.gather()` 可以控制多任务
+
+### 1. asyncio.wait()
+
+**作用**：等待多个任务执行完毕。在低层级精确的控制任务执行，注重执行过程。
+
+**定义**：
+
+```python
+async def wait(fs, *, loop=None, timeout=None, return_when=ALL_COMPLETED)
+```
+
+**参数说明：**
+
+- fs： **future 或协程构成的可迭代对象**
+- loop：事件循环
+- timeout: 限制执行时间，默认为`None`，表示不限时间。超时不会抛出异常，未执行完毕的任务存放在第二个返回值集合中。
+- return_when：退出条件，可以是以下三个其一: `asyncio.FIRST_COMPLETED` 有一个任务执行完毕后退出；`asyncio.FIRST_EXCEPTION` 有一个任务发生异常后退出；`asyncio.ALL_COMPLETED` 所有任务正常执行完毕退出（默认值）
+
+**返回值**：
+
+**执行结果**：
+
+​	两个由 Future 构成的集合
+
+```python
+done, pending = await asyncio.wait(fs)
+```
+
+**用法示例：**
+
+```python
+import asyncio
+import random
 
 
-### 控制多任务
+async def coro(tag):
+    print(">", tag)
+    await asyncio.sleep(random.uniform(0.5, 5))
+    print("<", tag)
+    return tag
 
-通过 `asyncio.wait()` 可以控制多任务
 
-`asyncio.wait()` **是一个协程，不会阻塞，立即返回，返回的是协程对象。**传入的参数是 future 或协程构成的可迭代对象。最后将返回值传给 `run_until_complete()` 加入事件循环
+loop = asyncio.get_event_loop()
 
-最简单控制多任务
+tasks = [coro(i) for i in range(1, 11)]
 
-下面代码 `asyncio.wait()` 中，参数传入的是由协程构成的可迭代对象
+print("Get first result:")
+finished, unfinished = loop.run_until_complete(
+    asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED))
+
+for task in finished:
+    print('result', task.result())
+print("unfinished:", len(unfinished))
+
+print("Get more results in 2 seconds:")
+finished2, unfinished2 = loop.run_until_complete(
+    asyncio.wait(unfinished, timeout=2))
+
+for task in finished2:
+    print('result', task.result())
+print("unfinished2:", len(unfinished2))
+
+print("Get all other results:")
+finished3, unfinished3 = loop.run_until_complete(asyncio.wait(unfinished2))
+
+for task in finished3:
+    print('result', task.result())
+
+loop.close()
+```
+
+上面代码展示了wait 不同参数的不同作用，一共创建了10个任务，第一次限定结束条件为 `FIRST_COMPLETED`，所以会有 9个任务未完成。第二次限定执行时间2s，且认为执行过程未发生异常。第三次未限定执行时间，且认为执行过程未发生异常，等待剩余所有任务执行完毕。
+
+输出结果不定，请自行测试。
+
+>**注意**：通过返回值的第一个参数获取执行结果时，其顺序与任务执行完毕的先后有关，与创建顺序无关。如下示例
 
 ```python
 import asyncio
 
-async def coroutine_example(name):
-    print('正在执行name:', name)
-    await asyncio.sleep(1)
-    print('执行完毕name:', name)
+
+async def coro(tag):
+    print('>', tag)
+    await asyncio.sleep(tag)
+    print('<', tag)
+    return tag
+
 
 loop = asyncio.get_event_loop()
 
-tasks = [coroutine_example('Zarten_' + str(i)) for i in range(3)]
-wait_coro = asyncio.wait(tasks)
-loop.run_until_complete(wait_coro)
-loop.close()
+tasks = [coro(i) for i in range(3, 0, -1)]
 
+done, pending = loop.run_until_complete(
+    asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION))
+
+for task in done:
+    print('result', task.result())
 ```
 
-输出结果：
+我执行的结果为:
 
-![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/640-20201211235334666.jpeg)
+```
+> 3
+> 1
+> 2
+< 1
+< 2
+< 3
+result 1
+result 2
+result 3
+```
 
-多任务中获取返回值
+先执行完毕的先输出。
 
-*   方案 1：需要通过 `loop.create_task()` 创建 task 对象，以便后面来获取返回值
-    
+### 2. asyncio.gather()
+
+作用：支持多层级的组任务嵌套，注重任务的执行结果（result）
+
+定义如下：
+
+```
+def gather(*coros_or_futures, loop=None, return_exceptions=False):
+```
+
+传入多个协程或者 future对象，**如果是future对象，所有的future必须在同一个 loop 循环中**
+
+返回一个 `Future` 对象
+
+示例代码：
+
+```python
+import asyncio
+import random
+from pprint import pprint
+
+
+async def coro(tag):
+    print(">", tag)
+    await asyncio.sleep(random.uniform(1, 3))
+    print("<", tag)
+    return tag
+
+
+loop = asyncio.get_event_loop()
+
+group1 = asyncio.gather(*[coro("group 1.{}".format(i)) for i in range(1, 6)])
+group2 = asyncio.gather(*[coro("group 2.{}".format(i)) for i in range(1, 4)])
+group3 = asyncio.gather(*[coro("group 3.{}".format(i)) for i in range(1, 10)])
+# 任意嵌套组和
+group4 = asyncio.gather(group1, group2)
+all_groups = asyncio.gather(group3, group4)
+
+results = loop.run_until_complete(all_groups)
+loop.close()
+
+pprint(results)  # 或者 pprint(all_groups.result())
+```
+
+所有任务组可以通过 `cancel()` 方法取消执行，如果父任务组被 `cancel()`， 那么其所有子任务组都会被取消。如上述代码中，group2 被取消后，不会影响同级的 group1 和父级的 group4 的执行。
+
+#### 使用`return_exceptions` 参数
+
+任一任务被 cancel 后，会在`run_until_complete`阶段抛出 `asyncio.CancelledError` 异常，要想正常执行，就必须将第三个参数`return_exceptions`设为`True`
+
+```python
+group4 = asyncio.gather(group1, group2, return_exceptions=True)
+all_groups = asyncio.gather(group3, group4)
+# 取消group2, 因为 group2 包含在 group4 中，所以group4 要设置return_exceptions=True
+group2.cancel()
+results = loop.run_until_complete(all_groups)
+loop.close()
+
+pprint(results)  # 或者 pprint(all_groups.result())
+```
+
+`return_exceptions` 参数的作用是是否捕获**该任务组中**异步任务执行中出现的异常，如果设为True，当发生异常时会捕获异常当做其result，从而不影响该任务组中其他任务的执行。
+
+> **开发建议**：所有调用gather的地方都将 `return_exceptions`设为`True`
+
+```python
+import asyncio
+import random
+from pprint import pprint
+
+
+async def coro(tag):
+    print(">", tag)
+    await asyncio.sleep(random.uniform(1, 3))
+    if tag[-1] == '3':
+        raise ValueError
+    print("<", tag)
+    return tag
+
+
+loop = asyncio.get_event_loop()
+
+group1 = asyncio.gather(*[coro("group 1.{}".format(i)) for i in range(1, 6)], return_exceptions=True)
+group2 = asyncio.gather(*[coro("group 2.{}".format(i)) for i in range(1, 4)], return_exceptions=True)
+group3 = asyncio.gather(*[coro("group 3.{}".format(i)) for i in range(1, 10)], return_exceptions=True)
+# 任意嵌套组和
+group4 = asyncio.gather(group1, group2, return_exceptions=True)
+all_groups = asyncio.gather(group3, group4, return_exceptions=True)
+
+results = loop.run_until_complete(all_groups)
+loop.close()
+
+pprint(results)  # 或者 pprint(all_groups.result())
+```
+
+### 3. 小结
+
+- gather从字面意思理解，注重对执行结果的收集，按照任务传入的先后顺序收集到一个列表中
+- wait等待任务执行，注重过程控制，执行结果需要手动收集
+- 参数不同，wait 接收一个序列，gather是通过收集参数接收多个值。
+- 通过 wait 返回值的第一个集合获取执行结果result()，其顺序不确定 
+
+### 4. 多任务中获取返回值
+
+#### 方案 1
+
+需要通过 `loop.create_task()` 创建 task 对象，以便后面来获取返回值
 
 下面代码 `asyncio.wait()` 中，参数传入的是由 future（task）对象构成的可迭代对象
 
@@ -232,11 +411,13 @@ for task in tasks:
     print(task.result())
 
 loop.close()
-
 ```
 
-*   方案 2：通过回调 `add_done_callback()` 来获取返回值
-    
+`asyncio.gather()` 获取返回值同理，还有上文提到的 `results = loop.run_until_complete(all_groups)` 可直接获取返回值。
+
+#### 方案 2
+
+通过回调 `add_done_callback()` 来获取返回值
 
 ```python
 import asyncio
@@ -262,12 +443,21 @@ wait_coro = asyncio.wait(tasks)
 loop.run_until_complete(wait_coro)
 
 loop.close()
-
 ```
 
 输出结果：
 
-![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/640-20201211235326981.jpeg)
+```
+正在执行name: Zarten_0
+正在执行name: Zarten_1
+正在执行name: Zarten_2
+执行完毕name: Zarten_0
+执行完毕name: Zarten_1
+执行完毕name: Zarten_2
+返回值： 返回值：Zarten_0
+返回值： 返回值：Zarten_1
+返回值： 返回值：Zarten_2
+```
 
 动态添加协程
 ------
@@ -509,6 +699,7 @@ def main():
     tasks = [get_http(url.format(i)) for i in range(10)]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
+    
 if __name__ == '__main__':
     main()
 ```
@@ -540,6 +731,7 @@ def main():
     tasks = [get_http(url.format(i)) for i in range(600)]
     loop.run_until_complete(asyncio.wait(tasks))
     loop.close()
+    
 if __name__ == '__main__':
     main()
 ```
@@ -552,7 +744,7 @@ if __name__ == '__main__':
 
 最常见的解决方案是：限制并发数量（一般 500），若并发的量不大可不作限制。其他方案这里不做介绍，如 windows 下使用 loop = asyncio.ProactorEventLoop() 以及使用回调方式等
 
-### 限制并发数量方法
+## 限制并发数量方法
 
 提示：此方法也可用来作为异步爬虫的限速方法（反反爬）
 
@@ -584,6 +776,12 @@ if __name__ == '__main__':
     loop.close()
 ```
 
-原文地址，原作 Zarten。  
 
-https://zhuanlan.zhihu.com/p/59621713
+
+---
+
+## 参考
+
+- https://stackoverflow.com/questions/42231161/asyncio-gather-vs-asyncio-wait
+
+- https://zhuanlan.zhihu.com/p/59621713

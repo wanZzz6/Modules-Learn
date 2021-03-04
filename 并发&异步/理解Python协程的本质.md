@@ -149,7 +149,7 @@ except StopIteration as e:
 
 如果我们把我们的`handler`用`yield`关键字转换成一个生成器，运行它来把 **IO 操作的具体内容**返回，IO 完成后的回调函数中把 IO 结果放回并恢复生成器运行，那就解决了业务代码不流畅的问题了：
 
-```
+```python
 def handler(request):
     # 业务逻辑代码
 
@@ -171,7 +171,6 @@ def on_request(request):
         g.send(result)  # 重新启动生成器
 
     asyncio.get_event_loop().io_call(io_info, call_back)
-
 ```
 
 上面的例子，用户写的`handler`代码已经不会被打散到 callback 中，`on_request`函数使用 callback 和`ioloop`交互，但它会被实现在 web 框架中，对用户不可见。上面代码足以给我们提供用生成器消灭的 callback 的启发，但局限性有两点：
@@ -188,7 +187,7 @@ def on_request(request):
 
 其中`request` 执行真正的 IO，`func1` `func2` 仅调用。显然我们的代码只能写成这样：
 
-```
+```python
 def func1():
     ret = yield request("http://test.com/foo")
     ret = yield func2(ret)
@@ -202,7 +201,6 @@ def request(url):
     # 这里模拟返回一个io操作，包含io操作的所有信息，这里用URL简化
     result = yield "iojob of %s" % url
     return result
-
 ```
 
 对于`request`，我们把 IO 操作通过 yield 暴露给框架。**对于`func1` 和 `func2`，调用`request`显然也要加`yield`关键字**，否则`request`调用返回一个生成器后不会暂停，继续执行后续逻辑显然会出错。
@@ -225,7 +223,7 @@ def request(url):
 
 如果实现出来，代码不长但信息量比较大。他把整个调用链对外变成一个生成器，对其调用 send，就能整个调用链中的 IO，完成这些 IO，继续推动调用链内的逻辑执行，直到整体逻辑结束：
 
-```
+```python
 def wrapper(gen):
     # 第一层调用 入栈
     stack = Stack()
@@ -260,12 +258,11 @@ def wrapper(gen):
         if stack.empty():
             print("finished")
             return result
-
 ```
 
 这可能是最复杂的部分，如果一下难以接受可以略过，对于本文理解无碍。只需要知道对于上面示例中的调用链，存在上面这种方法产生如下效果：
 
-```
+```python
 w = wrapper(func1())
 # 启动 wrpper, 将会得到 "iojob of http://test.com/foo"
 w.send(None)
@@ -273,12 +270,11 @@ w.send(None)
 w.send("bar")
 # 上个iojob bar 完成后的结构"barz"传入，继续运行，结束。
 w.send("barz")
-
 ```
 
 有了这部分以后，框架只需要再加上配套的代码：
 
-```
+```python
 # 维护一个就绪列表，存放所有完成的IO事件，格式为（wrapper，result）
 ready = []
 
@@ -304,7 +300,6 @@ def process_ready(self):
             # 完成后把生成器加入就绪列表，等待下一轮处理
             lambda result: ready.append((g, result)
         )
-
 ```
 
 这里核心思想是维护一个就绪列表，ioloop 每轮迭代都来扫一遍，推动就绪的状态的生成器向下运行，并把新的到到 IO 操作注册，IO 完成后再次加入就绪，经过几轮 ioloop 的迭代一个`handler`最终会被执行完成。
@@ -320,7 +315,7 @@ def process_ready(self):
 
 所以，协程最好能与网络解耦开，让等待网络 IO 只是其中一种场景，提高扩展性。Python 官方的解决方案是让用户自己处理阻塞代码，至于是向 ioloop 来注册 IO 事件还是开一个线程完全由你自己，并提供了一个标准「占位符」`Future`，表示他的结果等到未来才会有，其部分原型如下:
 
-```
+```python
 class Future：
     # 设置结果
     def set_result(result): pass
@@ -330,12 +325,11 @@ class Future：
     def done(): pass
     # 设置在他被设置结果时应该执行的回调函数，可以设置多个
     def add_done_callback(callback):  pass
-
 ```
 
 我们的稍加改动就能支持 future，让扩展性变得更强。对于用户代码的中的网络请求函数`request`：
 
-```
+```python
 # 现在 request 函数，不是生成器，它返回future
 def request(url):
     # future 理解为占位符
@@ -349,12 +343,11 @@ def request(url):
 
     # 返回占位符
     return future
-
 ```
 
 现在，`request`不再是一个生成器，而是直接返回 future。而对于位于框架中处理就绪列表的函数：
 
-```
+```python
 def process_ready(self):
     def callback(fut):
         # future被设置结果会被放入就绪列表
@@ -366,7 +359,6 @@ def process_ready(self):
         fut = g.send(result)
         # future被设置结果的时候会调用callback
         fut.add_done_callback(callback)
-
 ```
 
 0x05 发展和变革
@@ -376,7 +368,7 @@ def process_ready(self):
 
 后来有了`yield from` 表达式。他可以做什么？通俗地说，他就是做了上面那个生成器`wrapper`所做的事：通过栈实现调用链遍历的 ，**它是`wrapper`逻辑的语法糖**。有了它，同一个例子你可以这么写：
 
-```
+```python
 def func1():
     # 注意 yield from
     ret = yield from request("http://test.com/foo")
@@ -391,12 +383,11 @@ def func2(data):
 def request(url):
     # 同上基于future实现的request
     pass
-
 ```
 
 然后你就不再需要那个烧脑的`wrapper`函数了，`yield from` 背后实现了那段晦涩的逻辑：
 
-```
+```python
 g = func1()
 # 返回第一个请求的 future
 g.send(None)
@@ -404,7 +395,6 @@ g.send(None)
 g.send("bar")
 # 继续运行，完成调用链剩余逻辑，抛出StopIteration异常
 g.send("barz")
-
 ```
 
 `yield from`直接打通了整个调用链，这已经算是很大的进步了，但是用来异步编程看着还是别扭，其他语言此时已经有专门的协程`async` `await`关键字了。终于，再后来的版本把这些内容进一步封装到的`async` `await` 关键字，才成为今天比较优雅的样子。

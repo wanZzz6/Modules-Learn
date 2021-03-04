@@ -1,0 +1,316 @@
+## 一. 软件下载地址
+
+- [果核剥壳](https://www.ghpym.com/)
+- [Joker鹏少](https://vip.jokerps.com/software/macos)
+- [潮下载](http://www.chaoxz.com/)
+
+## 二. 常用软件
+
+- [搜狗输入法](https://pinyin.sogou.com/mac/)
+- [迅雷](http://mac.xunlei.com/)
+- [百度网盘](https://pan.baidu.com/download#pan)
+- [语雀](https://www.yuque.com/explore/headlines)
+- [snipaste贴图](https://www.snipaste.com/download.html)
+- [iShot （滚动）截图、录屏](https://apps.apple.com/cn/app/ishot-%E4%BC%98%E7%A7%80%E7%9A%84%E6%88%AA%E5%9B%BE%E5%BD%95%E5%B1%8F%E5%B7%A5%E5%85%B7/id1485844094?mt=12)
+- [超级右键](https://apps.apple.com/cn/app/%E8%B6%85%E7%BA%A7%E5%8F%B3%E9%94%AE-irightmouse/id1497428978?mt=12)
+- [eZip 解压缩](https://ezip.awehunt.com/)
+- [share Mouse：共享键鼠](https://www.macjb.com/mac/6410.html)
+- [Clipy：历史剪切板](https://clipy-app.com/)
+- [菜单栏管理 - Hidden Bar](https://github.com/dwarvesf/hidden)
+- [VLC多媒体播放器](https://vlc-media-player.en.softonic.com/mac/download)
+- [图片管理工具 Digikam](https://zhuanlan.zhihu.com/p/58758918)
+- [字由-设计师必备字体利器](https://www.hellofont.cn/download)
+- 系统监测性能优化
+  - [腾讯柠檬](https://lemon.qq.com/)
+  - [软件卸载清理残留 - Cleaner One Pro](https://www.zhihu.com/question/19551885/answer/426908198)
+  - [Mac性能优化工具，Sensei](https://vip.jokerps.com/4377.html)
+- [生产力工具集 - uTools](https://u.tools/index.html)
+- [PicGO 图床](https://molunerfinn.com/PicGo/) 和 [Typora](https://www.typora.io/)
+- [OBS 直播推流](https://obsproject.com/) - [soundflower](https://hub.fastgit.org/mattingalls/Soundflower/releases)
+- XmindZen 脑图 - [补丁](https://www.ghpym.com/xmindzen.html)
+- QQ影音
+- Notion 笔记
+
+## 三. 开发工具
+
+- [Miniconda-Python3](https://docs.conda.io/en/latest/miniconda.html)
+- [Charles](https://www.charlesproxy.com/latest-release/download.do) --- [激活](http://www.charles.ren/)
+- [GitKraken](https://blog.csdn.net/ZYC88888/article/details/106059421) --- [破解](https://github.com/5cr1pt/GitCracken)
+- [Pycharm](https://www.jetbrains.com/pycharm/) - [激活](https://zhile.io/)
+- [Goland](https://www.jetbrains.com/go/) - 激活同上
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/) - 激活同上
+- [VSCode](https://code.visualstudio.com/Download) - [环境变量配置](https://www.jianshu.com/p/fdf10fd927fd)
+- [SSH工具---FinalShell](http://www.hostbuf.com/t/988.html)
+- [数据库设计软件PDMan](https://gitee.com/robergroup/pdman)
+- [iterm2 终端](https://iterm2.com/downloads.html)
+
+
+## 四. 浏览器插件
+
+注：Edge登录账号并开启同步后，会先从微软插件市场里下载你账号上之前使用的插件（即不需要科学上网就能下载的），其他从谷歌应用商店里的插件需要在你能访问谷歌应用商店的网络环境下才能自动同步过来，所以你需要**先把任意一款谷歌访问助手插件离线安装上或者从账号上同步过来。**
+
+- [谷歌访问助手](https://microsoftedge.microsoft.com/addons/detail/%E8%B0%B7%E6%AD%8C%E8%AE%BF%E9%97%AE%E5%8A%A9%E6%89%8B/ipoefnomhohcbplopailbpbkopnjlmbj)
+- [iGG谷歌访问助手](https://microsoftedge.microsoft.com/addons/detail/igg%E8%B0%B7%E6%AD%8C%E8%AE%BF%E9%97%AE%E5%8A%A9%E6%89%8B/mchibleoefileemjfghfejaggonplmmg)
+- [印象笔记剪藏](https://microsoftedge.microsoft.com/addons/detail/evernote-web-clipper/llhcnbijpnechllogkacbcjmkcgjbjfi)
+- [Momentum 主题](https://microsoftedge.microsoft.com/addons/detail/momentum/jdoanlopeanabgejgmdncljhkdplcfed)
+- [AdBlock — 最佳广告拦截工具](https://microsoftedge.microsoft.com/addons/detail/adblock-%E2%80%94-%E6%9C%80%E4%BD%B3%E5%B9%BF%E5%91%8A%E6%8B%A6%E6%88%AA%E5%B7%A5%E5%85%B7/ndcileolkflehcjpmjnfbnaibdcgglog)
+- [谷歌翻译](https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb)
+- [github加速](https://chrome.google.com/webstore/detail/github%E5%8A%A0%E9%80%9F/mfnkflidjnladnkldfonnaicljppahpg?hl=zh-CN)
+- [Octotree - GitHub code tree](https://microsoftedge.microsoft.com/addons/detail/octotree-github-code-tr/joagmknfcgpikbadjkaikmnhpjadihjg)
+- [简悦 - SimpRead](https://microsoftedge.microsoft.com/addons/detail/%E7%AE%80%E6%82%A6-simpread/clgdhlhfiocphghdkdbgdlmfaafccfmc)
+- [PDF Viewer](https://chrome.google.com/webstore/detail/pdf-viewer/oemmndcbldboiebfnladdacbdfmadadm)
+- [哔哩哔哩助手](https://microsoftedge.microsoft.com/addons/detail/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E5%8A%A9%E6%89%8B%EF%BC%9Abilibilicom-%E7%BB%BC%E5%90%88%E8%BE%85%E5%8A%A9%E6%89%A9/fcfebhekhbkhjjimonjmbgmkbclheaoh)
+- [阅读列表（可多端同步）](https://chrome.google.com/webstore/detail/reading-list/lloccabjgblebdmncjndmiibianflabo)
+- [OneTab Plus:标签效率管理扩展](https://chrome.google.com/webstore/detail/onetab-plustab-manage-pro/lepdjbhbkpfenckechpdfohdmkhogojf)
+- [Extension Manager扩展管理](https://microsoftedge.microsoft.com/addons/detail/%E6%89%A9%E5%B1%95%E7%AE%A1%E7%90%86%E5%99%A8%EF%BC%88extension-manager%EF%BC%89/bhahgfgngfghgjhnpplmemebhenieijb)
+- [Notion Web Clipper](https://chrome.google.com/webstore/detail/notion-web-clipper/knheggckgoiihginacbkhaalnibhilkk/related?hl=zh-CN)
+- [Web Clipper - screen Capter 网页截图](https://chrome.google.com/webstore/detail/web-clipper-nimbus/kiokdhlcmjagacmcgoikapbjmmhfchbi)
+- [Save to Notion](https://chrome.google.com/webstore/detail/save-to-notion/ldmmifpegigmeammaeckplhnjbbpccmm?hl=zh-CN)
+- [Nimbus 截幕 & 屏幕录像机](https://chrome.google.com/webstore/detail/nimbus-screenshot-screen/bpconcjcammlapcogcnnelfmaeghhagj)
+- [TamperMonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)
+- [Chrome Better History历史记录管理](https://chrome.google.com/webstore/detail/view-chrome-history/oiginoblioefjckppeefcofmkkhgbdfc)
+- [Proxy Switchy Omega 代理设置](https://microsoftedge.microsoft.com/addons/detail/proxy-switchyomega/fdbloeknjpnloaggplaobopplkdhnikc)
+- [一键式视频下载器](https://microsoftedge.microsoft.com/addons/detail/%E4%B8%80%E9%94%AE%E5%BC%8F%E8%A7%86%E9%A2%91%E4%B8%8B%E8%BD%BD%E5%99%A8/fghpggflpedbjjmjghkgdjbhbfclgobk)
+- [Vue.js devtools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+
+## 五. IDLE插件
+
+- LeetCode
+
+
+## 六. hosts 配置
+/etc/hosts
+
+```sh
+# Github
+# 199.232.4.133    raw.githubusercontent.com
+199.232.28.133    raw.githubusercontent.com
+199.232.28.133   gist.githubusercontent.com
+199.232.28.133   cloud.githubusercontent.com
+199.232.28.133   camo.githubusercontent.com
+199.232.28.133   avatars0.githubusercontent.com
+199.232.28.133   avatars1.githubusercontent.com
+199.232.28.133   avatars2.githubusercontent.com
+199.232.28.133   avatars3.githubusercontent.com
+199.232.28.133   avatars4.githubusercontent.com
+199.232.28.133   avatars5.githubusercontent.com
+199.232.28.133   avatars6.githubusercontent.com
+199.232.28.133   avatars7.githubusercontent.com
+199.232.28.133   avatars8.githubusercontent.com
+```
+
+## 七. 开发环境搭建
+
+### 1. ❤️安装brew包管理工具
+
+#### 安装
+```sh
+/bin/zsh -c "$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)"
+```
+如果提示curl: `(7) Failed to connect to raw.githubusercontent.com port 443: Connection refused`
+就输入指令`sudo gem install redis`，再输入安装brew指令即可。
+
+（[阿里镜像源](https://developer.aliyun.com/mirror/homebrew))
+
+#### 基本用法
+
+1. 安装软件
+brew的安装目录在 `/usr/local/Cellar`，我们以安装nodejs为例子，只需要执行：
+    ```sh
+    brew install nodejs
+    ```
+2. 更新软件
+    ```sh
+    brew upgrade nodejs
+    ```
+3. 卸载
+    ```sh
+    brew remove nodejs
+    ```
+4. 其他命令
+    ```sh
+    brew list                   # 列出当前安装的软件
+    brew search nodejs          # 查询与 nodejs 相关的可用软件
+    brew info nodejs            # 查询 nodejs 的安装信息
+    ```
+    
+#### brew service
+brew services 是一个非常强大的工具，可以管理软件，进行停止、重启等
+```sh
+brew install elasticsearch          # 安装 elasticsearch
+brew services start elasticsearch   # 启动 elasticsearch
+brew services stop elasticsearch    # 停止 elasticsearch
+brew services restart elasticsearch # 重启 elasticsearch
+brew services list                  # 列出当前的状态
+```
+#### [homebrew-cask用法](https://gitee.com/devzone/homebrew-cask/blob/master/USAGE.md)
+
+### 2. Node.js
+
+#### 安装node
+
+```bash
+brew install node
+```
+执行以下命令查看是否安装成功
+```
+node -v:查看node版本
+npm -v：查看npm版本
+```
+#### 安装cnpm
+
+```
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+cnpm -v
+```
+
+#### 安装yarn
+
+```sh
+cnpm install -g yarn
+yarn -v
+```
+
+### 3. pip源
+
+- 修改pip源
+  修改 ~/.pip/pip.conf (没有就创建一个文件夹及文件。文件夹要加“.”，表示是隐藏文件夹)
+    ```ini
+    [global]
+    index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+    [install]
+    trusted-host = https://pypi.tuna.tsinghua.edu.cn
+    ```
+
+### 4. gem 源 & cocoapod
+
+> 先查看镜像地址：[RubyGems 镜像 - Ruby China](https://gems.ruby-china.com/)
+
+请尽可能用比较新的 RubyGems 版本，建议 2.6.x 以上。
+
+```sh
+gem update --system # 这里请翻墙一下
+gem -v
+```
+
+```sh
+gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/
+gem sources -l
+https://gems.ruby-china.com
+# 确保只有 gems.ruby-china.com
+```
+
+更新cocoapods
+
+```sh
+// 如果之前有
+sudo gem uninstall cocoapods (移除原来的cocoapods)
+// 安装CocoaPods（OS X 10.11以前）
+sudo gem install cocoapods
+// 安装CocoaPods（10.11后苹果升级了安全策略）
+sudo gem install -n /usr/local/bin cocoapods
+```
+
+cocoapod使用国内镜像
+
+```sh
+pod repo remove master
+pod repo add master https://gitee.com/mirrors/CocoaPods-Specs.git master
+// 查看镜像
+pod repo
+// 显示如下
+master
+- Type: git (master)
+- URL:  https://gitee.com/mirrors/CocoaPods-Specs.git
+- Path: /Users/xxx/.cocoapods/repos/master
+
+trunk
+- Type: CDN
+- URL:  https://cdn.cocoapods.org/
+- Path: /Users/xxx/.cocoapods/repos/trunk
+```
+
+pod install 尽量使用：
+
+```bash
+pod install --no-repo-update --verbose
+```
+
+### electron
+
+环境变量添加专用的国内镜像源：
+
+```sh
+ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/"
+```
+
+
+
+### 4. JDK8
+
+```sh
+brew install adoptopenjdk/openjdk/adoptopenjdk8
+```
+
+### 5. [jupyter notebook内核及插件](https://gitee.com/wanzheng_96/Modules-Learn/blob/master/%E6%8A%80%E6%9C%AF/jupyter%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%86%85%E6%A0%B8%E7%AE%A1%E7%90%86.ipynb)
+
+### 6. Iterm2
+
+**常用键位介绍:**
+
+- 分窗口操作：shift+command+d（横向）command+d（竖向）
+- 查找和粘贴：command+f，呼出查找功能，tab 键选中找到的文本，option+enter 粘贴
+- 自动完成： command+; 根据上下文呼出自动完成窗口，上下键选择
+- 粘贴历史： shift+command+h5、回放功能：option+command+b
+- 分屏切换： command + ] 和 command + [ 在分屏之间进行切换 
+- 全屏： command+enter和command+shift+enter
+- 标签页： command + t 新建标签页，command + w关闭标签页
+
+#### 安装
+
+可以直接去iterm2官网（http://iterm2.com/）下载zip包，然后将app拖进应用程序下面。
+
+更加优雅的方式是使用homebrew。
+
+```sh
+brew install iterm2
+```
+
+#### 更换主题
+
+先从github（https://github.com/altercation/solarized/tree/master/iterm2-colors-solarized）上将solarized下载下来。然后打开iterm2，点击 iTerm -> Preferences -> Profiles -> Colors。点击右下角 Colors Presets，并且选择Import
+
+#### 安装oh-my-zsh
+
+zsh有几个强大的优点：比如支持更加聪明的目录补全，和强大的插件机制。相信可以让你日常的开发效率提示很多。
+
+- 自动安装 
+
+  ```
+  $ sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+  ```
+
+- 手动安装
+
+  ```
+  $ git clone git://github.com/robbyrussell/oh-my-zsh.git --depth 1 ~/.oh-my-zsh
+  # 先备份原来的.zshrc文件
+  $ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+  ```
+
+## 八.其他教程
+
+
+[Mac高级玩家](https://www.jianshu.com/u/fd635b09b186)
+
+1. 如何使用CheatSheet快速查看所有Mac App的所有键盘快捷键
+2. [MacOS截屏的那些事儿 - 简书](https://app.yinxiang.com/shard/s64/nl/19721025/7d94a154-c32f-430f-a167-7ec2b42ac967/)
+3. [GitHub.com无法访问，连接超时](https://blog.csdn.net/qq_42540989/article/details/83745126)
+4. [ping github 请求超时解决方案](https://blog.csdn.net/u010377383/article/details/79365049/)
+5. [Homebrew、Fink、MacPorts三者对比](https://baijiahao.baidu.com/s?id=1664431778735748352&wfr=spider&for=pc)
+
+6. [macOS安全隐私向导 - github](https://github.com/drduh/macOS-Security-and-Privacy-Guide/blob/master/README-cn.md)
+
+7. [更改 macOS 用户帐户和个人文件夹的名称](https://support.apple.com/zh-cn/HT201548)
+

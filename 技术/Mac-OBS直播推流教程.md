@@ -39,7 +39,7 @@ OBS 官方地址如下: https://obsproject.com/
 ##### 声音设置
 
 Mac 上的声音设置较为复杂. Mac 上的声音输入主要包括 2 种: 麦克风 & 内部音响设备. 其中麦克风可以直接获取, 内部音响设备需要通过软件进行获取.  
-soundflower: http://blce.u.qiniudn.com/Soundflower-2.0b2.dmg
+soundflower: [Releases · mattingalls/Soundflower · GitHub](https://hub.fastgit.org/mattingalls/Soundflower/releases)
 
 *   安装 soundflower. 完成后, 重启电脑.
 *   检查安装情况: 通过`偏好设置`->`声音设置`  
