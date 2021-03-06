@@ -164,21 +164,204 @@ loop.run_forever()
 
 然后你就能正常看到错误信息了
 
-![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/20210120230439.png)
+<img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/20210120230439.png" style="zoom: 67%;" />
 
-# gather 和 wait 区别
+# gather() 和 wait() 区别
 
 常见用法的区别见我的另一篇文章，这里主要说明其在执行过程中发生任务取消cancel()时的不同
 
-- wait的任务被取消，只是抛出`CancelledError`异常，
+- 如果`wait()`被取消，只是抛出`CancelledError`异常，其第一个参数中等待执行的任务是不受影响的。
+
+- 如果`gather()`被取消，其提交的所有（未完成）的任务都会被取消。
+
+示例：
+
+```python
+import asyncio
+
+
+async def task(arg):
+    await asyncio.sleep(5)
+    return arg
+
+
+async def cancel_waiting_task(work_task, waiting_task):
+    await asyncio.sleep(2)
+    waiting_task.cancel()
+    try:
+        await waiting_task
+        print("Waiting done")
+    except asyncio.CancelledError:
+        print("Waiting task cancelled")
+
+    try:
+        res = await work_task
+        print(f"Work result: {res}")
+    except asyncio.CancelledError:
+        print("Work task cancelled")
+
+
+async def main():
+    work_task = asyncio.create_task(task("done"))
+    waiting = asyncio.create_task(asyncio.wait([work_task]))
+    await cancel_waiting_task(work_task, waiting)
+    print("-------------------")
+    work_task = asyncio.create_task(task("done"))
+    waiting = asyncio.gather(work_task)
+    await cancel_waiting_task(work_task, waiting)
+
+
+asyncio.run(main())
+```
+
+执行结果:
+
+```
+Waiting task cancelled
+Work result: done
+-------------------
+Waiting task cancelled
+Work task cancelled
+```
+
+在 `waiting_task.cancel()` 取消等待任务时，第一次是取消`wait()`, 发现其提交的 `work_task` 子任务仍然执行完毕，而第二次取消`gather()`，其提交的任务 `work_task` 也被取消了。
+
+# 任一任务完成后取消其他任务
 
 
 
+在使用`wait()`和`gather()`过程中，假如我们想在至少一个任务完成后，取消其他未完成的任务，或者取消`wait()`本身的任务后，也想将其提交的子任务取消。举个例子，当连接丢失后，取消所有后续等待任务。或者并行很多个连接任务，当其中一个收到请求后，取消其他连接任务。
+
+让我们模拟出上述需求：
+
+```python
+import asyncio
+from typing import Optional, Tuple, Set
 
 
+async def wait_any(
+        tasks: Set[asyncio.Future], *, timeout: Optional[int] = None,
+) -> Tuple[Set[asyncio.Future], Set[asyncio.Future]]:
+    """任一任务完成后，返回并取消其他未完成的任务"""
+    tasks_to_cancel: Set[asyncio.Future] = set()
+    try:
+        done, tasks_to_cancel = await asyncio.wait(
+            tasks, timeout=timeout, return_when=asyncio.FIRST_COMPLETED
+        )
+        return done, tasks_to_cancel
+    except asyncio.CancelledError:
+        tasks_to_cancel = tasks
+        raise
+    finally:
+        for task in tasks_to_cancel:
+            task.cancel()
 
 
+async def task():
+    await asyncio.sleep(5)
 
 
+async def cancel_waiting_task(work_task, waiting_task):
+    await asyncio.sleep(2)
+    waiting_task.cancel()
+    try:
+        await waiting_task
+        print("Waiting done")
+    except asyncio.CancelledError:
+        print("Waiting task cancelled")
 
+    try:
+        res = await work_task
+        print(f"Work result: {res}")
+    except asyncio.CancelledError:
+        print("Work task cancelled")
+
+
+async def check_tasks(waiting_task, working_task, waiting_conn_lost_task):
+    try:
+        await waiting_task
+        print("waiting is done")
+    except asyncio.CancelledError:
+        print("waiting is cancelled")
+
+    try:
+        await waiting_conn_lost_task
+        print("connection is lost")
+    except asyncio.CancelledError:
+        print("waiting connection lost is cancelled")
+
+    try:
+        await working_task
+        print("work is done")
+    except asyncio.CancelledError:
+        print("work is cancelled")
+
+
+async def work_done_case():
+    """Case1: 任务正常执行，没有收到断开连接的信号"""
+    working_task = asyncio.create_task(task())
+    connection_lost_event = asyncio.Event()
+    waiting_conn_lost_task = asyncio.create_task(connection_lost_event.wait())
+    waiting_task = asyncio.create_task(wait_any({working_task, waiting_conn_lost_task}))
+    await check_tasks(waiting_task, working_task, waiting_conn_lost_task)
+
+
+async def conn_lost_case():
+    """Case2: 任务在执行过程中，收到断开连接的信号后被取消"""
+    working_task = asyncio.create_task(task())
+    connection_lost_event = asyncio.Event()
+    waiting_conn_lost_task = asyncio.create_task(connection_lost_event.wait())
+    waiting_task = asyncio.create_task(wait_any({working_task, waiting_conn_lost_task}))
+    await asyncio.sleep(2)
+    connection_lost_event.set()  # <---
+    await check_tasks(waiting_task, working_task, waiting_conn_lost_task)
+
+
+async def cancel_waiting_case():
+    """Case3: wait() 本身被取消，所有任务都被取消"""
+    working_task = asyncio.create_task(task())
+    connection_lost_event = asyncio.Event()
+    waiting_conn_lost_task = asyncio.create_task(connection_lost_event.wait())
+    waiting_task = asyncio.create_task(wait_any({working_task, waiting_conn_lost_task}))
+    await asyncio.sleep(2)
+    waiting_task.cancel()  # <---
+    await check_tasks(waiting_task, working_task, waiting_conn_lost_task)
+
+
+async def main():
+    print("Case1: Work done")
+    print("-------------------")
+    await work_done_case()
+    print("\nCase2: Connection lost")
+    print("-------------------")
+    await conn_lost_case()
+    print("\nCase3: Cancel waiting")
+    print("-------------------")
+    await cancel_waiting_case()
+
+
+asyncio.run(main())
+```
+
+执行结果：
+
+```
+Case1: Work done
+-------------------
+waiting is done
+waiting connection lost is cancelled
+work is done
+
+Case2: Connection lost
+-------------------
+waiting is done
+connection is lost
+work is cancelled
+
+Case3: Cancel waiting
+-------------------
+waiting is cancelled
+waiting connection lost is cancelled
+work is cancelled
+```
 

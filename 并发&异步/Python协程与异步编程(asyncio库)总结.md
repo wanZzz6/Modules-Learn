@@ -187,6 +187,8 @@ async def wait(fs, *, loop=None, timeout=None, return_when=ALL_COMPLETED)
 
 **返回值**：
 
+coroutine 协程对象
+
 **执行结果**：
 
 ​	两个由 Future 构成的集合
@@ -284,19 +286,25 @@ result 3
 
 ### 2. asyncio.gather()
 
-作用：支持多层级的组任务嵌套，注重任务的执行结果（result）
+**作用**：支持多层级的组任务嵌套，注重任务的执行结果（result）
 
-定义如下：
+**定义：**
 
-```
-def gather(*coros_or_futures, loop=None, return_exceptions=False):
+```python
+def gather(*coros_or_futures, loop=None, return_exceptions=False)
 ```
 
 传入多个协程或者 future对象，**如果是future对象，所有的future必须在同一个 loop 循环中**
 
+**返回值：**
+
 返回一个 `Future` 对象
 
-示例代码：
+**执行结果：**
+
+列表，包含所有任务的返回值
+
+**示例代码：**
 
 ```python
 import asyncio
