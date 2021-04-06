@@ -3,6 +3,7 @@
 - [果核剥壳](https://www.ghpym.com/)
 - [Joker鹏少](https://vip.jokerps.com/software/macos)
 - [潮下载](http://www.chaoxz.com/)
+- [GoFans](https://gofans.cn/)
 
 ## 二. 常用软件
 
@@ -27,7 +28,11 @@
 - [生产力工具集 - uTools](https://u.tools/index.html)
 - [PicGO 图床](https://molunerfinn.com/PicGo/) 和 [Typora](https://www.typora.io/)
 - [OBS 直播推流](https://obsproject.com/) - [soundflower](https://hub.fastgit.org/mattingalls/Soundflower/releases)
+- [爱思助手](https://lemon.qq.com/lab/app/aisizhushou.html)
+- [幕布](https://lemon.qq.com/lab/app/mubu.html)
+- [clashX - 科学上网](https://github.com/yichengchen/clashX/releases) - [配置说明](https://lancellc.gitbook.io/clash/clash-config-file/an-example-configuration-file) - [购买](https://panel.sakura-cat.club/#/register?code=Gc3xSjXF)
 - XmindZen 脑图 - [补丁](https://www.ghpym.com/xmindzen.html)
+- [远程投屏](https://github.com/pavlobu/deskreen)
 - QQ影音
 - Notion 笔记
 
@@ -43,6 +48,7 @@
 - [SSH工具---FinalShell](http://www.hostbuf.com/t/988.html)
 - [数据库设计软件PDMan](https://gitee.com/robergroup/pdman)
 - [iterm2 终端](https://iterm2.com/downloads.html)
+- [HbuilderX](https://www.dcloud.io/hbuilderx.html)
 
 
 ## 四. 浏览器插件
@@ -56,7 +62,7 @@
 - [AdBlock — 最佳广告拦截工具](https://microsoftedge.microsoft.com/addons/detail/adblock-%E2%80%94-%E6%9C%80%E4%BD%B3%E5%B9%BF%E5%91%8A%E6%8B%A6%E6%88%AA%E5%B7%A5%E5%85%B7/ndcileolkflehcjpmjnfbnaibdcgglog)
 - [谷歌翻译](https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb)
 - [github加速](https://chrome.google.com/webstore/detail/github%E5%8A%A0%E9%80%9F/mfnkflidjnladnkldfonnaicljppahpg?hl=zh-CN)
-- [Octotree - GitHub code tree](https://microsoftedge.microsoft.com/addons/detail/octotree-github-code-tr/joagmknfcgpikbadjkaikmnhpjadihjg)
+- [Octotree - GitHub code tree](https://microsoftedge.microsoft.com/addons/detail/octotree-github-code-tr/joagmknfcgpikbadjkaikmnhpjadihjg) 或者 [GiteeTree](https://microsoftedge.microsoft.com/addons/detail/giteetree/ialknpjkghajbolmfcbklajihdimifdk?hl=zh-CN)
 - [简悦 - SimpRead](https://microsoftedge.microsoft.com/addons/detail/%E7%AE%80%E6%82%A6-simpread/clgdhlhfiocphghdkdbgdlmfaafccfmc)
 - [PDF Viewer](https://chrome.google.com/webstore/detail/pdf-viewer/oemmndcbldboiebfnladdacbdfmadadm)
 - [哔哩哔哩助手](https://microsoftedge.microsoft.com/addons/detail/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E5%8A%A9%E6%89%8B%EF%BC%9Abilibilicom-%E7%BB%BC%E5%90%88%E8%BE%85%E5%8A%A9%E6%89%A9/fcfebhekhbkhjjimonjmbgmkbclheaoh)
@@ -298,6 +304,45 @@ zsh有几个强大的优点：比如支持更加聪明的目录补全，和强�
   # 先备份原来的.zshrc文件
   $ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
   ```
+
+## clashX代理
+
+Config.yaml 
+
+```yaml
+port: 7890
+socks-port: 7891
+redir-port: 7892
+tproxy-port: 7893
+mixed-port: 7890
+allow-lan: true
+mode: rule
+log-level: debug
+external-controller: '127.0.0.1:9090'
+dns:
+    listen: '127.0.0.1:5450'
+    enhanced-mode: redir-host
+    nameserver: ['https://doh.pub/dns-query', 'tls://2c5cea.dns.nextdns.io']
+    fallback: ['tls://1.0.0.1:853', 'https://cloudflare-dns.com/dns-query', 'https://dns.google/dns-query']
+    fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4, 0.0.0.0/32] }
+
+proxies:
+    - { name: '网易云代理', type: http, server: 127.0.0.1, port: 54442}
+proxy-groups:
+    - { name: '网易云', type: select, proxies: ['网易云代理']}
+rules:
+    - DOMAIN,music.163.com,网易云代理
+    - DOMAIN,interface.music.163.com,网易云代理
+    - DOMAIN,interface3.music.163.com,网易云代理
+    - DOMAIN,apm.music.163.com,网易云代理
+    - DOMAIN,apm3.music.163.com,网易云代理
+    - 'GEOIP,CN,DIRECT'
+    - 'MATCH,DIRECT'
+```
+
+
+
+
 
 ## 八.其他教程
 

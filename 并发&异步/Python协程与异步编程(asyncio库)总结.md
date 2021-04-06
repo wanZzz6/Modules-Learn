@@ -101,7 +101,7 @@ loop.close()
 
 有 2 种方案可以获取返回值。
 
-### 方案一
+### 方法一：result()
 
 可通过调用 `task.result()` 方法来获取协程的返回值，**但是只有运行完毕后才能获取，若没有运行完毕，result() 方法不会阻塞去等待结果，而是抛出 `asyncio.InvalidStateError `错误**
 
@@ -132,7 +132,7 @@ loop.close()
 
 ![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/640-20201211235344189.png)
 
-### 方案二
+### 方法二：add_done_callback()
 
 通过 `add_done_callback()` 回调, 回调函数第一个参数必须接收future，如果需要传入其他参数，可以用`偏函数`或者 contex参数传入一个`contextvars.Context`对象
 
@@ -394,11 +394,9 @@ pprint(results)  # 或者 pprint(all_groups.result())
 
 ### 4. 多任务中获取返回值
 
-#### 方案 1
+#### wait()
 
-需要通过 `loop.create_task()` 创建 task 对象，以便后面来获取返回值
-
-下面代码 `asyncio.wait()` 中，参数传入的是由 future（task）对象构成的可迭代对象
+> 与上文提到的获取协程返回值方法相同， 使用 result() 或者 add_done_callback()。
 
 ```python
 import asyncio
@@ -421,17 +419,12 @@ for task in tasks:
 loop.close()
 ```
 
-`asyncio.gather()` 获取返回值同理，还有上文提到的 `results = loop.run_until_complete(all_groups)` 可直接获取返回值。
+#### gather()
 
-#### 方案 2
-
-通过回调 `add_done_callback()` 来获取返回值
+>除了使用 result() 或者 add_done_callback()以外，`results = loop.run_until_complete(all_groups)` 可直接获取返回值, 或者 `result = await asyncio.gather(…)`
 
 ```python
 import asyncio
-
-def my_callback(future):
-    print('返回值：', future.result())
 
 async def coroutine_example(name):
     print('正在执行name:', name)
@@ -439,32 +432,17 @@ async def coroutine_example(name):
     print('执行完毕name:', name)
     return '返回值：' + name
 
-loop = asyncio.get_event_loop()
 
-tasks = []
-for i in range(3):
-    task = loop.create_task(coroutine_example('Zarten_' + str(i)))
-    task.add_done_callback(my_callback)
-    tasks.append(task)
+async def main():
+    tasks = []
+    for i in range(3):
+        task = asyncio.create_task(coroutine_example('Zarten_' + str(i)))
+        tasks.append(task)
+    result = await asyncio.gather(*tasks, return_exceptions=True)
+    for i in result:
+        print(i)
 
-wait_coro = asyncio.wait(tasks)
-loop.run_until_complete(wait_coro)
-
-loop.close()
-```
-
-输出结果：
-
-```
-正在执行name: Zarten_0
-正在执行name: Zarten_1
-正在执行name: Zarten_2
-执行完毕name: Zarten_0
-执行完毕name: Zarten_1
-执行完毕name: Zarten_2
-返回值： 返回值：Zarten_0
-返回值： 返回值：Zarten_1
-返回值： 返回值：Zarten_2
+asyncio.run(main())
 ```
 
 动态添加协程
@@ -482,7 +460,7 @@ loop.close()
 - `loop.call_at()`：在指定时间执行回调函数，这里的时间统一使用 `loop.time()` 来替代 `time.sleep()`
 - `asyncio.run_coroutine_threadsafe()`： 动态的加入协程，参数为一个回调函数和一个 loop 对象，返回值为 future 对象，通过 `future.result()` 获取回调函数返回值
 
-### 动态添加协程: 同步任务
+### 动态添加协程: 同步任务loop.call_soon_threadsafe
 
 通过调用 `loop.call_soon_threadsafe()` 函数，传入一个回调函数 callback 和一个位置参数
 
@@ -520,7 +498,7 @@ print('继续运行中...')
 
 ![](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/640-20201211235317468.jpeg)
 
-### 动态添加协程：异步任务
+### 动态添加协程：异步任务asyncio.run_coroutine_threadsafe
 
 通过调用 `asyncio.run_coroutine_threadsafe()` 函数，传入一个回调函数 callback 和一个 loop 对象
 
@@ -787,6 +765,16 @@ if __name__ == '__main__':
 
 
 ---
+
+## Tips
+
+- `asyncio.create_task()`与 `loop.create_task()` 功能一样，都是向loop中动态注册任务，区别在于前者是向当前running正在运行状态的loop添加任务。后者在loop未启动时也能添加，并且在启动后自动调度。
+- `asyncio.ensure_future()`创建的任务不能主动调度，需要手动 await，且创建loop与运行loop必须一致。
+- `asyncio.current_task(loop=None)` 返回这个loop上当前正在运行的Task，loop没有运行或者没有任务则返回None
+- `asyncio.all_tasks(loop=None)` 返回这个loop上正在运行(running)和等待运行(pending) 的所有Task集合
+- `task.result()`和 `future.result()`在任务未完成时会抛出`asyncio.InvalidStateError`异常
+- `asyncio.run_coroutine_threadsafe(coro, loop)` 返回的future，调用 `future.result(timeout=None)`时，其loop必须在running状态下，且没有正在运行的任务才可以，即 `loop.is_running() and asyncio.current_task(loop) is None`。否则会因为无法调度而阻塞直到timeout。
+- `loop.call_soon_threadsafe`添加任务，后一个任务等前一个同步任务执行完才会运行。
 
 ## 参考
 

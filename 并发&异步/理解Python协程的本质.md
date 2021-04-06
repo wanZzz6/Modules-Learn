@@ -44,7 +44,7 @@ while True:
 
 IO 多路复用可以做到不使用线程解决问题，它是由操作系统内核提供的功能，可以说专门为这类场景而生。简单来讲，你的程序遇到网络 IO 时，告诉操作系统帮你盯着，同时操作系统提供给你一个方法，让你可以随时获取到有哪些 io 操作已经完成。就像这样：
 
-```
+```python
 # 操作系统的IO复用示例伪代码
 io_register(io_id, io_type)  # 向操作系统io注册自己关注的io操作的id和类型
 io_register(io_id, io_type)
@@ -56,12 +56,11 @@ for (io_id, io_type) in events:
         data = read_data(io_id)
     elif io_type == WRITE:
         write_data(io_id，data)
-
 ```
 
 把 IO 复用逻辑融合到我们的服务器中，大概会像这样：
 
-```
+```python
 call_backs = {}
 
 def handler(req):
@@ -90,7 +89,6 @@ while True：
     handler = get_handler(request)
     # 运行用户的handler，处理请求
     handler(request)
-
 ```
 
 我们的 handler 对于 IO 操作，注册了回调就立刻返回，同时每次迭代都会对已完成的 IO 执行回调，网络请求不再阻塞整个服务器。
@@ -102,7 +100,7 @@ while True：
 
 着重看下我们业务中经常写的 handler 函数，在有独立的 ioloop 后，它现在变成类似这样：
 
-```
+```python
 def handler(request):
     # 业务逻辑代码
 
@@ -123,7 +121,7 @@ def handler(request):
 
 如果你对 python 的**生成器**熟悉，你应该会发现，它恰好具有这个功能：
 
-```
+```python
 def example():
     value = yield 2
     print("get", value)
@@ -140,7 +138,6 @@ try:
 except StopIteration as e:
     # 生成器运行完成，将会print(4)，e.value 是生成器return的值
     print(e.value)
-
 ```
 
 函数中有`yield`关键字，调用函数将会得到一个生成器，生成器一个关键的方法`send()`可以跟生成器交互。`g.send(None)` 会运行生成器内代码直到遇到`yield`，并返回其后的对象，也就是`2`，生成器代码就停在这里了，直到我们再次执行`g.send(got*2)`, 会把`2*2`也就是`4` 赋值给`yield`前面的变量`value`, 然后继续运行生成器代码。 **yield 在这里就像一扇门，可以把一件东西从这里送出去，也可以把另一件东西拿进来。**

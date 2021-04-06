@@ -12,35 +12,37 @@ elif os.name == 'posix':
     asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 ```
 
-
-
-或者手动指定 loop 类型使用
-
-```python
-asyncio.set_event_loop(uvloop.new_event_loop())
-```
-
 # 终止loop循环示例1 - 信号
 
 ```python
 from signal import signal, SIGINT
+import asyncio
 
-import uvloop
+async def server():
+    while True:
+        print('run')
+        await asyncio.sleep(1)
 
-asyncio.set_event_loop(uvloop.new_event_loop())
-# 启动一个http服务
-server = app.create_server(host="0.0.0.0", port=7777)
+
+def callback(*args, **kwargs):
+    print('收到信号', args, kwargs)
+    loop.stop()
+
+
 loop = asyncio.get_event_loop()
-asyncio.ensure_future(server)
+asyncio.ensure_future(server(), loop=loop)
 # 注册信号
-signal(SIGINT, lambda s, f: loop.stop())
+signal(SIGINT, callback)
 try:
     loop.run_forever()
 except:
     loop.stop()
+    print('未收到信号，异常退出')
 ```
 
-# 终止loop循环示例 2 - 信号
+# 终止loop循环示例 2 - 信号（UNIX only）
+
+
 
 ```python
 import asyncio
@@ -132,8 +134,6 @@ F**k
 我们在 `coroutine_example()`里抛出了`TypeError`异常，但是我们单从程序输出里是看不到任何异常堆栈信息的，通过`future.exception()` 方法可以简单的判断是否运行出错，如果返回值`is not None`就证明程序出错了，但是也不要使用  `if future.exception(): ` 判断是否运行出错，因为该方法只是返回错误信息的字符串，就像上面的 `'F**k'`， 但是若抛出异常是没有附加信息呢？ `raise TypeError()` 或者 `raise TypeError`
 
  要想捕获错误堆栈信息，正确的做法是在 future的回调函数里使用`future.result()` 或者，直接一段时间后**假定任务已经执行完**， 调用`future.result(self, timeout=None)`，（注：参数 timeout 表示等待时间，None表示无限等待，即阻塞式），该方法时获取异步任务的返回值，如果发生异常会直接打印异常的堆栈信息。
-
-
 
 ```python
 import asyncio
