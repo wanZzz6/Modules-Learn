@@ -35,6 +35,9 @@
 - [远程投屏](https://github.com/pavlobu/deskreen)
 - QQ影音
 - Notion 笔记
+- PDF
+  - [万兴PDF编辑器](https://vip.jokerps.com/4113.html)
+  - [PDF Expert](https://vip.jokerps.com/6132.html)
 
 ## 三. 开发工具
 
@@ -77,6 +80,7 @@
 - [Chrome Better History历史记录管理](https://chrome.google.com/webstore/detail/view-chrome-history/oiginoblioefjckppeefcofmkkhgbdfc)
 - [Proxy Switchy Omega 代理设置](https://microsoftedge.microsoft.com/addons/detail/proxy-switchyomega/fdbloeknjpnloaggplaobopplkdhnikc)
 - [一键式视频下载器](https://microsoftedge.microsoft.com/addons/detail/%E4%B8%80%E9%94%AE%E5%BC%8F%E8%A7%86%E9%A2%91%E4%B8%8B%E8%BD%BD%E5%99%A8/fghpggflpedbjjmjghkgdjbhbfclgobk)
+- [Listen 1](https://microsoftedge.microsoft.com/addons/detail/listen-1/hneiglcmpeedblkmbndhfbeahcpjojjg)
 - [Vue.js devtools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
 
 ## 五. IDLE插件
@@ -163,6 +167,14 @@ brew install node
 node -v:查看node版本
 npm -v：查看npm版本
 ```
+#### 设置 python版本
+
+```sh
+npm config set python xxxx\python27\python.exe
+```
+
+
+
 #### 安装cnpm
 
 ```
@@ -249,6 +261,8 @@ pod install --no-repo-update --verbose
 
 ```sh
 ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/"
+或者
+ELECTRON_MIRROR="https://cdn.npm.taobao.org/dist/electron/"
 ```
 
 
