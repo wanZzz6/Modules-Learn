@@ -766,6 +766,12 @@ if __name__ == '__main__':
 
 ---
 
+## current_task / all_tasks
+
+`asyncio.current_task(loop=None)` 返回指定loop上正在运行的任务，loop默认为当前进程上正在运行的loop
+
+`asyncio.all_tasks(loop=None)` 返回指定loop上所有未执行完任务的集合，loop默认为当前进程上正在运行的loop
+
 ## Tips
 
 - `asyncio.create_task()`与 `loop.create_task()` 功能一样，都是向loop中动态注册任务，区别在于前者是向当前running正在运行状态的loop添加任务。后者在loop未启动时也能添加，并且在启动后自动调度。
