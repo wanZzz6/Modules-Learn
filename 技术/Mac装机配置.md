@@ -52,6 +52,7 @@
 - [数据库设计软件PDMan](https://gitee.com/robergroup/pdman)
 - [iterm2 终端](https://iterm2.com/downloads.html)
 - [HbuilderX](https://www.dcloud.io/hbuilderx.html)
+- [Docker Desktop](https://hub.docker.com/)
 
 
 ## 四. 浏览器插件
@@ -125,7 +126,7 @@
 #### 基本用法
 
 1. 安装软件
-brew的安装目录在 `/usr/local/Cellar`，我们以安装nodejs为例子，只需要执行：
+   brew的安装目录在 `/usr/local/Cellar`，我们以安装nodejs为例子，只需要执行：
     ```sh
     brew install nodejs
     ```
@@ -267,15 +268,63 @@ ELECTRON_MIRROR="https://cdn.npm.taobao.org/dist/electron/"
 
 
 
-### 4. JDK8
+### 5. JDK8
 
 ```sh
 brew install adoptopenjdk/openjdk/adoptopenjdk8
 ```
 
-### 5. [jupyter notebook内核及插件](https://gitee.com/wanzheng_96/Modules-Learn/blob/master/%E6%8A%80%E6%9C%AF/jupyter%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%86%85%E6%A0%B8%E7%AE%A1%E7%90%86.ipynb)
+### 6. maven
 
-### 6. Iterm2
+[Maven – Download Apache Maven](http://maven.apache.org/download.cgi)
+
+```sh
+export MAVEN_HOME="/Users/xxx/apache-maven-3.8.2"
+export PATH="$PATH:$MAVEN_HOME/bin"
+```
+
+### 7. Mysql
+
+```sh
+docker search mysql (搜索mysql镜像)
+docker pull mysql （下载mysql镜像，默认最新版本）
+docker run -it --rm --name my-mysql -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mysql
+
+可能的后续操作：
+docker exec -it my-mysql bash
+mysql -uroot -p123456
+use mysql;
+select user,host,authentication_string from user;
+grant all PRIVILEGES on *.* to root@'%' WITH GRANT OPTION;
+update user set host='%' where user='root';
+flush privileges;
+```
+
+[使用Docker搭建MySQL服务](https://www.cnblogs.com/sablier/p/11605606.html)
+
+### 8. redis
+
+```sh
+docker search redis
+docker pull redis
+docker run -d --name my-redis -p 6379:6379 redis:latest redis-server --appendonly yes --requirepass "你的密码"
+
+# 测试1
+docker exec -ti my-redis redis-cli
+auth 你的密码
+set wzz 123
+
+# 测试2
+docker exec -ti my-redis redis-cli -h localhost -p 6379 -a 你的密码
+set wzz 123
+```
+
+- redis-server --appendonly yes：在容器执行redis-server启动命令，并打开redis持久化配置
+- --requirepass "你的密码" ：设置密码
+
+### 9. [jupyter notebook内核及插件](https://gitee.com/wanzheng_96/Modules-Learn/blob/master/%E6%8A%80%E6%9C%AF/jupyter%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%86%85%E6%A0%B8%E7%AE%A1%E7%90%86.ipynb)
+
+### 10. Iterm2
 
 **常用键位介绍:**
 
@@ -319,7 +368,7 @@ zsh有几个强大的优点：比如支持更加聪明的目录补全，和强�
   $ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
   ```
 
-## clashX代理
+## 八、clashX代理
 
 Config.yaml 
 
@@ -354,12 +403,7 @@ rules:
     - 'MATCH,DIRECT'
 ```
 
-
-
-
-
-## 八.其他教程
-
+## 九、其他教程
 
 [Mac高级玩家](https://www.jianshu.com/u/fd635b09b186)
 
