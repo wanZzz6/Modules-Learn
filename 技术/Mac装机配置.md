@@ -256,7 +256,7 @@ pod install 尽量使用：
 pod install --no-repo-update --verbose
 ```
 
-### electron
+### 5. electron
 
 环境变量添加专用的国内镜像源：
 
@@ -322,9 +322,55 @@ set wzz 123
 - redis-server --appendonly yes：在容器执行redis-server启动命令，并打开redis持久化配置
 - --requirepass "你的密码" ：设置密码
 
-### 9. [jupyter notebook内核及插件](https://gitee.com/wanzheng_96/Modules-Learn/blob/master/%E6%8A%80%E6%9C%AF/jupyter%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%86%85%E6%A0%B8%E7%AE%A1%E7%90%86.ipynb)
+### 9. Zookeeper
 
-### 10. Iterm2
+```sh
+docker pull zookeeper
+docker run -d -p 2181:2181 --name my-zookeeper --restart always zookeeper
+
+# 启动客户端服务
+docker exec -it my-zookeeper bash
+./bin/zkCli.sh
+```
+
+客户端下载：
+
+```sh
+wget https://issues.apache.org/jira/secure/attachment/12436620/ZooInspector.zip
+unzip ZooInspector.zip
+cd build
+java -jar zookeeper-dev-ZooInspector.jar
+```
+
+### 10. MinIo
+
+[MinIO | The MinIO Quickstart Guide](https://docs.min.io/)
+
+```sh
+docker pull minio/minio
+docker run -d -p 9000:9000 -p 9001:9001 --name minio \
+-d --restart=always \
+-e "MINIO_ROOT_USER=admin" \
+-e "MINIO_ROOT_PASSWORD=admin123" \
+-v /home/data:/data \
+-v /home/config:/root/.minio \
+minio/minio server /data --console-address ":9001"
+```
+
+### Gstreamer
+
+[Download GStreamer](https://gstreamer.freedesktop.org/download/#macos)
+
+```sh
+export PATH=/Library/Frameworks/GStreamer.framework/Versions/1.0/bin:$PATH
+
+# 测试
+gst-launch-1.0 videotestsrc pattern=ball ! autovideosink
+```
+
+### 12. [jupyter notebook内核及插件](https://gitee.com/wanzheng_96/Modules-Learn/blob/master/%E6%8A%80%E6%9C%AF/jupyter%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E5%8F%8A%E5%86%85%E6%A0%B8%E7%AE%A1%E7%90%86.ipynb)
+
+### 13. Iterm2
 
 **常用键位介绍:**
 
@@ -408,12 +454,11 @@ rules:
 [Mac高级玩家](https://www.jianshu.com/u/fd635b09b186)
 
 1. 如何使用CheatSheet快速查看所有Mac App的所有键盘快捷键
-2. [MacOS截屏的那些事儿 - 简书](https://app.yinxiang.com/shard/s64/nl/19721025/7d94a154-c32f-430f-a167-7ec2b42ac967/)
-3. [GitHub.com无法访问，连接超时](https://blog.csdn.net/qq_42540989/article/details/83745126)
-4. [ping github 请求超时解决方案](https://blog.csdn.net/u010377383/article/details/79365049/)
-5. [Homebrew、Fink、MacPorts三者对比](https://baijiahao.baidu.com/s?id=1664431778735748352&wfr=spider&for=pc)
-
-6. [macOS安全隐私向导 - github](https://github.com/drduh/macOS-Security-and-Privacy-Guide/blob/master/README-cn.md)
-
-7. [更改 macOS 用户帐户和个人文件夹的名称](https://support.apple.com/zh-cn/HT201548)
+2. [Mac安装软件时提示已损坏的最全解决方法](https://zhuanlan.zhihu.com/p/114919138)
+3. [MacOS截屏的那些事儿 - 简书](https://app.yinxiang.com/shard/s64/nl/19721025/7d94a154-c32f-430f-a167-7ec2b42ac967/)
+4. [GitHub.com无法访问，连接超时](https://blog.csdn.net/qq_42540989/article/details/83745126)
+5. [ping github 请求超时解决方案](https://blog.csdn.net/u010377383/article/details/79365049/)
+6. [Homebrew、Fink、MacPorts三者对比](https://baijiahao.baidu.com/s?id=1664431778735748352&wfr=spider&for=pc)
+7. [macOS安全隐私向导 - github](https://github.com/drduh/macOS-Security-and-Privacy-Guide/blob/master/README-cn.md)
+8. [更改 macOS 用户帐户和个人文件夹的名称](https://support.apple.com/zh-cn/HT201548)
 
