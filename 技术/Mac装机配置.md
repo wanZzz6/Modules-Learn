@@ -288,7 +288,7 @@ export PATH="$PATH:$MAVEN_HOME/bin"
 ```sh
 docker search mysql (搜索mysql镜像)
 docker pull mysql （下载mysql镜像，默认最新版本）
-docker run -it --rm --name my-mysql -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mysql
+docker run -it --name my-mysql -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mysql
 
 可能的后续操作：
 docker exec -it my-mysql bash
