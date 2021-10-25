@@ -307,8 +307,10 @@ flush privileges;
 ```sh
 docker search redis
 docker pull redis
-docker run -d --name my-redis -p 6379:6379 redis:latest redis-server --appendonly yes --requirepass "你的密码"
-
+docker run -d --name my-redis -p 6379:6379 --restart always redis:latest redis-server --appendonly yes --requirepass "你的密码"
+# 可选映射
+# -v /home/redis/data:/data -v /home/redis/conf:/usr/local/etc/redis/redis.conf 
+ 
 # 测试1
 docker exec -ti my-redis redis-cli
 auth 你的密码
