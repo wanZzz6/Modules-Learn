@@ -32,12 +32,14 @@
 - [幕布](https://lemon.qq.com/lab/app/mubu.html)
 - [clashX - 科学上网](https://github.com/yichengchen/clashX/releases) - [配置说明](https://lancellc.gitbook.io/clash/clash-config-file/an-example-configuration-file) - [购买](https://panel.sakura-cat.club/#/register?code=Gc3xSjXF)
 - XmindZen 脑图 - [补丁](https://www.ghpym.com/xmindzen.html)
+- [仿网易云](https://github.com/qier222/YesPlayMusic/releases)
 - [远程投屏](https://github.com/pavlobu/deskreen)
 - QQ影音
 - Notion 笔记
 - PDF
   - [万兴PDF编辑器](https://vip.jokerps.com/4113.html)
   - [PDF Expert](https://vip.jokerps.com/6132.html)
+- [Mark-text](https://github.com/marktext/marktext)
 
 ## 三. 开发工具
 
@@ -53,6 +55,7 @@
 - [iterm2 终端](https://iterm2.com/downloads.html)
 - [HbuilderX](https://www.dcloud.io/hbuilderx.html)
 - [Docker Desktop](https://hub.docker.com/)
+- [Apifox - API 文档、调试、Mock、测试一体化协作平台](https://www.apifox.cn/#)
 
 
 ## 四. 浏览器插件
@@ -62,16 +65,17 @@
 - [谷歌访问助手](https://microsoftedge.microsoft.com/addons/detail/%E8%B0%B7%E6%AD%8C%E8%AE%BF%E9%97%AE%E5%8A%A9%E6%89%8B/ipoefnomhohcbplopailbpbkopnjlmbj)
 - [iGG谷歌访问助手](https://microsoftedge.microsoft.com/addons/detail/igg%E8%B0%B7%E6%AD%8C%E8%AE%BF%E9%97%AE%E5%8A%A9%E6%89%8B/mchibleoefileemjfghfejaggonplmmg)
 - [印象笔记剪藏](https://microsoftedge.microsoft.com/addons/detail/evernote-web-clipper/llhcnbijpnechllogkacbcjmkcgjbjfi)
-- [Momentum 主题](https://microsoftedge.microsoft.com/addons/detail/momentum/jdoanlopeanabgejgmdncljhkdplcfed)
+- [Momentum 主题](https://microsoftedge.microsoft.com/addons/detail/momentum/jdoanlopeanabgejgmdncljhkdplcfed) 或者 [几枝-中国诗词文化页签](https://microsoftedge.microsoft.com/addons/detail/几枝中国诗词文化页签/imifjimbooaehhlhhkonppkojinhfeal?hl=zh-CN)
 - [AdBlock — 最佳广告拦截工具](https://microsoftedge.microsoft.com/addons/detail/adblock-%E2%80%94-%E6%9C%80%E4%BD%B3%E5%B9%BF%E5%91%8A%E6%8B%A6%E6%88%AA%E5%B7%A5%E5%85%B7/ndcileolkflehcjpmjnfbnaibdcgglog)
 - [谷歌翻译](https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb)
 - [github加速](https://chrome.google.com/webstore/detail/github%E5%8A%A0%E9%80%9F/mfnkflidjnladnkldfonnaicljppahpg?hl=zh-CN)
 - [Octotree - GitHub code tree](https://microsoftedge.microsoft.com/addons/detail/octotree-github-code-tr/joagmknfcgpikbadjkaikmnhpjadihjg) 或者 [GiteeTree](https://microsoftedge.microsoft.com/addons/detail/giteetree/ialknpjkghajbolmfcbklajihdimifdk?hl=zh-CN)
+- [WakaTime](https://chrome.google.com/webstore/detail/wakatime/jnbbnacmeggbgdjgaoojpmhdlkkpblgi/related?hl=zh-CN)
 - [简悦 - SimpRead](https://microsoftedge.microsoft.com/addons/detail/%E7%AE%80%E6%82%A6-simpread/clgdhlhfiocphghdkdbgdlmfaafccfmc)
 - [PDF Viewer](https://chrome.google.com/webstore/detail/pdf-viewer/oemmndcbldboiebfnladdacbdfmadadm)
 - [哔哩哔哩助手](https://microsoftedge.microsoft.com/addons/detail/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E5%8A%A9%E6%89%8B%EF%BC%9Abilibilicom-%E7%BB%BC%E5%90%88%E8%BE%85%E5%8A%A9%E6%89%A9/fcfebhekhbkhjjimonjmbgmkbclheaoh)
 - [阅读列表（可多端同步）](https://chrome.google.com/webstore/detail/reading-list/lloccabjgblebdmncjndmiibianflabo)
-- [OneTab Plus:标签效率管理扩展](https://chrome.google.com/webstore/detail/onetab-plustab-manage-pro/lepdjbhbkpfenckechpdfohdmkhogojf)
+- [OneTab Plus:标签效率管理扩展](https://chrome.google.com/webstore/detail/onetab-plustab-manage-pro/lepdjbhbkpfenckechpdfohdmkhogojf) 或者 [Keptab](https://microsoftedge.microsoft.com/addons/detail/keptab/jhajaihldpgefhccepbjdpiimikplhng)
 - [Extension Manager扩展管理](https://microsoftedge.microsoft.com/addons/detail/%E6%89%A9%E5%B1%95%E7%AE%A1%E7%90%86%E5%99%A8%EF%BC%88extension-manager%EF%BC%89/bhahgfgngfghgjhnpplmemebhenieijb)
 - [Notion Web Clipper](https://chrome.google.com/webstore/detail/notion-web-clipper/knheggckgoiihginacbkhaalnibhilkk/related?hl=zh-CN)
 - [Web Clipper - screen Capter 网页截图](https://chrome.google.com/webstore/detail/web-clipper-nimbus/kiokdhlcmjagacmcgoikapbjmmhfchbi)
@@ -82,11 +86,15 @@
 - [Proxy Switchy Omega 代理设置](https://microsoftedge.microsoft.com/addons/detail/proxy-switchyomega/fdbloeknjpnloaggplaobopplkdhnikc)
 - [一键式视频下载器](https://microsoftedge.microsoft.com/addons/detail/%E4%B8%80%E9%94%AE%E5%BC%8F%E8%A7%86%E9%A2%91%E4%B8%8B%E8%BD%BD%E5%99%A8/fghpggflpedbjjmjghkgdjbhbfclgobk)
 - [Listen 1](https://microsoftedge.microsoft.com/addons/detail/listen-1/hneiglcmpeedblkmbndhfbeahcpjojjg)
+- [一路背单词（查词助手）](https://microsoftedge.microsoft.com/addons/detail/一路背单词（查词助手）/imdlioeebfgoibapgdhdfikcaeanhpaa?hl=zh-CN)
+- [谷歌翻译](https://microsoftedge.microsoft.com/addons/detail/谷歌翻译/fcoongackakfdmiincikmjgkedcgjkdp?hl=zh-CN)
+- [Web Clipper (Nimbus)](https://microsoftedge.microsoft.com/addons/detail/web-clipper-nimbus/lejegddiigegnlgkepkdemlkbccmpfom?hl=zh-CN) 、[Nimbus Clarity](https://microsoftedge.microsoft.com/addons/detail/nimbus-clarity-video-an/ialkhchcaibnpcilchfohbdhjhiofdmg?hl=zh-CN)、[Nimbus 截幕 & 屏幕录像机](https://microsoftedge.microsoft.com/addons/detail/nimbus-截幕-屏幕录像机/lngaebamompmckcjpaenfkkdcadjigbo?hl=zh-CN)
+- [PDF Viewer](https://chrome.google.com/webstore/detail/pdf-viewer/oemmndcbldboiebfnladdacbdfmadadm?hl=zh-CN)
 - [Vue.js devtools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
 
 ## 五. IDLE插件
 
-- LeetCode
+- 
 
 
 ## 六. hosts 配置
