@@ -476,7 +476,7 @@ rtp 包由 rtp 头部和 rtp 荷载构成
 
   1Bit，若 X=1，则在 RTP 报头后跟有一个扩展头。
 
-- CSRC 技术器(CC)：
+- CSRC计数器(CC)：
 
   4Bit，含有固定头部后面跟着的 CSRC 的数据, 指示 CSRC 标识符的个数
 
@@ -678,3 +678,7 @@ RFC 文档：
 
 - [RFC6184-RTP 载荷 H.264 视频格式](https://tools.ietf.org/html/rfc6184)
 <!-- #endregion -->
+
+```python
+
+```

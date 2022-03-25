@@ -5,7 +5,7 @@ ADD 复制文件
     *   ADD <src>...<dest>
     *   ADD ["<src>",..."<dest>"]
 
-```
+```dockerfile
 ADD docker-test-demo-0.0.1-SNAPSHOT.jar app.jar
 ```
 

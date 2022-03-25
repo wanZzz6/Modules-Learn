@@ -1,18 +1,3 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.10.2
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
-<!-- #region -->
 ### 问题
 
 通过 date 命令查看时间
@@ -60,7 +45,6 @@ docker cp /usr/share/zoneinfo/Asia/Shanghai 【容器ID或者NAME】:/etc/localt
 
 ```sql
 select now() from dual;
-
 ```
 
 可以发现，时间并没有更改过来。 
@@ -91,31 +75,17 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo '$TZ' > /etc/timezone
 1）进入容器
 
 ```
-docker exec -t -i c360cc412528 /bin/bash    // c360cc412528 为容器id
-
+docker exec -t -i c360cc412528 /bin/bash    // c360cc412528 为容器i
 ```
 
-2）在 / usr/share/zoneinfo 目录下找上海时区
+2）在 /usr/share/zoneinfo 目录下找上海时区
 
 ```
 cd  /usr/share/zoneinfo/Asia
-
 ```
 
 3）复制上海时区到 /etc 重命名 localtime 文件
 
 ```
-copy Shanghai /etc/localtime 
-
+cp -i Shanghai /etc/localtime
 ```
-
-在使用 copy 时，提示我们：
-
-bash: copy: command not found.
-
-那么我们可以使用 cp -i Shanghai /etc/localtime, 效果是一样的
-
-完成后的效果
-
-![](https://img-blog.csdn.net/20180831144039456?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzI3Mjk1NDAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
-<!-- #endregion -->

@@ -1,19 +1,3 @@
----
-jupyter:
-  jupytext:
-    formats: ipynb,md
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.10.2
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
-<!-- #region -->
 # 1. 查看显卡厂商
 
 ```sh
@@ -81,9 +65,7 @@ modinfo i915
 ```sh
 sudo dpkg --list | grep nvidia-*
 ```
-<!-- #endregion -->
 
-<!-- #region -->
 # Nvidia命令行工具nvidia-smi
 
 `nvidia-smi`（The Nvidia System Management Interface）是Nvidia显卡命令行管理套件，基于NVML（Nvidia Management Library）库，旨在管理和监控Nvidia GPU设备。
@@ -134,6 +116,7 @@ nvidia-smi -l 10
 8. 第八列   Uncorr. ECC   ECC是“Error Checking and Correcting”的简写，“错误检查和纠正”
         Compute M是计算模式。 
         
+
 显存占用和GPU占用是两个不一样的东西，显卡是由GPU和显存等组成的，显存和GPU的关系有点类似于内存和CPU的关系。
 
 
@@ -147,6 +130,3 @@ nvidia-smi -l 10
 - https://developer.nvidia.com/nvidia-system-management-interface
 - https://blog.csdn.net/wangleiwavesharp/article/details/71642310?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.add_param_isCf&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.add_param_isCf
 
-```python
-
-```

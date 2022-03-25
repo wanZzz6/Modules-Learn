@@ -8,7 +8,7 @@
 ## 破解步骤
 
 - 项目地址：~~https://github.com/5cr1pt/GitCracken~~  
-https://github.com/happyhope/GitCracken(备份）
+https://github.com/happyhope/GitCracken（备份）
 
 ### 环境要求
 

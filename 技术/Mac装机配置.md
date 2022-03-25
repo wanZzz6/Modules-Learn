@@ -1,6 +1,7 @@
 ## 一. 软件下载地址
 
 - [果核剥壳](https://www.ghpym.com/)
+- [MacWk - 精品mac软件下载](https://www.macwk.com/)
 - [Joker鹏少](https://vip.jokerps.com/software/macos)
 - [潮下载](http://www.chaoxz.com/)
 - [GoFans](https://gofans.cn/)
@@ -8,6 +9,8 @@
 ## 二. 常用软件
 
 - [搜狗输入法](https://pinyin.sogou.com/mac/)
+- [hide menu bar选择隐藏顶部图标](https://github.com/dwarvesf/hidden)
+- [TopNotch for macOS 抹平刘海](https://topnotch.app/)
 - [迅雷](http://mac.xunlei.com/)
 - [百度网盘](https://pan.baidu.com/download#pan)
 - [语雀](https://www.yuque.com/explore/headlines)
@@ -56,6 +59,7 @@
 - [HbuilderX](https://www.dcloud.io/hbuilderx.html)
 - [Docker Desktop](https://hub.docker.com/)
 - [Apifox - API 文档、调试、Mock、测试一体化协作平台](https://www.apifox.cn/#)
+- [RedisInsight | Redis官方GUI客户端](https://redis.com/redis-enterprise/redis-insight/)
 
 
 ## 四. 浏览器插件
@@ -464,6 +468,7 @@ rules:
 [Mac高级玩家](https://www.jianshu.com/u/fd635b09b186)
 
 1. 如何使用CheatSheet快速查看所有Mac App的所有键盘快捷键
+1. [Apple ARM M1 应用安装后运行闪退、无法激活怎么办？](https://www.macwk.com/article/apple-silicon-m1-application-crash-repair)
 2. [Mac安装软件时提示已损坏的最全解决方法](https://zhuanlan.zhihu.com/p/114919138)
 3. [MacOS截屏的那些事儿 - 简书](https://app.yinxiang.com/shard/s64/nl/19721025/7d94a154-c32f-430f-a167-7ec2b42ac967/)
 4. [GitHub.com无法访问，连接超时](https://blog.csdn.net/qq_42540989/article/details/83745126)
