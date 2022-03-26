@@ -1,14 +1,14 @@
 
-### 亲测7.7.0版本破解可用（全平台）
-
 ## 声明
 
-此破解工具来源于github，程序开源，**切勿用于商业用途**
+此破解工具来源于github，程序开源，**切勿用于商业用途** 
 
 ## 破解步骤
 
+亲测7.7.0版本破解可用（全平台）
+
 - 项目地址：~~https://github.com/5cr1pt/GitCracken~~  
-https://github.com/happyhope/GitCracken（备份）
+（备份）https://github.com/happyhope/GitCracken
 
 ### 环境要求
 
@@ -17,7 +17,7 @@ https://github.com/happyhope/GitCracken（备份）
 
 ### 开始破解
 
->破解工具最后一次提交记录显示 8.2.2 已被破解，如果不能破解请按照下文列出的历史版本下载地址，使用7.7.0版本
+>破解工具最后一次提交记录显示 8.2.2 已被破解，如果不能破解请下载7.7.0版本
 
 **⚠️警告：破解之前先关闭gitkraken软件，MAC用户需要先启动一次再关闭软件**
 
@@ -51,7 +51,15 @@ hosts 文件路径：
 或者 
 - /etc/hosts
 
-历史版本下载（改改版本号就行）
+## Windows卸载残留
+
+C:\Users\xxxxx\AppData\Roaming.gitkraken 
+C:\Users\xxxxx\AppData\Roaming\GitKraken 
+C:\Users\xxxxx\AppData\Local\gitkraken
+
+## 历史版本下载
+
+（改改版本号就行）
 
 - Linux-deb : https://release.axocdn.com/linux/GitKraken-v7.7.0.deb
 - Linux-rpm : https://release.axocdn.com/linux/GitKraken-v7.7.0.rpm
@@ -59,10 +67,16 @@ hosts 文件路径：
 - Win64 https://release.axocdn.com/win64/GitKrakenSetup-7.7.0.exe
 - Mac : https://release.axocdn.com/darwin/GitKraken-v7.7.0.zip
 
----
+### 百度云地址
 
-卸载残留:
+- 7.5.1 版本
+链接: [https://pan.baidu.com/s/1MyN54U_r3lQ-PAIcmt9vcg](https://pan.baidu.com/s/1MyN54U_r3lQ-PAIcmt9vcg) 
+提取码: tjfj 
 
-C:\Users\xxxxx\AppData\Roaming\.gitkraken  
-C:\Users\xxxxx\AppData\Roaming\GitKraken  
-C:\Users\xxxxx\AppData\Local\gitkraken\  
+- 6.5.0 版本
+链接：[https://pan.baidu.com/s/1ysDsu41C5RggfllPPoVGPA](https://pan.baidu.com/s/1ysDsu41C5RggfllPPoVGPA)
+提取码：bjik
+
+- 6.0.0版本
+链接：[https://pan.baidu.com/s/1qZyxd9uceVoXDXag-FvdfA](https://pan.baidu.com/s/1qZyxd9uceVoXDXag-FvdfA)
+提取码：cnfn
