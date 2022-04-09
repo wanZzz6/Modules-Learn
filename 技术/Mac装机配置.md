@@ -95,9 +95,15 @@
 - [Web Clipper (Nimbus)](https://microsoftedge.microsoft.com/addons/detail/web-clipper-nimbus/lejegddiigegnlgkepkdemlkbccmpfom?hl=zh-CN) 、[Nimbus Clarity](https://microsoftedge.microsoft.com/addons/detail/nimbus-clarity-video-an/ialkhchcaibnpcilchfohbdhjhiofdmg?hl=zh-CN)、[Nimbus 截幕 & 屏幕录像机](https://microsoftedge.microsoft.com/addons/detail/nimbus-截幕-屏幕录像机/lngaebamompmckcjpaenfkkdcadjigbo?hl=zh-CN)
 - [PDF Viewer](https://chrome.google.com/webstore/detail/pdf-viewer/oemmndcbldboiebfnladdacbdfmadadm?hl=zh-CN)
 - [Vue.js devtools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+- [SingleFile - 保存为离线网页](https://microsoftedge.microsoft.com/addons/detail/singlefile/efnbkdcfmcmnhlkaijjjmhjjgladedno?hl=zh-CN)
 
 ## 五. IDLE插件
 
+- SonarLint
+- GitToolBox
+- MybatisX
+- Jrebel and XRebel
+- Alibaba Java Coding Guidelines
 - 
 
 
