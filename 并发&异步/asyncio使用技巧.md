@@ -365,3 +365,6 @@ waiting connection lost is cancelled
 work is cancelled
 ```
 
+# 坑
+
+- 不要在async 声明的方法（协程）里调用 create_task()、run_coroutine_threadsafe() 等方法，否则会卡住不调度

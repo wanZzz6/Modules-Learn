@@ -17,7 +17,7 @@
 - [snipaste贴图](https://www.snipaste.com/download.html)
 - [iShot （滚动）截图、录屏](https://apps.apple.com/cn/app/ishot-%E4%BC%98%E7%A7%80%E7%9A%84%E6%88%AA%E5%9B%BE%E5%BD%95%E5%B1%8F%E5%B7%A5%E5%85%B7/id1485844094?mt=12)
 - [超级右键](https://apps.apple.com/cn/app/%E8%B6%85%E7%BA%A7%E5%8F%B3%E9%94%AE-irightmouse/id1497428978?mt=12)
-- [eZip 解压缩](https://ezip.awehunt.com/)
+- [MacZip 解压缩](https://ezip.awehunt.com/)
 - [share Mouse：共享键鼠](https://www.macjb.com/mac/6410.html)
 - [Clipy：历史剪切板](https://clipy-app.com/)
 - [菜单栏管理 - Hidden Bar](https://github.com/dwarvesf/hidden)
@@ -55,7 +55,8 @@
 - [VSCode](https://code.visualstudio.com/Download) - [环境变量配置](https://www.jianshu.com/p/fdf10fd927fd)
 - [SSH工具---FinalShell](http://www.hostbuf.com/t/988.html)
 - [数据库设计软件PDMan](https://gitee.com/robergroup/pdman)
-- [iterm2 终端](https://iterm2.com/downloads.html)
+- [iterm2 终端 (易卡住，不好用)](https://iterm2.com/downloads.html)
+- [Tabby - 终端](https://tabby.sh/)
 - [HbuilderX](https://www.dcloud.io/hbuilderx.html)
 - [Docker Desktop](https://hub.docker.com/)
 - [Apifox - API 文档、调试、Mock、测试一体化协作平台](https://www.apifox.cn/#)
@@ -377,7 +378,7 @@ docker run -d -p 9000:9000 -p 9001:9001 --name minio \
 minio/minio server /data --console-address ":9001"
 ```
 
-### Gstreamer
+### 11. Gstreamer
 
 [Download GStreamer](https://gstreamer.freedesktop.org/download/#macos)
 
@@ -418,21 +419,47 @@ brew install iterm2
 
 #### 安装oh-my-zsh
 
+zsh 取代 bash，设为默认 shell
+
+```sh
+chsh -s `which zsh`
+```
+
+官网：https://github.com/robbyrussell/oh-my-zsh
+
 zsh有几个强大的优点：比如支持更加聪明的目录补全，和强大的插件机制。相信可以让你日常的开发效率提示很多。
+
+直接用 zsh 会很蛋疼，因为 zsh 功能很强大但是太复杂，所以需要 oh-my-zsh 来将它简单化.
 
 - 自动安装 
 
-  ```
-  $ sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
+  ```sh
+  sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
   ```
 
 - 手动安装
 
-  ```
-  $ git clone git://github.com/robbyrussell/oh-my-zsh.git --depth 1 ~/.oh-my-zsh
+  ```sh
+  git clone git://github.com/robbyrussell/oh-my-zsh.git --depth 1 ~/.oh-my-zsh
   # 先备份原来的.zshrc文件
-  $ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+  cp ~/.zshrc ~/.zshrc.orig
+  cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+  cd ~/.oh-my-zsh/tools
+  ./install.sh
   ```
+  
+- 设置主题
+
+  oh-my-zsh 集成了大量的主题, 位于 `oh-my-zsh/theme`
+
+  配置主题, 可以通过修改`~/.zshrc`中的环境变量`ZSH_THEME`来完成
+
+  ```sh
+  ZSH_THEME="agnoster" # (this is one of the fancy ones)
+  ZSH_THEME="random"  # 随机主题
+  ```
+
+  
 
 ## 八、clashX代理
 
