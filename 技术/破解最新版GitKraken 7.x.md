@@ -27,6 +27,8 @@
 
 （如果使用的是7.7.0版本激活，请查看该仓库git历史记录，切换代码到倒数第二次提交记录，再执行以下操作）
 
+（`git reset 07f422 --hard` ）
+
 2. cd GitCracken/GitCracken/
 3. yarn install
 4. yarn build
