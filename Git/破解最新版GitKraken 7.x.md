@@ -55,7 +55,7 @@ hosts 文件路径：
 
 ## Windows卸载残留
 
-C:\Users\xxxxx\AppData\Roaming.gitkraken 
+C:\Users\xxxxx\AppData\Roaming\.gitkraken 
 C:\Users\xxxxx\AppData\Roaming\GitKraken 
 C:\Users\xxxxx\AppData\Local\gitkraken
 

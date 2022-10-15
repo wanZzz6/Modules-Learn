@@ -73,8 +73,6 @@ nohup jupyter notebook &
 注：可以写入 sh 脚本，然后设置开机自启
 
 ## 设置阿里云安全组（非阿里云用户无需这一步）
-<!-- #endregion -->
-
 在`控制台`-`云服务器ESC`-`实例` 选择自己的主机点击`本实例安全组`-`安全组列表`-`配置规则`-`入方向`-`手动添加`添加如下图所示配置
 注：其中端口号填写自己设置的端口
 ![](https://img-blog.csdnimg.cn/2020073110064542.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dhbnpoZW5nXzk2,size_16,color_FFFFFF,t_70#pic_center)
@@ -330,7 +328,7 @@ import org.slf4j.logger;
 项目地址： https://github.com/n-riesco/ijavascript
 
 - 依赖：Node.js、npm
-    
+  
     > sudo apt-get install nodejs npm
 
 ### 安装

@@ -1,18 +1,3 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.13.8
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
-<!-- #region -->
 ## 查看所有的网络连接
 
 ```sh
@@ -41,9 +26,5 @@ tasklist | findstr "8081"
 taskkill /pid 8081  -t  -f
 ```
 
-- -f 用来强制执行 
-<!-- #endregion -->
+- -f 用来强制执行
 
-```python
-
-```

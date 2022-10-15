@@ -1,21 +1,7 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.13.8
-  kernelspec:
-    display_name: Python 3 (ipykernel)
-    language: python
-    name: python3
----
-
 > 本文由 [简悦 SimpRead](http://ksria.com/simpread/) 转码， 原文地址 https://www.cnblogs.com/jasonxiaoqinde/p/10763185.html
 
 1.`sudo apt-get install build-essential`
-  
+
 2.`sudo apt install gcc-8`
 
 3.`sudo apt install g++-8`

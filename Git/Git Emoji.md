@@ -1,21 +1,7 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.13.8
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
 使用 git 的开发者都知道提交代码的最简单命令： `git commit -m '此次提交的内容说明'`。  
 我们在 github 发现了这样一张视图：
 
-![](https://www.pianshen.com/images/890/61d56e512976a31c61dfbfbf53cd432a.png)
+<img src="C:\Users\wzz\AppData\Roaming\Typora\typora-user-images\image-20220613120416799.png" alt="image-20220613120416799" style="zoom: 67%;" />
 
 这是在 commit 时，添加了 emoji 表情说明，我们来看看其命令语法：
 
@@ -24,7 +10,6 @@ jupyter:
 
 ```
 git commit -m ':emoji: 此次提交的内容说明'
-
 ```
 
 添加多个 emoji 表情图标
@@ -32,7 +17,6 @@ git commit -m ':emoji: 此次提交的内容说明'
 
 ```
 git commit -m ':emoji1: :emoji2: :emoji3: 此次提交的内容说明'
-
 ```
 
 在提交内容的前面增加了 emoji 标签： **:emoji:**，其中 emoji 是表情图标的标签，列表见下面的附录表格。
