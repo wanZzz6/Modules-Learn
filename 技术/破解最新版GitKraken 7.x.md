@@ -42,7 +42,7 @@
 
 破解后你会看到右下角显示 **Pro**，如果显示 free 或者其他，表示没有破解成功，可卸载干净后选择其他版本重试。 
 
-![image-20221216160521606](C:\Users\wzz\AppData\Roaming\Typora\typora-user-images\image-20221216160521606.png)
+![image-20221216160521606](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/202212161618492.png)
 
 ### 禁用更新（可选）
 
