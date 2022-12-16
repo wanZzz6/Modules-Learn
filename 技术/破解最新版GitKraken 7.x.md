@@ -34,7 +34,15 @@
 4. yarn build
 5. node dist/bin/gitcracken.js patcher
 
-如果最后一步没有错误发生，就破解成功啦
+如果最后一步没有错误发生，就破解成功啦。
+
+
+
+初次使用会让你先登录账号，建议用 github 账号授权登录（记得用梯子）。
+
+破解后你会看到右下角显示 **Pro**，如果显示 free 或者其他，表示没有破解成功，可卸载干净后选择其他版本重试。 
+
+![image-20221216160521606](C:\Users\wzz\AppData\Roaming\Typora\typora-user-images\image-20221216160521606.png)
 
 ### 禁用更新（可选）
 

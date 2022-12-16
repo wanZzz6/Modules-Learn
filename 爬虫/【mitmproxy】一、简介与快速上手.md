@@ -1,6 +1,4 @@
-> - [官网](https://aka.ms/terminal)
->
-> - [官方文档](https://link.zhihu.com/?target=https%3A//mitmproxy.org/)
+> - [官方文档](https://mitmproxy.org/)
 >
 > - [github](https://github.com/mitmproxy/mitmproxy)
 >
@@ -160,3 +158,4 @@ mitmweb.exe -s .\gid.py --set http2=false
 ---
 
 - [PC微信小程序抓包需要3.4.5及以前的版本 - 微信历史版本](https://mydown.yesky.com/pcsoft/44417133/versions/)
+- [最全面的解决Charles手机抓包的证书问题(步骤非常详细) - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/281126584)
