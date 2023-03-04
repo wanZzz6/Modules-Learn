@@ -25,4 +25,4 @@ git commit -m ':emoji1: :emoji2: :emoji3: 此次提交的内容说明'
 
 参考资料 :
 
-*   [https://gitmoji.carloscuesta.me/](https://gitmoji.carloscuesta.me/)
+*   [gitmoji | An emoji guide for your commit messages](https://gitmoji.dev/)
