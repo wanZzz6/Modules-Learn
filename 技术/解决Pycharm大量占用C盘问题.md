@@ -1,17 +1,3 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.13.8
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
 在使用 PyCharm 时会在 C:\Users\<username>\.PyCharm < 版本号 > 下创建一大堆文件，里边包括了配置信息，项目缓存信息等。要为了解决 Pycharm 大量占用 C 盘问题，需要把一些配置信息搬迁到指定位置。
 
 通过 PyCharm 修改
@@ -29,5 +15,4 @@ idea.system.path=D:/Program Files/.PyCharm/system
 ```
 
 最后将原文件夹下的 C:\\Users\\<username>\\.PyCharm \< 版本号 \> 复制到目标搬迁文件夹下，并关闭 PyCharm 之后删除 system 文件夹并重启 PyCharm 就完成了配置的搬迁。其实只保留 config 目录下的一个 idea.properties 文件即可，其余文件都可以删除。
-
 

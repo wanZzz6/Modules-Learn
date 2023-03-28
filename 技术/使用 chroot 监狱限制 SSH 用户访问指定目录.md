@@ -1,17 +1,3 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.13.8
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
 > 原文地址 [linux.cn](https://linux.cn/article-8313-1.html?pr)
 
 将 [SSH 用户会话限制](http://www.tecmint.com/restrict-sftp-user-home-directories-using-chroot/) [1] 访问到特定的目录内，特别是在 web 服务器上，这样做有多个原因，但最显而易见的是为了系统安全。为了锁定 SSH 用户在某个目录，我们可以使用 **chroot** 机制。
@@ -28,8 +14,6 @@ jupyter:
 
 ```
 # mkdir -p /home/test
-
-
 ```
 
 2、 接下来，根据 `sshd_config` 手册找到所需的文件，`ChrootDirectory` 选项指定在身份验证后要 chroot 到的目录的路径名。该目录必须包含支持用户会话所必需的文件和目录。
@@ -38,8 +22,6 @@ jupyter:
 
 ```
 # ls -l /dev/{null,zero,stdin,stdout,stderr,random,tty}
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215336gzm7nraoa21onam7.png)
@@ -55,8 +37,6 @@ _列出所需文件_
 # mknod -m 666 tty c 5 0
 # mknod -m 666 zero c 1 5
 # mknod -m 666 random c 1 8
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215338ide3pr3krvrosere.png)
@@ -69,8 +49,6 @@ _创建 /dev 和所需文件_
 # chown root:root /home/test
 # chmod 0755 /home/test
 # ls -ld /home/test
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215339uvvvppvomvvfm2oi.png)
@@ -84,8 +62,6 @@ _设置目录权限_
 ```
 # mkdir -p /home/test/bin
 # cp -v /bin/bash /home/test/bin/
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215340daajm55eoacw5f4e.png)
@@ -98,8 +74,6 @@ _复制文件到 bin 目录中_
 # ldd /bin/bash
 # mkdir -p /home/test/lib64
 # cp -v /lib64/{libtinfo.so.5,libdl.so.2,libc.so.6,ld-linux-x86-64.so.2} /home/test/lib64/
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215341z7r8471jmoz685w4.png)
@@ -113,8 +87,6 @@ _复制共享库文件_
 ```
 # useradd tecmint
 # passwd tecmint
-
-
 ```
 
 8、 创建 chroot 监狱通用配置目录 `/home/test/etc` 并复制已更新的账号文件（`/etc/passwd` 和 `/etc/group`）到这个目录中：
@@ -149,8 +121,6 @@ _复制密码文件_
 Match User tecmint
 # 指定 chroot 监狱
 ChrootDirectory /home/test
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215343tz71v933d1wgzisv.png)
@@ -163,8 +133,6 @@ _配置 SSH chroot 监狱_
 # systemctl restart sshd
 或者
 # service sshd restart
-
-
 ```
 
 ### 步骤 5：测试 SSH 的 chroot 监狱
@@ -176,8 +144,6 @@ _配置 SSH chroot 监狱_
 -bash-4.1$ ls
 -bash-4.1$ date
 -bash-4.1$ uname
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215344qwrf1h8xuwc0k0sk.png)
@@ -193,8 +159,6 @@ _测试 SSH 用户 chroot 监狱_
 -bash-4.1$ pwd
 -bash-4.1$ echo "Tecmint - Fastest Growing Linux Site"
 -bash-4.1$ history
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215345oabfcffyhkbt9byb.png)
@@ -209,8 +173,6 @@ _SSH 内置命令_
 # mkdir -p /home/test/home/tecmint
 # chown -R tecmint:tecmint /home/test/home/tecmint
 # chmod -R 0700 /home/test/home/tecmint
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215347twfkvvvikspj15ij.png)
@@ -223,8 +185,6 @@ _创建 SSH 用户主目录_
 # cp -v /bin/ls /home/test/bin/
 # cp -v /bin/date /home/test/bin/
 # cp -v /bin/mkdir /home/test/bin/
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215348lpem7e9fdxlf0el0.png)
@@ -236,8 +196,6 @@ _向 SSH 用户添加命令_
 ```
 # ldd /bin/ls
 # cp -v /lib64/{libselinux.so.1,libcap.so.2,libacl.so.1,libc.so.6,libpcre.so.1,libdl.so.2,ld-linux-x86-64.so.2,libattr.so.1,libpthread.so.0} /home/test/lib64/
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215349xlml1e6yyh9f1v1i.png)
@@ -253,8 +211,6 @@ _复制共享库_
 ```
 # 启用 sftp 的 chroot 监狱 
 ForceCommand internal-sftp
-
-
 ```
 
 保存并退出文件。接下来重启 sshd 服务：
@@ -263,16 +219,12 @@ ForceCommand internal-sftp
 # systemctl restart sshd
 或者
 # service sshd restart
-
-
 ```
 
 15、 现在使用 ssh 测试，你会得到下面的错误：
 
 ```
 # ssh tecmint@192.168.0.10
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215350fiu8i42xxii8r8kh.png)
@@ -283,8 +235,6 @@ _测试 SSH Chroot 监狱_
 
 ```
 # sftp tecmint@192.168.0.10
-
-
 ```
 
 ![](https://img.linux.net.cn/data/attachment/album/201703/16/215350qhz5lh6x26fhfd77.png)
@@ -303,12 +253,12 @@ via: [http://www.tecmint.com/restrict-ssh-user-to-directory-using-chrooted-jail/
 
 作者：[Aaron Kili](http://www.tecmint.com/author/aaronkili/)[5] 译者：[geekpi](https://github.com/geekpi)[6] 校对：[jasminepeng](https://github.com/jasminepeng)[7]
 
-[1]: http://www.tecmint.com/restrict-sftp-user-home-directories-using-chroot/  
-[2]: https://linux.cn/tag-sudo.html  
-[3]: http://www.tecmint.com/add-users-in-linux/  
-[4]: http://www.tecmint.com/restrict-sftp-user-home-directories-using-chroot/  
-[5]: http://www.tecmint.com/author/aaronkili/  
-[6]: https://github.com/geekpi  
-[7]: https://github.com/jasminepeng  
-[8]: https://github.com/LCTT/TranslateProject  
+[1]: http://www.tecmint.com/restrict-sftp-user-home-directories-using-chroot/
+[2]: https://linux.cn/tag-sudo.html
+[3]: http://www.tecmint.com/add-users-in-linux/
+[4]: http://www.tecmint.com/restrict-sftp-user-home-directories-using-chroot/
+[5]: http://www.tecmint.com/author/aaronkili/
+[6]: https://github.com/geekpi
+[7]: https://github.com/jasminepeng
+[8]: https://github.com/LCTT/TranslateProject
 [9]: https://linux.cn/article-8313-1.html?pr

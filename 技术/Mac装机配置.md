@@ -285,8 +285,6 @@ ELECTRON_MIRROR="https://npm.taobao.org/mirrors/electron/"
 ELECTRON_MIRROR="https://cdn.npm.taobao.org/dist/electron/"
 ```
 
-
-
 ### 5. JDK8
 
 ```sh

@@ -89,9 +89,9 @@ hosts 文件路径：
 
 ### Windows卸载残留
 
-C:\Users\xxxxx\AppData\Roaming\\.gitkraken 
-C:\Users\xxxxx\AppData\Roaming\GitKraken 
-C:\Users\xxxxx\AppData\Local\gitkraken
+- `C:\Users\{用户名}\AppData\Roaming\\.gitkraken` 
+- `C:\Users\{用户名}\AppData\Roaming\GitKraken` 
+- `C:\Users\{用户名}\AppData\Local\gitkraken`
 
 ### 查询所有历史版本
 

@@ -1,19 +1,3 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.13.8
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
-<!-- #region -->
-
 网页转 markdown 的几个方法
 ==================
 
@@ -38,8 +22,3 @@ html2text
 ---
 适合自己开发：<https://pypi.org/project/html2text/>
 
-<!-- #endregion -->
-
-```python
-
-```
