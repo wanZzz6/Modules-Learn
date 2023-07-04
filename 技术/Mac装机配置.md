@@ -43,6 +43,7 @@
   - [万兴PDF编辑器](https://vip.jokerps.com/4113.html)
   - [PDF Expert](https://vip.jokerps.com/6132.html)
 - [Mark-text](https://github.com/marktext/marktext)
+- [瓦特工具箱(Steam++官网) ](https://steampp.net/)
 
 ## 三. 开发工具
 
@@ -93,6 +94,7 @@
 - [Listen 1](https://microsoftedge.microsoft.com/addons/detail/listen-1/hneiglcmpeedblkmbndhfbeahcpjojjg)
 - [一路背单词（查词助手）](https://microsoftedge.microsoft.com/addons/detail/一路背单词（查词助手）/imdlioeebfgoibapgdhdfikcaeanhpaa?hl=zh-CN)
 - [谷歌翻译](https://microsoftedge.microsoft.com/addons/detail/谷歌翻译/fcoongackakfdmiincikmjgkedcgjkdp?hl=zh-CN)
+- [deepl 翻译](https://microsoftedge.microsoft.com/addons/detail/deepl-translate-reading-/fancfknaplihpclbhbpclnmmjcjanbaf)
 - [Web Clipper (Nimbus)](https://microsoftedge.microsoft.com/addons/detail/web-clipper-nimbus/lejegddiigegnlgkepkdemlkbccmpfom?hl=zh-CN) 、[Nimbus Clarity](https://microsoftedge.microsoft.com/addons/detail/nimbus-clarity-video-an/ialkhchcaibnpcilchfohbdhjhiofdmg?hl=zh-CN)、[Nimbus 截幕 & 屏幕录像机](https://microsoftedge.microsoft.com/addons/detail/nimbus-截幕-屏幕录像机/lngaebamompmckcjpaenfkkdcadjigbo?hl=zh-CN)
 - [PDF Viewer](https://chrome.google.com/webstore/detail/pdf-viewer/oemmndcbldboiebfnladdacbdfmadadm?hl=zh-CN)
 - [Vue.js devtools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)

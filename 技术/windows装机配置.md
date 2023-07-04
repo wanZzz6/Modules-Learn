@@ -17,7 +17,10 @@
 - [安装JDK11](https://blog.csdn.net/m0_46502538/article/details/119353044)
 - [Windows Terminal 主题美化 ](https://zhuanlan.zhihu.com/p/352882990)
 
+## 常用软件
 
+- [瓦特工具箱(Steam++官网) ](https://steampp.net/)
+- [Quicker软件 您的指尖工具箱](https://getquicker.net/)
 
 ## 其他
 

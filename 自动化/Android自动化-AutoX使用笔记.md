@@ -54,13 +54,13 @@ AutoX 是基于 AutoJs 4.1 的社区开发版，基本兼容AutoJs，虽不能�
 
 - 开发环境下运行 `npm run start`，会在目录下生成一个 dist 文件夹，里面存放 webpack 打包编译过的文件（项目初始化时里面有几个示例项目，打包哪个项目需要在`scriptConfig.js` 中配置，具体看注释），在dist目中录找一个打包过的js主程序，右键选择 `重新运行`，手机端便会运行该示例项目，`./work` 目录存放的就是项目源码，你可以尝试修改项目文件，点击保存后会自动打包并重新运行（热部署）。
 
+- 完整过程：[优酷视频讲解](https://v.youku.com/v_show/id_XNDg2NjA3NTYyMA==.html)  
+
 <img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/autox-init.png" alt="image-20230319234843453" style="zoom:50%;" />
 
-完整过程：[优酷视频讲解](https://v.youku.com/v_show/id_XNDg2NjA3NTYyMA==.html)  
+👍[autoX-webpack-template](https://github.com/wanZzz6/autoX-webpack-template)：我在用 webpack-autojs 时遇到点bug，总是不能自动上传运行，暂时不知道哪的问题，所以自己稍加修改定制了一个项目模板，欢迎大家测试使用。
 
 [使用 vue 作为 UI ](http://auto.moly.host/index.html#/example/vue)  
-
-[autoX-webpack-template](https://github.com/wanZzz6/autoX-webpack-template)：我在用 webpack-autojs 时遇到点bug，总是不能自动上传运行，暂时不知道哪的问题，所以自己稍加修改定制了一个项目模板，欢迎大家测试使用。
 
 ## 三、基础模块
 
@@ -68,55 +68,52 @@ AutoX 是基于 AutoJs 4.1 的社区开发版，基本兼容AutoJs，虽不能�
 
 #### sleep()
 
+本质是 `java.lang.Thread.sleep(millis);`
+
 会阻塞**当前线程**，**当前线程**，**当前线程**！
 
-如不想阻塞，可以启用[协程](#async)特性。
+如不想阻塞，可以启用[协程](#async) 或`Promise`特性。
 
 
 #### getClip() 
 
-Android 10以上限制了应用的后台剪贴板内容获取行为,
-只有当前界面获得焦点后（onResume）才能获取到剪切板内容
+Android 10以上限制了应用的后台剪贴板内容获取行为, 只有当前界面获得焦点后（onResume）才能获取到剪切板内容
 
-我们创造一个有焦点的悬浮窗, 就可以获取剪贴板内容了
+我们创造一个有焦点的悬浮窗, 就可以获取剪贴板内容了：
 ~~并且要开启前台服务~~
 
 ```js
-function getclip() {
-    var window = floaty.window(
-        <frame visibility="invisible" >
-            <input id="input" />
-        </frame>
-    );
-    ui.run(function () {
-        window.requestFocus();
-        window.input.requestFocus();
-        toastLog("已读取粘贴板，内容如下：\n" + getClip());
-        window.close();
-    });
+if (!floaty.checkPermission()) {
+  toast('本脚本需要悬浮窗权限来显示悬浮窗');
+  floaty.requestPermission();
+  exit();
 }
-```
 
-
-
-```js
-$settings.setEnabled("foreground_service", true);
-
-var w = floaty.window(
-  <frame gravity="center" bg="#ffffff">
-    <text id="text">牙叔教程 简单易学</text>
-  </frame>
-);
-ui.run(function () {
-  w.requestFocus();
-  setTimeout(() => {
-    toastLog(getClip());
-    w.close();
-  }, 1);
+events.on('exit', function () {
+  floaty.closeAll(); // 关闭所有本脚本的悬浮窗。
+  console.log('onExit');
 });
 
-setInterval(() => {}, 1000);
+const _window = floaty.window(<frame visibility="invisible"></frame>);
+
+function myGetClip() {
+  const result = threads.disposable();
+  ui.run(function () {
+    _window.requestFocus();
+    setTimeout(() => {
+      result.setAndNotify(getClip());
+      _window.disableFocus();
+    }, 1);
+  });
+  return result.blockedGet();
+}
+
+console.log(myGetClip());
+sleep(5000);
+console.log(myGetClip());
 ```
+
+
 
 #### toast(message)
 
@@ -395,41 +392,58 @@ myEE
 ### 1. 基于控件的操作
 
 - `click(text[, i])`、`longClick(text[, i]))`: 点击文本，当不指定参数 i 时则会尝试点击屏幕上出现的所有文字 text 并返回**是否全部点击成功**。尽量指定第二个参数 `i`，提高执行效率。
-
 - `setText()`、`input()`：文本输入
 
-- 选择器：
-  
-  常用属性选择器：`text、desc、id、depth、className、drawingOrder` 以及其扩展方法 `xxxContains()`、`xxxStartsWith()`、`xxxEndsWith()`、`xxxMatches()`  
-  
+
+
+- 选择器 `UiSelector`：
+
+  常用属性选择器：`text()、desc()、id()、depth()、className()、drawingOrder()` 以及其扩展方法 `xxxContains()`、`xxxStartsWith()`、`xxxEndsWith()`、`xxxMatches()` 。这些是`UiSelector`类的实例方法，作为全局变量可直接使用，但是从代码设计角度来讲，这样并不可取，既污染了全局变量又不符合面向对象设计规范，在开发中尽量先用 `selector()` 方法获取到`UiSelector()` 实例，然后再添加筛选条件，例如：
+
+  ```js
+  selector().text('文本').depth(11).className('xxx').findOnce()?.click()
+  ```
+
   **id属性**并不代表在页面中的唯一性。  
-  
-  `bounds()` 属性选择兼容性差，不推荐使用.  
-  
+
+  `bounds()` 属性一般不用于查询条件（因为不同手机的屏幕尺寸不一样，导致代码兼容性差），当控件的`click()`方法返回 false 时可用来获取控件中心坐标.
+
   `drawingOrder`属性在 Android 7.0 以上才能使用.  
-  
+
   如果使用**正则表达式**，请使用javaScript的双反斜杠语法，例如`textMatches(/\d+/)`  
+
   
-  
-  
+
   有时候只靠一个属性并不能唯一确定一个控件，这时需要通过属性的组合来完成定位，例如`className("ImageView").depth(10).findOne().click()`，通过链式调用来组合条件。  
-  
+
   如果不加`findOne()`而直接进行操作，则选择器会找出**所有**符合条件的控件并操作。
+
   
+
+  文档中列出的方法不全，全部可用的筛选方法可参考源码：[UiGlobalSelector.kt](https://github.com/kkevsekk1/AutoX/blob/84a1f59135433f40747d18ac0805f1b4682bd032/automator/src/main/java/com/stardust/automator/UiGlobalSelector.kt) 与其子类 [UiSelector.java](https://github.com/kkevsekk1/AutoX/blob/8b3c57b06b7323d2b656f331c8ae31d834f69388/autojs/src/main/java/com/stardust/autojs/core/accessibility/UiSelector.java)
+
   
-  
+
 - 搜索：
-  
+
   - `findOne()`：对屏幕上的控件进行**深度优先搜索**(DFS)，直到屏幕上出现满足条件的一个控件为止，并返回该控件。如果找不到控件，当屏幕内容发生变化时会重新寻找，直至找到。需要注意的是，**如果屏幕上一直没有出现所描述的控件，则该函数会阻塞**，直至所描述的控件出现为止。因此此函数不会返回`null`。
+
   - `findOne(timeout)`：如果在 timeout 毫秒的时间内没有找到符合条件的控件，则终止搜索并返回`null`。
+
   - `findOnce(i)`：只在屏幕上**深度优先搜索(DSF)一次而不是一直搜索**，并返回第 i + 1 个符合条件的控件；如果没有找到符合条件的控件，或者符合条件的控件个数 < i, 则返回`null`。
+
   - `find()`: 找到所有满足条件的控件集合并返回。这个搜索只进行一次，返回 `UiCollection` 控件集合
+
   - `exits()`： 判断控件是否存在
+
   - `filter(f)`：过滤
+
   - `waitFor()`： 等待控件出现
+
+  - `algorithm(type)`: 设置搜索算法，只能传字符串 `”BFS“` 或 `”DFS“`，分别代表广度优先（默认）和深度优先。具体代码实现：[DFS](https://github.com/kkevsekk1/AutoX/blob/84a1f59135433f40747d18ac0805f1b4682bd032/automator/src/main/java/com/stardust/automator/search/DFS.kt)、
+
   
-  
-  
+
 - UiObject控件操作：
 
   - `click()`: 点击。点击一个控件，**前提是这个控件的 clickable 属性为 true**
@@ -458,15 +472,6 @@ myEE
 - 多点触摸操作需开启root权限用RootAutomator来实现
 
 
-
-### 3. 按键模拟
-
-按键模拟部分提供了一些模拟物理按键的全局函数，包括Home、音量键、锁屏键等，
-
-一般来说，**以大写字母开头的函数**都依赖于root权限。
-
-
-
 - 双指捏合
 
   ```js
@@ -474,7 +479,13 @@ myEE
            [500, [300, 1500], [500, 1000]]);
   ```
 
-  
+
+### 3. 按键模拟
+
+按键模拟部分提供了一些模拟物理按键的全局函数，包括Home、音量键、锁屏键等。
+
+一般来说，**以大写字母开头的函数**都依赖于root权限。
+
 
 ### 4. 颜色-colors
 
@@ -550,9 +561,14 @@ app.viewFile("/sdcard/1.jpg");
 
 - 内置模型
   - 百度飞桨OCR，总体感觉还凑合，如果识别不准确可以先进行图片预处理。可设置模型精度和cpu数量，建议使用 AutoX 6.2.5 以后的版本
-  - 6.3.4 新增Google MLkITOCR，就目前版本来说，非常难用。
+  - 6.3.4 新增Google MLkITOCR，速度比飞桨快，准确度方面我觉得可以跟飞桨搭配使用，前者识别不准时，后者可能就很准，反之亦然😂。附[简略API文档](https://github.com/kkevsekk1/AutoX/blob/de7a9a07661d0466fe3ab9296191607a127f1a84/app/src/main/assets/sample/GoogleMLKit/API.md)，当然你可以从[示例代码](https://github.com/kkevsekk1/AutoX/blob/de7a9a07661d0466fe3ab9296191607a127f1a84/app/src/main/assets/sample/GoogleMLKit/OCR截图识别.js)中学习到更多东西
+  - 6.2.9 新增 Tessract OCR。(emmmm.........暂不做评价）
 
-个人感觉这两个模型用起来都没有 Autojs Pro9 中的准确度高
+个人感觉这两个模型用起来都没有 Autojs Pro9 中的准确度高，只可惜。。。当然，你可以用自己训练的OCR模型重新编译打包autoX。  
+
+其次要吐槽的一点是，这几种ocr方式返回的结构都不一样，结果中只要包含文字（text)、位置（rect)、置信度（confidence)这三个属性就够了，且按从上到下、从左往右的出现顺序排列，也就是飞桨OCR返回的结果最简洁、实用。如果项目中要混合使用多种OCR方式（不限于以上官方提供的3种），自己有必要再对OCR识别结果类型进行统一封装。
+
+
 
 基础用例：
 
@@ -602,7 +618,7 @@ Auto.js的UI系统来自于Android，所有属性和方法都能在Android源码
 - 文本：`<text text="文本内容" textColor="red" textSize="14sp" textStyle="bold|italic" maxLines="5" ellipsize="end"/>`
 - 按钮：`<button style="Widget.AppCompat.Button.Colored" text="一个按钮"/>`
 - 输入框: `<input id="name" hint="请输入姓名"/>`
-- 图片: `<img w="40" h="40" radius="2" tint="red" borderWidth="2" borderColor="gray" src="https://www.baidu.com/img/bd_logo1.png" scaleType="fitCenter"/>`
+- 图片: `<img w="40" h="40" radius="2" tint="red" borderWidth="2" borderColor="gray" src="file:///sdcard/Download/1.png" scaleType="fitCenter"/>`
 - 复选框：`<checkbox checked="true" text="被禁用的复选框" enabled="false"/>`
 - 单选框: 一般与radiogroup搭配使用，`<radio id="radio3" text="已勾选的单选框3" checked="true"/>`
 - 开关：`<Switch id="sw" text="单选框1" />`
@@ -627,10 +643,13 @@ Auto.js的UI系统来自于Android，所有属性和方法都能在Android源码
 
 
 
+- `attr(name)`: 获取属性值
+- `attr(name, value)`：设置属性值
 - `w`:宽度
   - `*` 表示宽度**尽量**填满父布局；
   - `auto`表示根据 View 的**内容**自适应。如果不设置该属性，则不同的控件和布局有不同的默认宽度，大多数为`auto`
-  - 具体数值，`h`:高度，取值与`w`相同
+  - 具体数值
+- `h`:高度，取值与`w`相同
 - `id`：一个界面的 id 在同一个界面下通常是唯一的，id 属性也是连接 xml 布局和 JavaScript 代码的桥梁。不建议使用控件的同名属性作为 id，比如`id="bg"`，会产生误会，不清楚到底是获取属性值还是根据 id 获取视图对象。
 - `gravity`：决定 View 中的内容的位置。取值为：`left、right、top、bottom、center、center_vertical、center_horizontal`中的一种或者组合，例如`gravity="right|bottom"`内容会在右下角。
 - `layout_gravity`：决定 View 在他的**父布局**中的位置，取值与 `gravity` 相似，注意区分两者的作用对象。
@@ -639,8 +658,41 @@ Auto.js的UI系统来自于Android，所有属性和方法都能在Android源码
   - 颜色，`bg="#00ff00"`
   - 效果链接，`bg="?attr/selectableItemBackground"`
   - 图片文件路径，`bg="file:///sdcard/1.png"`
-
 - `alpha`、`minHeight`、`minWidth`、`visibility`、`rotation`、`style`
+
+```js
+'ui';
+
+ui.layout(
+  <vertical w="auto" h="auto" bg="#FF444444">
+    <img id="pic"/>
+  </vertical>
+);
+
+// 动态设置图片
+// 方式1
+ui.pic.setSource('file:///sdcard/Download/11.png');
+
+// 方式2
+const pic = images.read('/sdcard/Download/11.png');
+ui.pic.setSource(pic);
+
+// 方式3
+const pic = images.read(imgPath);
+ui.pic.setImageBitmap(pic.bitmap);
+events.on("exit", function () {
+  pic.recycle();
+});
+
+// 方式4
+ui.pic.attr('src', 'data:image/png;base64,' + images.toBase64(pic));
+```
+
+
+
+
+
+
 
 ### 4. 事件
 
@@ -650,12 +702,13 @@ Auto.js的UI系统来自于Android，所有属性和方法都能在Android源码
 
 ```js
 "ui";
-$ui.layout(
+ui.layout(
     <vertical padding="16">
         <button id="click_me" text="点我" w="auto"/>
     </vertical>
 );
-$ui.click_me.on("long_click", (event) => {
+
+ui.click_me.on("long_click", (event) => {
     toast("我被长按啦");
     // 消费事件
     event.consumed = true;
@@ -693,7 +746,43 @@ ui.ok.click(function(){
 
 ### 5. 悬浮窗
 
-未完待续。。。
+floaty模块提供了悬浮窗的相关函数，可以在屏幕上显示自定义悬浮窗，控制悬浮窗大小、位置等。
+
+
+
+- 首行不要加 `'ui';`
+- `floaty`
+  - `window(layout)`：创建悬浮窗对象并立即显示，返回一个`FloatyWindow`对象，`layout`参数可以是xml布局或者一个View，所以要先了解前面的 `ui` 模块。此类型悬浮窗自带关闭、调整大小、调整位置按键，可根据需要调用`setAdjustEnabled(enable)`函数来显示或隐藏。
+  - `rawWindow(layout)`：创建悬浮窗对象并立即显示，返回一个`FloatyRawWindow`对象。与`floaty.window()`函数不同的是，该悬浮窗不会增加任何额外设施（例如调整大小、位置按钮）。而且，该悬浮窗**支持完全全屏**，可以覆盖状态栏，因此**可以做护眼模式之类**的应用。
+
+- 悬浮窗大小：悬浮窗控件可以看作创建此悬浮窗的xml根节点的父级View，xml控件内容默认填满悬浮窗，可通过 `setSize(width, height)` 设置悬浮窗大小，单位像素。`FloatyWindow`对象也可以开启 `setAdjustEnabled(true)` 手动调节
+
+- 悬浮窗在脚本停止运行时会自动关闭，可以用一个 Timer 保持。
+
+```js
+const w = floaty.window(
+    <frame gravity="center">
+        <text id="text">长按调整</text>
+    </frame>
+);
+
+w.exitOnClose();
+w.setPosition(100, device.height / 2);
+w.text.on('long_click', () => {
+  w.setAdjustEnabled(!w.isAdjustEnabled());
+});
+setInterval(() => {}, 1000);
+```
+
+- 因为脚本运行的线程不是UI线程，而所有对控件的修改操作需要在UI线程执行，此时需要用`ui.run`
+
+```js
+ui.run(function(){
+  w.text.setText("文本");
+});
+```
+
+  
 
 ## 六、高级功能
 
@@ -715,7 +804,7 @@ ui.ok.click(function(){
 
 用过 Nodejs 或者 python 的开发者都知道协程能提高单线程代码的执行效率，Autojs Pro 9 可使用Node作为脚本引擎，再配合 `async/await` 语法可降低协程开发难度。
 
-尽管 AutoX 提供了对 `Promise`的支持，但需要在 `project.json` 中添加配置，且每次都要将项目上传到手机，然后以项目的方式启动。经过本人测试，autoX 的协程实现多少有点bug，不推荐使用，用多线程就够了。
+最近几个版本 AutoX 更新了 `Promise` 特性的实现，比之前好用了些，如需使用 `async/await` 语法还是得用借助 webpack
 
 
 
@@ -782,6 +871,21 @@ while (true) {
 }
 ```
 
+### 3. 护眼模式
+
+```js
+var w = floaty.rawWindow(
+    <frame gravity="center" bg="#44ffcc00"/>
+);
+
+w.setSize(-1, -1); // 占满全屏
+w.setTouchable(false);
+
+setTimeout(()=>{
+    w.close();
+}, 4000);
+```
+
 
 
 
@@ -807,7 +911,7 @@ AutoX与此相关的API：
 
 - `app.autojs.versionCode`：获取当前的Auto.js版本号
 - `app.autojs.versionName`：获取当前的Auto.js版本
-- [requiresApi(api)](http://doc.autoxjs.com/#/globals?id=requiresapiapi)：表示此脚本需要Android API版本达到指定版本才能运行。详见：[链接](http://doc.autoxjs.com/#/globals?id=requiresapiapi)
+- [requiresApi(api)](http://doc.autoxjs.com/#/globals?id=requiresapiapi)：表示此脚本需要Android API版本达到指定版本才能运行。详见：[Build.VERSION_CODES  | Android Developers (google.cn)](https://developer.android.google.cn/reference/kotlin/android/os/Build.VERSION_CODES#m)
 - [requiresAutojsVersion(version)](http://doc.autoxjs.com/#/globals?id=requiresautojsversionversion): 表示此脚本需要Auto.js版本达到指定版本才能运行。
 - `device.sdkInt`：安卓系统API版本。例如安卓4.4的sdkInt为19。
 - `setScreenMetrics(width, height)`：设置脚本坐标点击所适合的屏幕宽高。
