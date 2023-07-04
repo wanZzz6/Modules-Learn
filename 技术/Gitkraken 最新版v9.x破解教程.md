@@ -93,7 +93,7 @@ hosts 文件路径：
 
 ### Windows卸载残留
 
-- `C:\Users\{用户名}\AppData\Roaming\\.gitkraken` （**注**：这里存放账号信息、打开过的项目、用户设置等，如果后续还要使用Gitkraken 可以不用删除）
+- `C:\Users\{用户名}\AppData\Roaming\\.gitkraken` （**注**：这里存放账号信息、打开过的项目、用户设置等，如果你只是升级版本，可以不用删除）
 - `C:\Users\{用户名}\AppData\Roaming\GitKraken` 
 - `C:\Users\{用户名}\AppData\Local\gitkraken` （**注**：这是默认安装位置，如果安装完成后桌面没有快捷方式，可从这里启动）
 
