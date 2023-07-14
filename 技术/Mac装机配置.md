@@ -99,6 +99,8 @@
 - [PDF Viewer](https://chrome.google.com/webstore/detail/pdf-viewer/oemmndcbldboiebfnladdacbdfmadadm?hl=zh-CN)
 - [Vue.js devtools](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
 - [SingleFile - 保存为离线网页](https://microsoftedge.microsoft.com/addons/detail/singlefile/efnbkdcfmcmnhlkaijjjmhjjgladedno?hl=zh-CN)
+- [Relingo 网页生词自动注释](https://microsoftedge.microsoft.com/addons/detail/relingo-master-words-fr/fhaefmiaghgdaciliiiflaoiknhibkmo?hl=zh-CN)
+- [AI沉浸翻译和YouTube/Netflix双字幕 - Trancy - Microsoft Edge Addons](https://microsoftedge.microsoft.com/addons/detail/ai沉浸翻译和youtubenetflix双字幕/aepdhbcjfkpncgbmlllcaloniioihlma)
 
 ## 五. IDLE插件
 
