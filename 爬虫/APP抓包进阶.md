@@ -183,11 +183,11 @@ drony会在你的手机上创建一个VPN，将手机上的所有流量都重定
 
 <img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/drony4.png" alt="image-20221031182518443" style="zoom: 67%;" />
 
-往下滑，代理类型默认**普通** http，也可以根据实际情况修改
+往下滑，代理类型默认**普通** http，也可以根据实际情况修改。（PS：如果你用Charles抓包，建议用Socks5类型)
 
 <img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/drony5.png" alt="image-20221031182718084" style="zoom:50%;" />
 
-往下滑，過濾默認值（默认代理规则）选择 **引導全部**（即：Direct all），如果不设置该值则所有的应用流量都走代理，我们用这个软件的意义就没有了。
+往下滑，過濾默認值（默认代理规则）选择 **引導全部**（即：Direct all）
 
 接着点击下方的 **編輯過濾規則**，为我们的抓包应用单独配置代理：
 
