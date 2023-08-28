@@ -8,57 +8,90 @@
 
 ## 二、软件安装
 
-此工具支持破解 Gitkraken V7.7.0 ~ V9.x(最新版)，直接从官网下载最新的安装包即可，如后续破解工具失效，可回退到旧版进行激活
+此工具支持破解 Gitkraken V8.2.0 ~ V9.x(最新版)，直接从官网下载最新的安装包即可，如后续破解工具失效，可回退到旧版进行激活
 
-(亲测9.6.0可用)
+(亲测9.7.1可用)
 
 官网下载地址：[Gitkraken](https://www.gitkraken.com/download)
 
-### MacOS用户
+### 2.1 MacOS用户
 
-1. 如果你之前安装过该软件，请先卸载，并清理用户缓存（`rm -r ~/.gitkraken`)
-
-2. 下载安装包
+1. 下载安装包，(解压)并安装
 
 ​	如果是从官网下载的最新安装包，后缀为 `.dmg`，下载完直接双击运行，会提示拖动到 **Applications** 中，然后就会在启动台（开始菜单）看到图标。
 
-​	如果你下载的稍旧点的版本（后缀为 `.zip`），在"**访达**"页面解压完后双击运行，如果是进入了软件主界面而不是（如下图）提示拖动到 **Applications** 中，那么你需要关闭软件，手动将安装包拖动到访达左侧的 **Applications**(应用程序)中
+​	如果你下载的稍旧点的版本（后缀为 `.zip`），在"**访达**"页面解压完后双击运行，如果是进入了软件主界面而**不是**（如下图）提示拖动到 **Applications** 中，那么你需要关闭软件，手动将安装包拖动到访达左侧的 **Applications**(应用程序)中。
 
 <img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-step1.jpg" alt="Snipaste_2023-07-14_09-32-17" style="zoom:67%;" />
 
 3. 安装完成后，在**启动台**（开始菜单）中找到Gitkraken图标，并点击运行。
 
-4. 进入引导页面
-
-   这里以9.6.0 版本为例，用户界面如下所示，点击绿色按钮开始使用，不用点击下方的登录。
-
-   <img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-step2.jpg" alt="Snipaste_2023-07-14_09-36-12" style="zoom: 67%;" />
-
-5. 输入你的用户名、邮箱后，点击绿色按钮
-
-   （注：这里的用户名、邮箱就是你以后git push后显示的个人信息）
-
-   <img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-step3.jpg" alt="Snipaste_2023-07-14_09-36-54" style="zoom:67%;" />
-
-6. 按提示打开一个git仓库，可以是本地的，或者clone远程的
-
-7. 关闭Gitkran，并确保在底部 Dock 栏也**完全退出**
-
 >MacOS上如果遇到软件**已损坏**的问题，请参考：[解决方法](https://zhuanlan.zhihu.com/p/114919138)
 
-### Windows 用户
+### 2.2 Windows 用户
 
-下载v9.x安装包，双击运行，会自动安装到C盘并进入主页面，操作步骤同前面Mac一样，按绿色按钮，输入用户名、邮箱后再点击绿色按钮，随便打开一个git仓库，然后关闭软件。
+下载安装包，双击运行，会自动安装到C盘并自动运行软件。
+
+回到桌面，检查是否创建了桌面快捷方式。如果没有创建快捷方式，可到 `C:\Users\{用户名}\AppData\Local\gitkraken` 目录，找到 gitkraken.exe 手动为其创建快捷方式.
+
+## 三、用户登录
+
+打开软件后，如果你是**初次使用**该软件，会进入用户引导页面，这里根据Gitkraken的版本分两种情况。
+
+### 3.1 情形一：新版本（v>=9.4.0)
+
+软件在v>=9.4.0以后不再强制要求登录账号。
+
+这里以9.6.0 版本为例，画面如下所示，直接点击绿色按钮开始使用，不用点击下方的登录。
+
+<img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-step2.jpg" alt="Snipaste_2023-07-14_09-36-12" style="zoom: 67%;" />
+
+输入你的用户名、邮箱后，点击绿色按钮
+
+**（注：这里的用户名、邮箱就是你git commit后显示的个人信息）**
+
+<img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-step3.jpg" alt="Snipaste_2023-07-14_09-36-54" style="zoom:67%;" />
+
+随便打开一个本地的git仓库体验一下。
+
+<img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-open2.png" alt="image-20230825231221156" style="zoom:50%;" />
 
 
 
-关闭Girkraken后若发现其未自动创建桌面快捷方式，可到 `C:\Users\{用户名}\AppData\Local\gitkraken` 目录，找到 gitkraken.exe 为其创建快捷方式.
+然后，关闭Gitkraken（Mac系统在底部 Dock 栏也**完全退出**），进入下一步破解步骤。
 
-## 三、破解步骤
+### 3.2 情形二：稍旧版本（v<=9.3.0)
+
+在之前的版本中，用户初次使用会强制你选择一种方式进行登录，如下图所示：
+
+你可以点击底部“Sign Up”注册一个Gitkraken的账号，然后点击邮箱登录；
+
+如果你的网络允许，我更推荐用Github、GitLab、Google等第三方账号的其中一种进行授权登录，简单快捷。点击后会跳转到浏览器进行授权，授权成功后浏览器会提示"**尝试打开Gitkraken**"，点击"**打开**"即可完成登录.
+
+<img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-signin1.png" alt="image-20230825102118222" style="zoom:67%;" />
+
+<img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-signin2.png.png" alt="image-20230825105614296" style="zoom: 67%;" />
+
+回到Gitkraken，输入你的用户名、邮箱后，点击绿色按钮。
+
+**（注：这里的用户名、邮箱就是你git commit后显示的个人信息）**
+
+<img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-signin3.png" alt="image-20230825110128194" style="zoom:50%;" />
+
+随便打开一个本地的git仓库体验一下。
+
+<img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-open1.png" alt="image-20230825111117529" style="zoom:50%;" />
+
+
+
+接着关闭Gitkraken（Mac系统在底部 Dock 栏也**完全退出**），进入下一步破解步骤。
+
+
+## <span id='pjbz'>四、破解步骤</span>
 
 此工具 `GNU/Linux` (without `snap`), `Windows`和`macOS` 全平台可用
 
-### 1. 下载破解工具
+### 4.1 下载破解工具
 
 下载链接: [百度网盘](https://pan.baidu.com/s/1dFEWCdzVg1bibn3GSYjuTw?pwd=6666)
 
@@ -66,88 +99,92 @@
 
 （原地址：https://github.com/PMExtra/GitCracken.git）
 
-### 2. 环境准备
+### 4.2 环境准备
 
-- 安装 Node.js >=12
+- 安装 [Node.js](https://nodejs.org/zh-cn) >=12
 - 安装yarn包管理工具
 
 	```sh
 	npm install --global yarn
 	```
 
-### 3. 开始破解
+### 4.3 开始破解
 
-**⚠️警告：破解之前先关闭 Gitkraken 软件**
+**⚠再次提醒：破解之前先关闭 Gitkraken 软件，Mac平台确保在底部Dock栏中也彻底关闭该软件**
 
 解压破解工具，进入 GitCracken 目录，然后在此目录打开命令行，依次执行以下3条命令：
 
 ```bash
 yarn install
 yarn build
-yarn gitcracken patcher     # Mac\Linux 用户可能需要root权限，需在前面加上 sudo
+yarn gitcracken patcher     # Mac/Linux 用户可能需要root权限，需在前面加上 sudo
 ```
 
 如图所示：
 
-![image-20230307235617800](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken9.png)
+<img src="https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken9.png" alt="image-20230307235617800" style="zoom:67%;" />
 
-如有遇到错误，可通过issue或者邮件，将错误信息、平台、软件版本等信息告知于我。  
+最后输出 “Patching done!” 代表破解成功。
 
-(issue回复不及时，可邮箱联系：1343837706@qq.com)
+最后一条命令在破解成功后不可重复执行，除非你更换了新版本。
 
-### 4. 验证是否成功
+如有遇到问题，可在 [Issues](https://github.com/wanZzz6/Modules-Learn/issues?q=is%3Aissue+is%3Aclosed) 中讨论。
 
-v9.x 版本：重新打开Gitkraken，破解成功会在右下角看到 Pro 标志，如果破解失败就依然是 Free 标志。
+### 4.4 验证是否成功
+
+重新打开Gitkraken，并打开一个git仓库，激活成功会在右下角看到 **Pro** 标志。
+
+![image-20230828175828578](C:\Users\wzz\AppData\Roaming\Typora\typora-user-images\image-20230828175828578.png)
 
 
 
-稍旧点的v7、v8版本：Gitkraken 初次使用会让你先登录账号，建议用 github 账号授权登录（记得用梯子）
+如果显示 **Free** 可尝试删除用户缓存目录
 
-- 若点击用 Github 授权登录没反应，检查 hosts 文件是不是把 gitkraken 网址屏蔽了
-- 若在浏览器中显示授权失败，xxx error之类的，多尝试登录几次即可
+- Windows
+  - `C:\Users\{用户名}\AppData\Roaming\\.gitkraken` 
+- Mac、Linux：
+  -  `~/.gitkraken` 
 
-登录账号后你会看到右下角显示 **Pro**，如果显示 free 可能是你之前的账号信息未清理干净，请尝试删除目录： `C:\Users\{用户名}\AppData\Roaming\\.gitkraken` （Windows用户）或  `~/.gitkraken` （Mac、Linux用户）
+然后重新打开软件并登录，如果依然显示Free，那就是破解工具失效了，只能切回旧版本了。
 
-![image-20230704223447045](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/202307042234098.png)
 
-### 5. 禁用更新（可选）
+## 五、屏蔽更新（可选）
 
-> 到目前最新版的 v9.x 都可破解使用，所以你 duck 不必禁用更新，继续白嫖最新功能😂。
+> 到目前最新版的v9版本都可破解使用，所以你 duck 不必禁用更新，继续白嫖最新功能😂。
 >
-> 如果自动更新了，再次运行破解命令就行，不用删除`.gitkraken` 文件夹，你也不想你的项目和账号信息都清空吧
+> 如果自动更新了，再次运行`yarn gitcracken patcher`命令就行。
+>
+> 需要注意的是，Windows平台自动更新后并不会自动卸载旧版软件，而且这些无用的文件会占用较大的磁盘空间（大概1~2G），最好手动删除，目录是`C:\Users\{用户名}\AppData\Local\gitkraken\app-xxx`
 
 
 
-Window 平台直接删除： `C:\Users\{用户名}\AppData\Local\gitkraken\Update.exe` 即可。
+**Window 平台**：直接删除安装路径下的Update.exe程序 `C:\Users\{用户名}\AppData\Local\gitkraken\Update.exe`，简单粗暴，但是以后想升级版本就只能去官网下载了。
 
-其他平台：
+**通用方案：**
 
-将以下内容添加到你的 `hosts` 文件中
+将以下内容追加到系统的 `hosts` 文件中：
 
 ```
 0.0.0.0 release.gitkraken.com
-0.0.0.0 api.gitkraken.com
-0.0.0.0 gloapi.gitkraken.com
 ```
 
-hosts 文件路径：
+原理是让自动更新程序无法下载最新的安装包，但不影响你从官网页面下载安装包，因为我通过抓包发现软件内部请求<u>release.gitkraken.com</u>时会重定向到<u>release.axocdn.com</u>，而官网下载链接直接用的后者😊。
 
-- C:\Windows\System32\drivers\etc
+> 注，hosts 文件路径：
+>
+> - Windows平台：`C:\Windows\System32\drivers\etc\hosts`
+>
+> - Mac/Linux平台：`/etc/hosts`
 
-或者 
-- /etc/hosts
+## 六、其他
 
-
-
-## 其他
-
-### Windows卸载残留
+### 6.1 Windows卸载残留
 
 - `C:\Users\{用户名}\AppData\Roaming\\.gitkraken` （**注**：这里存放账号信息、打开过的项目、用户设置等，如果你只是升级版本，可以不用删除）
 - `C:\Users\{用户名}\AppData\Roaming\GitKraken` 
 - `C:\Users\{用户名}\AppData\Local\gitkraken` （**注**：这是默认安装位置，如果安装完成后桌面没有快捷方式，可从这里启动）
 
-### Mac 卸载残留
+### 6.2 Mac 卸载残留
 
 ```sh
 rm -r ~/.gitkraken
@@ -155,7 +192,7 @@ rm -r ~/.gitkraken
 
 
 
-### 查询所有历史版本
+### 6.3 查询所有历史版本
 
 可能需要梯子
 
@@ -165,7 +202,7 @@ rm -r ~/.gitkraken
 
 [GitKraken Client v9.x 更新记录](https://help.gitkraken.com/gitkraken-client/current/)
 
-### 历史版本下载
+### 6.4 历史版本下载
 
 改改版本号就行
 
@@ -174,9 +211,9 @@ rm -r ~/.gitkraken
 - Linux-tar.gz : https://release.axocdn.com/linux/GitKraken-v7.7.0.tar.gz
 - Win64： https://release.axocdn.com/win64/GitKrakenSetup-7.7.0.exe
 - Mac (Intel) : https://release.axocdn.com/darwin/GitKraken-v7.7.0.zip
-- Mac (Apple Silicon) 从v9.0.0开始支持：(https://release.axocdn.com/darwin-arm64/GitKraken-v9.0.0.zip)
+- Mac (Apple Silicon) 从v9.0.0开始支持：https://release.axocdn.com/darwin-arm64/GitKraken-v9.0.0.zip
 
-### 百度云地址
+### 6.5 旧版7.5|6.0百度云下载地址
 
 - 7.5.1 版本
 链接: [https://pan.baidu.com/s/1MyN54U_r3lQ-PAIcmt9vcg](https://pan.baidu.com/s/1MyN54U_r3lQ-PAIcmt9vcg) 
@@ -186,7 +223,7 @@ rm -r ~/.gitkraken
 链接：[https://pan.baidu.com/s/1ysDsu41C5RggfllPPoVGPA](https://pan.baidu.com/s/1ysDsu41C5RggfllPPoVGPA)
 提取码：bjik
 
-- 6.0.0版本
+- 6.0.0 版本
 链接：[https://pan.baidu.com/s/1qZyxd9uceVoXDXag-FvdfA](https://pan.baidu.com/s/1qZyxd9uceVoXDXag-FvdfA)
 提取码：cnfn
 
@@ -194,7 +231,7 @@ rm -r ~/.gitkraken
 
 ---
 
-## 常见问题
+## 七、QA
 
 ### 1. 不开代理软件无法拉取代码
 
@@ -212,5 +249,15 @@ git config --global --unset http.proxy
 
 ### 2. Mac上加了sudo仍然提示权限不足
 
-当你使用第三方终端软件时（如iTerm、Warp等），系统为了保证用户数据安全，默认不允许这些软件用命令更新或者删除其他应用，可在设置->隐私与安全性中找到相关设置，当然最简单的解决方法是用系统默认的 Terminal 终端软件。
+当你使用第三方终端软件时（如iTerm、Warp等），系统为了保证用户数据安全，默认不允许这些软件用命令更新或者删除文件，可在 设置->隐私与安全性->App管理 中找到相关设置，当然最简单的解决方法是用系统自带的 Terminal 终端工具。
+
+### 3. 已在hosts文件中添加了屏蔽更新条目，但还是会自动更新
+
+首先确保按照上文第五部分内容修改了 hosts 文件，并保存成功；
+
+其次检查自己是否启用了代理软件，比如翻墙代理，在开启规则代理或者全局代理的时候可能将 `release.gitkraken.com` 域名给放行了，检查一下代理日志，如果有此域名的代理记录，请在代理软件的相关设置中将其过滤掉。
+
+
+
+遇到其他问题可在 [Issues](https://github.com/wanZzz6/Modules-Learn/issues?q=is%3Aissue+is%3Aclosed) 中讨论。
 
