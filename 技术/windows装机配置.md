@@ -21,8 +21,8 @@
 
 - [瓦特工具箱(Steam++官网) ](https://steampp.net/)
 - [Quicker软件 您的指尖工具箱](https://getquicker.net/)
+- [Uahh/ToastFish: 一个利用摸鱼时间背单词的软件](https://github.com/Uahh/ToastFish)
 
 ## 其他
 
 - [win11修改用户名](https://zhuanlan.zhihu.com/p/440768641)
-
