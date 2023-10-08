@@ -1,4 +1,4 @@
-# Gitkraken 最新版v9.x全平台破解教程
+# Gitkraken 最新版v9.x全平台Pro版激活
 
 ## 一、 免责声明
 
@@ -10,7 +10,7 @@
 
 此工具支持破解 Gitkraken V8.2.0 ~ V9.x(最新版)，直接从官网下载最新的安装包即可，如后续破解工具失效，可回退到旧版进行激活
 
-(亲测9.7.1可用)
+(亲测9.9.0可用)
 
 官网下载地址：[Gitkraken](https://www.gitkraken.com/download)
 
