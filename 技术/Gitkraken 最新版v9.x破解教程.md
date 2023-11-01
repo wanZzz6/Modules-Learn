@@ -1,4 +1,6 @@
-# Gitkraken 最新版v9.x全平台Pro版激活
+# Gitkraken 最新版v9.x全平台Pro版激活教程
+
+[toc]
 
 ## 一、 免责声明
 
@@ -10,7 +12,7 @@
 
 此工具支持破解 Gitkraken V8.2.0 ~ V9.x(最新版)，直接从官网下载最新的安装包即可，如后续破解工具失效，可回退到旧版进行激活
 
-(亲测9.9.1可用)
+(亲测9.9.2可用)
 
 官网下载地址：[Gitkraken](https://www.gitkraken.com/download)
 
@@ -213,7 +215,7 @@ rm -r ~/.gitkraken
 - Mac (Intel) : https://release.axocdn.com/darwin/GitKraken-v7.7.0.zip
 - Mac (Apple Silicon) 从v9.0.0开始支持：https://release.axocdn.com/darwin-arm64/GitKraken-v9.0.0.zip
 
-### 6.5 旧版7.5|6.0百度云下载地址
+### 6.5 旧版7.5|6.0百度云下载地址（备用）
 
 - 7.5.1 版本
 链接: [https://pan.baidu.com/s/1MyN54U_r3lQ-PAIcmt9vcg](https://pan.baidu.com/s/1MyN54U_r3lQ-PAIcmt9vcg) 
@@ -246,6 +248,8 @@ git config --global http.proxy
 ```sh
 git config --global --unset http.proxy
 ```
+
+PS，新版的Gitkraken 顶部中间菜单栏有个Terminal选项，可以打开命令行终端，在里面设置http代理和推拉代码也很方便。
 
 ### 2. Mac上加了sudo仍然提示权限不足
 

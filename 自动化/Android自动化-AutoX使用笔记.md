@@ -564,7 +564,7 @@ images模块提供了一些手机设备中常见的图片处理函数，包括�
 
 - 读取本地图片：`images.read(path)`
 - 加载网络图片：`images.load(url)`
-- 截屏：`requestScreenCapture([landscape])`、`captureScreen()`，如果需要临时缓存截图，需要调用 `images.copy(img)`，否则下次截图会自动回收上一次截图结果。
+- 截屏：`requestScreenCapture([landscape])`、`captureScreen()`。**如果需要临时缓存截图，需要调用 `images.copy(img)`**，否则下次截图会自动回收上一次截图结果。
 - 保存：`images.save(image, path)`，如果文件不存在会被创建；文件存在会被覆盖。
 
 ```js
@@ -606,7 +606,7 @@ app.viewFile("/sdcard/1.jpg");
 - 找色：`images.findColor(image, color, options)`、`images.findAllPointsForColor(img, color, options)`，可限制regon查找区域
 - 多点找色：`images.findAllPointsForColor(img, color, options)`
 - 取色并比较：`images.detectsColor(image, color, x, y)`，用于检测图片中某个位置是否是特定颜色。
-- 找图：`images.findImage(img, template)`、`images.matchTemplate(img, template)`，在大图片img中查找小图片template的位置（模块匹配）
+- 找图：`images.findImage(img, template, options)`、`images.matchTemplate(img, template, options)`，在大图片img中查找小图片template的位置（模块匹配）
 - 找圆：`images.findCircles(gray)`，需要提前转为灰度图
 
 >找图、多点找色操作时尽量限定 regon 查找范围参数，提高准确度和查找效率。
@@ -621,20 +621,61 @@ app.viewFile("/sdcard/1.jpg");
 >
 >```java
 >private static int selectPyramidLevel(Mat img, Mat template) {
->    int minDim = Nath.min(img.rows(), img.cols(), template.rows(), template.cols());
->    //这里选取16为图像缩小后的最小宽高，从而用log(2, minDim / 16)得到最多可以经过几次缩小。
->    int maxLevel = (int) (Math.log(minDim / 16) / Math.log(2));
->    if (maxLevel < 0) {
->        return 0;
->    }
->    //上限为6
->    return Math.min(6, maxLevel);
+>int minDim = Nath.min(img.rows(), img.cols(), template.rows(), template.cols());
+>//这里选取16为图像缩小后的最小宽高，从而用log(2, minDim / 16)得到最多可以经过几次缩小。
+>int maxLevel = (int) (Math.log(minDim / 16) / Math.log(2));
+>if (maxLevel < 0) {
+>return 0;
+>}
+>//上限为6
+>return Math.min(6, maxLevel);
 >}
 >```
 >
 >最高层为6，也就是图像尺寸非常大的时候。
 >
->该参数影响搜图的效率和准确度，如果不传level参数找图的结果像素点位置与预期相差较大，甚至有时根本找不到图，不妨将level设置为**0或者1**。
+>**level 参数存在的意义仅仅是提高搜索效率**，金字塔的每一层level中大图和小图同时进行等比例缩放，每提高一层，表示图像的矩阵数组就减小为原来的1/4，搜索效率大大提高。在高层level时图像细节较少，此时若能找到符合预期的匹配点，那么在图像细节更多的低level层就一定也会找到位置大致相当的点与之匹配。与level参数相关另一个参数weakThreshold（弱阈值，默认0.6）生效原理就在此，在金字塔高层都没有满足大于weakThreshold的匹配点，那么低层就更不可能有大于weakThreshold的匹配点，匹配过程会立即退出，不再向下层金字塔继续搜索。
+>
+>
+>
+>💡Tips：level 参数影响搜图的效率，如果不传level参数找图的结果像素点位置与预期相差较大，甚至有时根本找不到图，不妨将level设置为**0或者1**。若再找不到可尝试将weakThreshold参数调低，max参数调高，但此时找到的点置信度会非常低，需要自己进行额外的判断。
+>
+>
+>
+>**图像金字塔算法找图优缺点：**
+>
+>优点：如果模板图是从大图中1：1比例裁剪出来的，且设置参数level=0或1时，找图结果的相似度会非常高，即，找图结果可信度高，在大图和模板图尺寸都很大时，调高level可以提高找图效率。
+>
+>缺点：**不适用于多分辨率找图**。当模板图从大图中裁剪出后，大图比例发生变化（通常发生在开发机型上裁剪的模板，适配到其他分辨率机型中，或者游戏画面中可以双指缩放），实测在大图等比放大1.2倍后，无论如何调节参数都没有找到相似度大于0.6的点，且会搜索到多个不符合预期的点位，更不适用于matchTemplate找寻多个目标的场景中。
+>
+>在不对AutoX代码进行扩展的情况下，我用js代码实现了一版可调节大图缩放比的搜图代码。大致思路是，固定大图尺寸不变，设置一系列缩放因子，依次对小图模板进行尺寸变换（当然也可以固定小图，对大图进行变换，只不过大图变换的内存开销大，实测效率慢1倍多），每变换一次就进行一次搜图，可设置threshold阈值和region找图范围，返回符合条件的点位信息和对应的缩放比。另外支持灰度预处理，使算法专注于图像的纹理和亮度变化，比rgb找图效率快2~4倍。详见下文。
+
+
+
+
+
+
+
+**OpenCV API:**
+
+另外，如果你需要自己实现一些图像处理操作（开闭运算、轮廓检测等等），肯定要借助opencv API，可以参考官方文档：
+
+[OpenCV 4.8.0 Java documentation](https://docs.opencv.org/4.x/javadoc/index.html)
+
+
+
+opencv 里操作的主要对象是 `org.opencv.core.Mat`:
+
+- Image 转 Mat：`img.mat`
+
+- Mat 转 Image：`images.matToImage(mat)`
+
+- 复制Mat：`mat.clone()`
+
+- 释放空间：`mat.release()`
+- 色彩空间转换：`Imgproc.cvtColor(img.mat, mat, Imgproc.COLOR_BGR2GRAY)`
+
+
 
 ### 6. OCR 文字识别
 
@@ -918,7 +959,7 @@ AutoX当前版本定时任务功能还存在很多bug，建议用Macrodroid、Ta
 - [`runtime.loadJar(path)`](http://doc.autoxjs.com/#/globals?id=runtimeloadjarpath)
 - [Rhino 官方文档](https://p-bakker.github.io/rhino/tutorials/scripting_java/)
 
-## 七、示例
+## 七、常用代码
 
 ### 1. 终端模拟器
 
@@ -1087,241 +1128,6 @@ function restartApp(delay) {
 
 restartApp();
 ```
-
-
-### 6.（图片）懒加载+Storage
-
-**使用场景**：
-
-在编写游戏脚本时，都是通过基于坐标来进行自动化操作，比如当需要使用某个物品时，需要先确定其位置坐标，而在不同分辨率的机型上该物品的位置是不固定的，如果按照全部已知的机型分辨率罗列出来并写到配置文件中是个很费力的事情。
-
-通常我的做法是，通过**OCR或者找色**确定游戏中某个关键Icon的位置、宽高，再进行后续点击、滑动操作。如果该物品在该机型上的位置固定，但每次进行点击前都先检测其位置坐标，这会花费额外的时间和性能开销，为此，当在脚本中初次引用该物品的坐标数据时，可通过一个检测方法 `fetchXxx` 获取到其位置，并保存到本地缓存中，后续再使用时直接加载缓存即可。
-
-
-
-另一个使用场景是，你的脚本功能比较多，依赖的找图模板也很多，但每次只执行其中几个功能，用此方式按需加载所需的图片资源，可降低内存占用，最后在脚本退出前统一释放图片资源即可，详见下方示例代码。
-
-
-
-（代码后面有使用示例）
-
-```js
-const isFunction = (val) => typeof val === 'function';
-
-/**
- * 创建一个懒加载对象。动态获取到的属性值可保存在内存中，也可持久化到Storage中，下次运行时从Storage中直接加载
- * @param {object} obj
- * @param {string|null} saveKey 为空则只在内存中进行懒加载；如果不为空，表示此对象以saveKey为键存储到Storage。
- * @returns
- */
-function createLazyObject(obj, saveKey) {
-  let lazyObject = {};
-  let cacheData = saveKey ? getCache(saveKey, {}) : {};
-
-  for (let key in obj) {
-    if (!obj.hasOwnProperty(key)) {
-      continue;
-    }
-
-    // 静态值不做处理
-    if (!isFunction(obj[key])) {
-      lazyObject[key] = obj[key];
-      continue;
-    }
-    // 动态加载方法，且有缓存值
-    if (cacheData[key] !== undefined) {
-      lazyObject[key] = cacheData[key];
-      continue;
-    }
-    // 是动态加载方法，但没有缓存值
-    let tempKey = key; // Getter属性值
-    let memoryKey = '_' + key; // 内存中实际存储属性
-    let fetchMethod = obj[key];
-
-    Object.defineProperty(lazyObject, tempKey, {
-      get: function () {
-        if (!this.hasOwnProperty(memoryKey)) {
-          let value = fetchMethod();
-          Object.defineProperty(this, memoryKey, {
-            value: value,
-            writable: true,
-            configurable: true,
-            enumerable: false
-          });
-          // 保存到Storage
-          if (saveKey) {
-            cacheData[tempKey] = value;
-            updateCache(saveKey, cacheData);
-          }
-        }
-        return this[memoryKey];
-      },
-      set: function (value) {
-        if (value === undefined) {
-          delete this[memoryKey];
-        } else {
-          this[memoryKey] = value;
-        }
-        if (saveKey) {
-          cacheData[tempKey] = value;
-          // 更新缓存，值为undefined的属性会被略过，有清除部分缓存的功能
-          updateCache(saveKey, cacheData);
-        }
-      },
-      enumerable: true,
-      configurable: false
-    });
-  }
-
-  return lazyObject;
-}
-
-const _myStorage = storages.create('xxx脚本缓存');
-/**
- * 缓存数据
- * @param {string} key
- * @param {any} value
- * @param {number} expire 过期时间戳，ms
- */
-function updateCache(key, value, expire) {
-  if (!key) {
-    throw new Error('缓存key不能为空');
-  }
-  if (expire) {
-    value.__expire = expire;
-  }
-  _myStorage.put(key, value);
-  delete value.__expire;
-}
-
-/**
- * 读取缓存数据，数据不存在或者过期会返回默认值或null
- * @param {string} key key
- * @param {any} defaultValue 数据不存在时返回的默认值
- * @returns 没有缓存会返回null
- */
-function getCache(key, defaultValue) {
-  if (!key) {
-    return defaultValue;
-  }
-  const value = _myStorage.get(key);
-
-  if (value === undefined || (value.__expire && value.__expire < Date.now())) {
-    return defaultValue || null;
-  }
-
-  delete value.__expire;
-  return value;
-}
-
-/**
- * 清理缓存，key为空时清理当前Storage全部缓存
- * @param {string|undefined} key
- */
-function clearCache(key) {
-  if (key) {
-    _myStorage.remove(key);
-  } else {
-    console.info('清除当前脚本所有缓存\n');
-    _myStorage.clear();
-  }
-}
-// =======================================================
-function fetchName() {
-  console.log('触发name动态方法');
-  return 'John Doe'; // 假设获取到的名称是 'John Doe'
-}
-
-function fetchAge() {
-  console.log('触发age动态方法');
-  return 30; // 假设获取到的年龄是 30
-}
-// 清理缓存
-clearCache(identifier);
-let identifier = 'foo';
-
-// 定义一个懒加载对象
-let lazyObject = createLazyObject(
-  {
-    name: fetchName,
-    age: fetchAge,
-    sex: 'male'
-  },
-  identifier //保存到Storage
-);
-
-console.log(getCache(identifier));
-console.log(lazyObject);
-
-console.log('================测试获取===================');
-console.log(lazyObject.name); // 懒加载
-console.log(lazyObject.name); // 已获取到
-console.log(lazyObject.age); // 懒加载
-console.log(getCache(identifier));
-console.log(lazyObject);
-
-console.log('================测试修改===================');
-lazyObject.age = 20; // 懒加载属性被重新赋值，触发Setter方法；保存到Storage
-lazyObject.sex = 'female'; // 静态属性被重新赋值，不触发Setter方法；不保存到Storage
-console.log(lazyObject.age);
-console.log(getCache(identifier));
-console.log(lazyObject);
-
-console.log('================测试清除缓存===================');
-lazyObject.age = undefined;
-console.log(lazyObject.age); // 重新触发懒加载
-console.log(getCache(identifier));
-console.log(lazyObject);
-
-console.log('================测试图像懒加载===================');
-let _imageCache = {};
-events.on('exit', function () {
-  console.log('释放图片资源', Object.values(_imageCache).length);
-  Object.values(_imageCache).forEach((img) => {
-    img.recycle();
-  });
-});
-
-// 通过闭包保存图片路径参数
-function _loadImage(path) {
-  return function () {
-    console.log('加载图片：' + path);
-    let img = images.read(path);
-    if (img == null) {
-      throw new Error('图片资源不存在：' + path);
-    }
-    _imageCache[path] = img;
-    return img;
-  };
-}
-
-function createImageLazyObject(imagePathMap) {
-  let lazyObject = {};
-  for (let key in imagePathMap) {
-    if (Object.hasOwnProperty.call(imagePathMap, key)) {
-      lazyObject[key] = _loadImage(imagePathMap[key]);
-    }
-  }
-
-  return createLazyObject(
-    lazyObject,
-    undefined // 图片对象不建议保存到Storage，如果需要得先转为base64
-  );
-}
-
-// 定义一个图像懒加载对象
-const imgResource = createImageLazyObject({
-  home: '/sdcard/Download/home.jpg',
-  shop: '/sdcard/Download/shop.jpg',
-});
-console.log(imgResource);
-console.log(imgResource.icon);
-console.log(imgResource.icon.getWidth());
-console.log(imgResource.icon2);
-console.log(imgResource.icon2.getWidth());
-```
-
-
 
 
 ## 五、发布&打包

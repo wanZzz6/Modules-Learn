@@ -29,7 +29,7 @@
   - [软件卸载清理残留 - Cleaner One Pro](https://www.zhihu.com/question/19551885/answer/426908198)
   - [Mac性能优化工具，Sensei](https://vip.jokerps.com/4377.html)
 - [生产力工具集 - uTools](https://u.tools/index.html)
-- [PicGO 图床](https://molunerfinn.com/PicGo/) 和 [Typora](https://www.typora.io/)
+- [PicGO 图床](https://molunerfinn.com/PicGo/) - [插件](https://picgo.github.io/PicGo-Core-Doc/zh/dev-guide/deploy.html#gui插件)和 [Typora](https://www.typora.io/)
 - [OBS 直播推流](https://obsproject.com/) - [soundflower](https://hub.fastgit.org/mattingalls/Soundflower/releases)
 - [爱思助手](https://lemon.qq.com/lab/app/aisizhushou.html)
 - [幕布](https://lemon.qq.com/lab/app/mubu.html)
@@ -44,6 +44,7 @@
   - [PDF Expert](https://vip.jokerps.com/6132.html)
 - [Mark-text](https://github.com/marktext/marktext)
 - [瓦特工具箱(Steam++官网) ](https://steampp.net/)
+- [RustDesk – 开源远程桌面访问软件](https://rustdesk.com/zh/)
 
 ## 三. 开发工具
 
@@ -81,7 +82,7 @@
 - [PDF Viewer](https://chrome.google.com/webstore/detail/pdf-viewer/oemmndcbldboiebfnladdacbdfmadadm)
 - [哔哩哔哩助手](https://microsoftedge.microsoft.com/addons/detail/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E5%8A%A9%E6%89%8B%EF%BC%9Abilibilicom-%E7%BB%BC%E5%90%88%E8%BE%85%E5%8A%A9%E6%89%A9/fcfebhekhbkhjjimonjmbgmkbclheaoh)
 - [阅读列表（可多端同步）](https://chrome.google.com/webstore/detail/reading-list/lloccabjgblebdmncjndmiibianflabo)
-- [OneTab Plus:标签效率管理扩展](https://chrome.google.com/webstore/detail/onetab-plustab-manage-pro/lepdjbhbkpfenckechpdfohdmkhogojf) 或者 [Keptab](https://microsoftedge.microsoft.com/addons/detail/keptab/jhajaihldpgefhccepbjdpiimikplhng)
+- [Tab Session Manager 标签效率管理扩展](https://microsoftedge.microsoft.com/addons/detail/tab-session-manager/jkjjclfiflhpjangefhgfjhgfbhajadk)
 - [Extension Manager扩展管理](https://microsoftedge.microsoft.com/addons/detail/%E6%89%A9%E5%B1%95%E7%AE%A1%E7%90%86%E5%99%A8%EF%BC%88extension-manager%EF%BC%89/bhahgfgngfghgjhnpplmemebhenieijb)
 - [Notion Web Clipper](https://chrome.google.com/webstore/detail/notion-web-clipper/knheggckgoiihginacbkhaalnibhilkk/related?hl=zh-CN)
 - [Web Clipper - screen Capter 网页截图](https://chrome.google.com/webstore/detail/web-clipper-nimbus/kiokdhlcmjagacmcgoikapbjmmhfchbi)

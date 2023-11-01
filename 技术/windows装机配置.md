@@ -8,6 +8,7 @@
 - 包管理工具 - [winget-cli](https://github.com/microsoft/winget-cli)
 - ssh 终端 - [Tabby](https://tabby.sh/)
 -  [Typora](https://typoraio.cn/) + [PicGo](https://picgo.github.io/PicGo-Doc/zh/guide/#下载安装) + [主题](https://theme.typoraio.cn/theme/Drake/)
+-  [RustDesk – 开源远程桌面访问软件](https://rustdesk.com/zh/)
 
 ## 环境搭建
 

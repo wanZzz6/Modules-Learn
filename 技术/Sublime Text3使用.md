@@ -1,79 +1,46 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.13.8
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
-<!-- #region -->
-<!-- # Sublime Text3 配置 -->
-
 Sublime 相对其他编辑器轻便、可扩展性强，你可以用来写任何语言的程序。我使用它的主要原因是内存占用少，相当的少，秒启动，面板布局配上丰富的主题不输任一款编辑器，真可谓居家旅行必备良品。
 
 ## 一、安装
 
-1. Sublime Texe3 下载地址：http://www.sublimetext.com/3
+官网下载地址：[Download - Sublime Text](https://www.sublimetext.com/download)
 
-2. 使用文档
-   - [官方文档](http://www.sublimetext.com/docs/3/)
-   - [非官方文档](https://sublime-text-unofficial-documentation.readthedocs.io/en/latest/)
+
 
 ## 激活步骤
 
-**修改host文件**
+打开[hexed.it](https://hexed.it/)
 
-- windows系统：C:\Windows\System32\drivers\etc\hosts
-- linux/Mac系统：/etc/hosts
+按下Ctrl+O找到sublime text的安装路径，打开**sublime_text.exe**
 
-**添加以下内容**
-```
-# 屏蔽联网验证
-127.0.0.1    www.sublimetext.com
-127.0.0.1    sublimetext.com
-127.0.0.1    sublimehq.com
-0.0.0.0     license.sublimehq.com
+破解：按Ctrl+F搜索 `4157415656575553B828210000`，在找到的第一处结果的起始位置，会看到光标在数字 "41" 上闪烁，然后复制：`33C0FEC0C3575553B828210000` ，按下Ctrl+V粘贴进去，选择"从当前光标处插入数据"和"作为十六进制数值"，如下图：
+
+![image-20231018224543368](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/image-20231018224543368.png)
+
+再按同样的操作将 `6C6963656E73652E7375626C696D6568712E636F6D` 替换为 `7375626C696D6568712E6C6F63616C686F73740000`
+
+操作完成后，按下Ctrl+S，将原文件备份后（例如改名为sublime_text.exe.bak），保存
+
+
+
+运行Sublime Text，菜单Help->Enter License->输入下面的激活码->Use License->确定，软件就激活了
+
+```text
+—– BEGIN LICENSE —–
+Zer0Daylab
+Unlimited User License
+EA7E-81044230
+0C0CD4A8 CAA317D9 CCABD1AC 434C984C
+7E4A0B13 77893C3E DD0A5BA1 B2EB721C
+4BAAB4C4 9B96437D 14EB743E 7DB55D9C
+7CA26EE2 67C3B4EC 29B2C65A 88D90C59
+CB6CCBA5 7DE6177B C02C2826 8C9A21B0
+6AB1A5B6 20B09EA2 01C979BD 29670B19
+92DC6D90 6E365849 4AB84739 5B4C3EA1
+048CC1D0 9748ED54 CAC9D585 90CAD815
+—— END LICENSE ——
 ```
 
-**填写注册码**：
-```
-ZYNGA INC.
-50 User License
-EA7E-811825
-927BA117 84C9300F 4A0CCBC4 34A56B44
-985E4562 59F2B63B CCCFF92F 0E646B83
-0FD6487D 1507AE29 9CC4F9F5 0A6F32E3
-0343D868 C18E2CD5 27641A71 25475648
-309705B3 E468DDC4 1B766A18 7952D28C
-E627DDBA 960A2153 69A2D98A C87C0607
-45DC6049 8C04EC29 D18DFA40 442C680B
-1342224D 44D90641 33A3B9F2 46AADB8F
-```
-
-或者
-
-```sh
------ BEGIN LICENSE -----
-Member J2TeaM
-Single User License
-EA7E-1011316
-D7DA350E 1B8B0760 972F8B60 F3E64036
-B9B4E234 F356F38F 0AD1E3B7 0E9C5FAD
-FA0A2ABE 25F65BD8 D51458E5 3923CE80
-87428428 79079A01 AA69F319 A1AF29A4
-A684C2DC 0B1583D4 19CBD290 217618CD
-5653E0A0 BACE3948 BB2EE45E 422D2C87
-DD9AF44B 99C49590 D2DBDEE1 75860FD2
-8C8BB2AD B2ECE5A4 EFC08AF2 25A9B864
------- END LICENSE ------
-```
-<!-- #endregion -->
+相关讨论见：[github](https://gist.github.com/skoqaq/3f3e8f28e23c881143cef9cf49d821ff?permalink_comment_id=4366207)
 
 ## 二、安装 packageControl
 
@@ -188,7 +155,7 @@ SideBarEnhancements 是一款很实用的右键菜单增强插件，有以 diff 
 - `OmniMarkupPreviewer`:  
   使用说明：用来在浏览器中预览 markdown 编辑的效果 快捷键：ctrl+alt+o
 - `Alignment`:  
-Alignment 是一个代码格式化插件，它可以使多行代码中的等号对齐，也可以调整多行代码为一个缩进级别。
+  Alignment 是一个代码格式化插件，它可以使多行代码中的等号对齐，也可以调整多行代码为一个缩进级别。
   快捷键：ctrl+shift+alt+a
 - `Gitmoji`:  
 选择git提交信息图标
@@ -215,11 +182,11 @@ Alignment 是一个代码格式化插件，它可以使多行代码中的等号�
   ctrl+alt+p 新建 php 模板文件
   ctrl+alt+r 新建 ruby 模板文件
   ctrl+alt+shift+p 新建 python 模板文件
-（**注**：插件的配置及快捷键使用请在插件市场里搜索查看）
+  （**注**：插件的配置及快捷键使用请在插件市场里搜索查看）
 - `Terminal`:
   调用命令行工具，这里我设置的是 git bash,可在该插件的 setting-user
 - `Codelf`:  
-下载地址：[Codelf for Sublime Text](https://github.com/unbug/codelf)  
+  下载地址：[Codelf for Sublime Text](https://github.com/unbug/codelf)  
   使用说明：变量命名神器 Codelf 通过搜索在线开源平台的项目源码帮开发者给变量命名 ，有了它再也不用为了命名而绞尽脑汁了
   快捷键：鼠标右键，选择 Codelf
 - `SublimeCodeInte`:  
@@ -227,7 +194,7 @@ Alignment 是一个代码格式化插件，它可以使多行代码中的等号�
 
 
 ### Package Control超时解决方法：
- 
+
 Preferences > Package Settings > Package Control > Settings - User
 添加
 
@@ -308,11 +275,11 @@ Preferences > Package Settings > Package Control > Settings - User
 ### 插件
 
 - `Emmet`: Tab 补全html神器
-Emmet绝对的节省时间。您可以轻松快速地编写HTML。但是要注意console里的安装日志检查 pyv8环境是否安装成功，Mac系统需要手动安装PyV8:
+  Emmet绝对的节省时间。您可以轻松快速地编写HTML。但是要注意console里的安装日志检查 pyv8环境是否安装成功，Mac系统需要手动安装PyV8:
     - PyV8安装：[下载PyV8相关文件](https://github.com/emmetio/pyv8-binaries)，查找对应的版本下载，下载好的pyv8后，在st安装所在目录下的installed packages文件夹中新建一个文件名为PyV8的文件夹，把解压的文件放到该文件夹当中。如图：
-    ![](../assets/mac_pyv8_1.png)
-    ![](../assets/mac_pyv8_2.png)
-    创建一个html文件，输入html:5 按下`Tab`试试
+      ![](../assets/mac_pyv8_1.png)
+      ![](../assets/mac_pyv8_2.png)
+      创建一个html文件，输入html:5 按下`Tab`试试
     - [Emmet使用指南](https://scotch.io/tutorials/write-html-crazy-fast-with-emmet-an-interactive-guide)
     - [Emmet 插件使用方法总结](http://www.cnblogs.com/jesse131/p/4978966.html)
 - `Goto-CSS-Declaration`：即时追踪CSS样式
@@ -338,7 +305,7 @@ Emmet绝对的节省时间。您可以轻松快速地编写HTML。但是要注�
 - `View In Browser`:
   使用说明：sublime 以本地服务器方式打开网页 为了使用插件，你需要建立一个 sublime-project 文件，点击 Project->Edit Project 粘贴以下代码(这是我的相关配置),并保存到 user 目录下
   ```json
-{
+  {
     "folders":
     [
         {
@@ -353,7 +320,7 @@ Emmet绝对的节省时间。您可以轻松快速地编写HTML。但是要注�
             "basePath": "D:\\wamp\\www",   //本地虚拟主机根目录
         }
     }
-}
+  }
 ```
 - `SublimeLinter`:  
   使用说明：它可以帮你找出错误或编写不规范的代码 需要安装 nodejs,jshint,csslint
