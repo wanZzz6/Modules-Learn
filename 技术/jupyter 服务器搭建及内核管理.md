@@ -1,14 +1,18 @@
-# 远程访问服务搭建
+# jupyter远程访问服务搭建
 
-## 环境准备
+> [awesome Jupyter Notebook](https://github.com/ml-tooling/best-of-jupyter)
+
+## 一、环境准备
+
+### 安装python3和jupyter
+
 ```bash
 sudo apt-get install update
 sudo apt-get install python3 python-pip
 sudo pip3 install jupyter
 ```
 
-
-## 修改pip源
+### 修改pip源
 
 Linux编辑 ~/.pip/pip.conf ，在最上方加入如下内容：
 ```ini
@@ -18,7 +22,7 @@ index-url = https://pypi.tuna.tsinghua.edu.cn/simple
 trusted-host = https://pypi.tuna.tsinghua.edu.cn
 ```
 
-## 虚拟环境（可选）
+### 虚拟环境（可选）
 
 ```bash
 sudo pip install -U virtualenv
@@ -26,27 +30,30 @@ virtualenv venv -p python3
 source venv/bin/activate
 ```
 
-## 创建登陆密码
+## 二、配置Jupyter
+
+### 创建登陆密码
 
 ```python
 from notebook.auth import passwd
-print(passwd("jupyter"))
+print(passwd("jupyter"))  # 密码自行修改
 ```
 Out[2]: 'sha1:*******************'
 
 
-## 创建ssl证书（https连接需要，http可跳过）
+### 创建ssl证书（远程https连接需要，仅本地http访问可跳过）
 
 >openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mycert.pem -out mycert.pem
 
-## 编辑配置文件
+### 编辑配置文件
 
-**jupyter notebook --generate-config**
+```sh
+jupyter notebook --generate-config   # root用户加上参数 --allow-root
+```
 
-root用户加上--allow-root
-
-在当前用户根目录下生成.**.jupyter/jupyter_notebook_config.py**文件
+执行完后，会在当前**用户根目录**下生成`~/.jupyter/jupyter_notebook_config.py`文件
 修改以下内容：
+
 ```python
 c.NotebookApp.notebook_dir = '/home/demo'  # 默认启动目录
 c.NotebookApp.allow_remote_access = True  # jupyter 4.5版本以上需要配
@@ -55,50 +62,53 @@ c.NotebookApp.ip = '*'   # 允许远程访问（备用参数0.0.0.0）
 c.NotebookApp.notebook_dir = r'/root/jupyter'  # 启动目录
 c.NotebookApp.open_browser = False    # 默认不启动浏览器
 c.NotebookApp.password = 'sha1:xxxxxxxxxx' # 上面生成的密钥
-c.NotebookApp.certfile = u'c:/jpyb/mycert.pem'  # 指定文件路径
-c.NotebookApp.keyfile = u'c:/jpyb/mykey.key'  # 指定文件路径
+c.NotebookApp.certfile = u'c:/jpyb/mycert.pem'  # 指定证书文件路径
+c.NotebookApp.keyfile = u'c:/jpyb/mykey.key'
 c.IPKernelApp.pylab = 'inline'    # 所有matplotlib的图像都通过iline的方式显示
 c.NotebookApp.port = 8888     # 运行的端口
-
 ```
 
- - 查看端口是否占用脚本
->netstat -anp|grep 8888
+### ✨更换Logo
 
-## 启动jupyter
+图片地址：
+
+>/usr/local/lib/python3.5/dist-packages/notebook/static/base/images/logo.png
+
+## 三、启动jupyter
 
 ```bash
 nohup jupyter notebook &
 ```
 注：可以写入 sh 脚本，然后设置开机自启
 
-## 设置阿里云安全组（非阿里云用户无需这一步）
+ - 查看端口是否占用脚本
+>netstat -anp|grep 8888
+
+### 阿里云服务器设置安全组
+
 在`控制台`-`云服务器ESC`-`实例` 选择自己的主机点击`本实例安全组`-`安全组列表`-`配置规则`-`入方向`-`手动添加`添加如下图所示配置
 注：其中端口号填写自己设置的端口
 ![](https://img-blog.csdnimg.cn/2020073110064542.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dhbnpoZW5nXzk2,size_16,color_FFFFFF,t_70#pic_center)
 
+### 腾讯云服务器设置防火墙规则
 
-## ✨更换Logo
+略
 
-图片地址：
-
->/usr/local/lib/python3.5/dist-packages/notebook/static/base/images/logo.png
-
-## 👍安装扩展插件
+## 四、👍安装扩展插件
 
 [github地址](https://github.com/ipython-contrib/jupyter_contrib_nbextensions)
 
->pip3 install jupyter_contrib_nbextensions
+```sh
+pip3 install jupyter_contrib_nbextensions
+pip3 install -U six
+jupyter contrib nbextension install --user
+```
 
->pip3 install -U six
+## 五、与Markdown文件互通
 
->jupyter contrib nbextension install --user
+### jupytext
 
-# 打开Markdown为ipynb
-
-## 安装
-
-直接安装jupytext即可
+安装jupytext，重启 jupyter 即可使用
 
 ```sh
 pip install jupytext
@@ -107,11 +117,11 @@ pip install jupytext
 jupytext --to markdown *.ipynb
 ```
 
-## 其他方案
+### 其他方案
 
 插件主页：https://github.com/aaren/notedown
 
-`notedown` 插件可以使 ipynb 和 .md  文件进行互相转换，还可以配置在浏览器界面直接编辑和预览 markdown文件，还能将 md文件中的python代码块渲染成ipynb中可编辑可执行的 cell单元，总之很强大。
+`notedown` 插件可以使 .ipynb 和 .md 文件进行互相转换，还可以配置在浏览器界面直接编辑和预览 markdown 文件，还能将 md 文件中的 python 代码块渲染成 ipynb 中可编辑可执行的 cell 单元，总之很强大。
 
 ```
 pip install notedown
@@ -157,17 +167,17 @@ notedown input.ipynb --to markdown > output_with_outputs.md
 notedown input.ipynb --to markdown  --render > output_with_outputs.md 
 ```
 
-# 📢内核管理
+## 六、📢内核管理
 
-## 常用操作
+### 1. 常用操作
 
-### 查看已安装内核的信息
+#### 查看已安装内核的信息
 
 ```sh
 jupyter kernelspec list
 ```
 
-### 卸载
+#### 卸载
 
 卸载指定名称的内核，比如： java
 
@@ -175,45 +185,48 @@ jupyter kernelspec list
 jupyter kernelspec remove java
 ```
 
-### 删除
+#### 删除
 
 ```sh
 jupyter kernelspec uninstall java   #java  
 ```
 
-## 安装多版本python内核
+### 2.安装多版本python内核
 
 安装多个py内核后就能像虚拟环境一样运行不同版本的代码了，在jupyter 新建文件时可以选择不同的内核版本，也可以在上方菜单栏点击<kbd>Kernel</kbd> - > <kbd>Change kernel</kbd> 切换当前内核。
 
 当前场景：以在python3 中安装了jupyter，需要安装 python2 的内核
 
-1. 在python2（虚拟环境也可）下安装 ipykernel 
+- 在python2（虚拟环境也可）下安装 ipykernel 
+
 ```sh
 python2 -m pip install ipykernel
 ```
 
-2. 安装内核到jupyter 中
+- 安装内核到jupyter 中
+
 ```sh
 python2 -m ipykernel install --user --name py2 
 # --user安装到当前用户，可查看帮助选择不同安装位置，也可不加该参数，安装到默认位置。--name为内核命名为py2
 ```
-3. 查看
+- 查看
+
 ```sh
 jupyter kernelspec list
 ```
 
-4. 重启jupyter
+- 重启jupyter
 
-## 🚀支持C++内核( 需要minicanda或者新建虚拟环境）
+### 3. 🚀支持C++内核( 需要minicanda或者新建虚拟环境）
 
 
-### 利用windows子系统（WSL）或者Linux中
+#### 利用windows子系统（WSL）或者Linux中
 
-（利用Win10子系统可视化开发环境搭建可参考鄙人文章）
+（利用Win10子系统可视化开发环境搭建可参考我的其他文章）
 
-1. 从windows应用商店里安装Ubuntu子系统
+1. 从windows应用商店里安装 **Ubuntu** 子系统
 
-2. 安装 Miniconda
+2. 安装 **Miniconda**
 
 这里使用 xeus-cling，安装说明指出需要 Miniconda，因为 Anaconda 会有冲突，因此我使用 Miniconda，已经装过 Anaconda 的可以尝试一下用 Anaconda 安装。
 
@@ -237,15 +250,14 @@ bash Miniconda3-latest-Linux-x86_64.sh
 
 安装完之后再次打开 Jupyter notebook，可以在 New 按钮下看到多了 C++11，C++14 和 C++17，新建一个 C++14 notebook，输入一些 C++ 代码，Shift + Enter 可以得到运行结果，没有报错就大功告成了！
 
-## ☕支持Java
+### 4. ☕支持Java
 
-![](assets/display-img.png)
+![](../assets/display-img.png)
 
-### 环境准备：
+#### 环境准备：
 
 1. Java JDK >= 9，注意不是jre
 
- i. 检查java环境
 ```
 > java -version
 java version "9"
@@ -253,22 +265,17 @@ Java(TM) SE Runtime Environment (build 9+181)
 Java HotSpot(TM) 64-Bit Server VM (build 9+181, mixed mode)
 ```
 
-ii. 接下来，确保Java位于jdk的安装位置，而不仅仅是jre, 使用`java --list-modules` .输出列表应当包含`jdk.jshell`.
+接下来，检查是否存在 jshell 工具包
 
-  - On *nix `java --list-modules | grep "jdk.jshell"`
+  - linux: `java --list-modules | grep "jdk.jshell"`
   
   - 在 windows上: `java --list-modules | findstr "jdk.jshell"`
 
-应当输出`jdk.jshell@`
+应当输出： `jdk.jshell@版本号`
 
 如果没有，请输入`java -verbose`检查第一行或者最后一行的java路径信息，确认java在JDK路径下，而不是JRE中。
 
-2. 不限类似jupyter的环境
-  - Jupyter
-  - JupyterLab
-  - nteract
-
-### 安装
+#### 安装
 
 1. 下载地址：<https://github.com/SpencerPark/IJava/releases>
 
@@ -296,9 +303,9 @@ python3 install.py --sys-prefix
 jupyter kernelspec list
 ```
 
-![untitled.png](assets/untitled.png)
+![untitled.png](../assets/untitled.png)
 
-### 使用
+#### 使用
 
 导包：
 直接导入
@@ -323,7 +330,7 @@ maven 导入
 
 import org.slf4j.logger;
 ```
-## 支持javascript
+### 5. 支持javascript
 
 项目地址： https://github.com/n-riesco/ijavascript
 
@@ -331,19 +338,20 @@ import org.slf4j.logger;
   
     > sudo apt-get install nodejs npm
 
-### 安装
+#### 安装
 
 ```sh
 npm install -g ijavascript
 ijsinstall
 ```
-## 支持Node JS - jupyter-nodejs
+
+### 6. 支持Node JS - jupyter-nodejs
 
 项目地址：https://github.com/notablemind/jupyter-nodejs
 
 使用效果：[Example](http://nbviewer.jupyter.org/gist/jaredly/404a36306fdee6a1737a)
 
-### 安装依赖
+#### 安装依赖
 
 - IPython 3.x
 - pkg-config
@@ -351,7 +359,7 @@ ijsinstall
     >sudo apt install pkg-config
     
 - 安装Node
-    >sudo apt-get install nodejs  
+    >sudo apt-get install nodejs
     >sudo apt-get install npm
     
 - 检查node-gyp 是否安装
@@ -366,7 +374,7 @@ ijsinstall
     
     其他系统安装方式： https://zeromq.org/download/
 
-### 安装
+#### 安装
 
 ```sh
 git clone https://github.com/notablemind/jupyter-nodejs.git --depth=1
@@ -377,11 +385,44 @@ npm run build
 npm run build-ext
 ```
 
-### 尝试
+#### 尝试
 
 ```sh
 jupyter console --kernel nodejs
 ```
+
+### 7. 支持 GO
+
+项目地址：[gophernotes](https://github.com/gopherdata/gophernotes)
+
+使用效果：[Examples](https://github.com/gopherdata/gophernotes#examples)
+
+#### 环境依赖
+
+- [Go 1.13+](https://golang.org/doc/install) 
+- git
+- github 访问代理
+
+#### Linux 快速安装
+
+```sh
+go install github.com/gopherdata/gophernotes@v0.7.5
+mkdir -p ~/.local/share/jupyter/kernels/gophernotes
+cd ~/.local/share/jupyter/kernels/gophernotes
+cp "$(go env GOPATH)"/pkg/mod/github.com/gopherdata/gophernotes@v0.7.5/kernel/*  "."
+chmod +w ./kernel.json # in case copied kernel.json has no write permission
+sed "s|gophernotes|$(go env GOPATH)/bin/gophernotes|" < kernel.json.in > kernel.json
+```
+
+#### [Mac安装步骤](https://github.com/gopherdata/gophernotes#mac)
+
+#### [Windows 安装步骤](https://github.com/gopherdata/gophernotes#windows)
+
+
+
 ## 👍其他内核支持
 
 <https://github.com/jupyter/jupyter/wiki/Jupyter-kernels>
+
+同一语言有多种内核实现，尽量选择star数量多且近期维护过的开源项目，另外需要注意是否支持全平台安装。
+

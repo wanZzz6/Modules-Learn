@@ -1,4 +1,4 @@
-# Gitkraken 最新版v9.x全平台Pro版激活教程
+# Gitkraken 最新版v9、v10全平台Pro版激活教程
 
 [toc]
 
@@ -10,9 +10,9 @@
 
 ## 二、软件安装
 
-此工具支持破解 Gitkraken V8.2.0 ~ V9.x(最新版)，直接从官网下载最新的安装包即可，如后续破解工具失效，可回退到旧版进行激活
+此工具支持破解 Gitkraken V8.2.0 ~ V10.x(最新版)，直接从官网下载最新的安装包即可，如后续破解工具失效，可先回退到旧版进行激活
 
-(亲测9.9.2可用)
+(亲测 **v9~10.1.1** 可用)
 
 官网下载地址：[Gitkraken](https://www.gitkraken.com/download)
 
@@ -136,7 +136,7 @@ yarn gitcracken patcher     # Mac/Linux 用户可能需要root权限，需在前
 
 重新打开Gitkraken，并打开一个git仓库，激活成功会在右下角看到 **Pro** 标志。
 
-![image-20231015115450846](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-v991.png)
+![image-20240806103331701](https://md-picture-1254350681.cos.ap-beijing.myqcloud.com/gitkraken-v1011.png)
 
 
 

@@ -20,6 +20,7 @@
 - [MacZip 解压缩](https://ezip.awehunt.com/)
 - [share Mouse：共享键鼠](https://www.macjb.com/mac/6410.html)
 - [Clipy：历史剪切板](https://clipy-app.com/)
+- [EcoPaste: 剪切板管理工具](https://gitee.com/ayangweb/EcoPaste)
 - [菜单栏管理 - Hidden Bar](https://github.com/dwarvesf/hidden)
 - [VLC多媒体播放器](https://vlc-media-player.en.softonic.com/mac/download)
 - [图片管理工具 Digikam](https://zhuanlan.zhihu.com/p/58758918)
@@ -45,6 +46,9 @@
 - [Mark-text](https://github.com/marktext/marktext)
 - [瓦特工具箱(Steam++官网) ](https://steampp.net/)
 - [RustDesk – 开源远程桌面访问软件](https://rustdesk.com/zh/)
+- [Zoxide｜一个更聪明更强大的 cd 命令](https://github.com/ajeetdsouza/zoxide)
+- [语雀md导出工具 下载共享知识库 - yuque-dl](https://github.com/gxr404/yuque-dl)
+- [PDF转Markdown](https://github.com/VikParuchuri/marker)
 
 ## 三. 开发工具
 
@@ -63,6 +67,7 @@
 - [Docker Desktop](https://hub.docker.com/)
 - [Apifox - API 文档、调试、Mock、测试一体化协作平台](https://www.apifox.cn/#)
 - [RedisInsight | Redis官方GUI客户端](https://redis.com/redis-enterprise/redis-insight/)
+- [Kafka 客户端](https://www.kafkatool.com/download.html)
 
 
 ## 四. 浏览器插件
@@ -106,11 +111,23 @@
 ## 五. IDLE插件
 
 - SonarLint
+
 - GitToolBox
+
 - MybatisX
+
 - Jrebel and XRebel
+
 - Alibaba Java Coding Guidelines
-- 
+
+### AI 辅助
+
+- [iFlyCode (xfyun.cn)](https://iflycode.xfyun.cn/)
+- [通义灵码_智能编码助手_AI编程-阿里云](https://tongyi.aliyun.com/lingma)
+- [Fitten Code](https://code.fittentech.com?ref=yz_ac8)
+- [CodeGeeX 智谱- 免费的AI编程助手 支持生成git描述](https://codegeex.cn/zh-CN)
+- [腾讯云 AI 代码助手](https://cloud.tencent.com/product/acc)
+- [豆包 MarsCode - 编程助手](https://www.marscode.cn/home)
 
 
 ## 六. hosts 配置
@@ -198,12 +215,16 @@ npm -v：查看npm版本
 npm config set python xxxx\python27\python.exe
 ```
 
+#### 设置npm源
 
+```sh
+npm config set registry https://registry.npmmirror.com
+```
 
 #### 安装cnpm
 
 ```
-npm install -g cnpm --registry=https://registry.npm.taobao.org
+npm install -g cnpm --registry=https://registry.npmmirror.com
 
 cnpm -v
 ```
@@ -214,6 +235,14 @@ cnpm -v
 cnpm install -g yarn
 yarn -v
 ```
+
+#### 安装pnpm
+
+```sh
+npm install pnpm -g
+```
+
+
 
 ### 3. pip源
 

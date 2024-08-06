@@ -1,70 +1,58 @@
----
-jupyter:
-  jupytext:
-    formats: ipynb,md
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.10.2
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
 
-<!-- #region -->
-> [原文地址](https://blog.csdn.net/nahancy/article/details/79059135)
 
-# 前言
 
-在我们平时使用 Linux 系统时候，通常使用的 Linux SSH 登录方式是用户名加密码的登录方式，今天来探讨另外的一种相对安全的登录方式——密钥登录。
 
-我们知道 SSH 登录是用的 RSA 非对称加密的，所以我们在 SSH 登录的时候就可以使用 RSA 密钥登录，SSH 有专门创建 SSH 密钥的工具 ssh-keygen，下面就来一睹风采。
+# Linux-ssh基本配置
 
-# 操作步骤
+## 配置密钥登录
 
-## 生成密钥
+通过密钥方式登录Linux 服务器相对更加安全
 
-首先进入 Linux 系统的用户目录下的. ssh 目录下，root 用户是 / root/.ssh，普通用户是 / home / 您的用户名 /.ssh，**我们以 root 用户为例：**(用其他用户请先执行 `useradd xxx` 添加用户，设置密码,并切换到该用户)
+### 1. 生成密钥
+
+执行 `ssh-keygen` 命令创建密钥对
 
 ```sh
-cd /root/.ssh
+ssh-keygen -t rsa -b 4096 -C "1343837706@qq.com"
 ```
 
-执行 ssh-keygen 命令创建密钥对，
+- -t：指定加密算法
+- -b：密钥长度
+- -C：密钥注释（备注）
 
-```sh
-ssh-keygen -t rsa -b 4096
-```
+也可以什么参数都不加，直接执行 `ssh-keygen`。
 
-这里笔者加了 -b 参数，指定了长度，也可以不加 -b 参数，直接使用 ssh-keygen -t rsa，ssh-keygen 命令的参数后文再介绍。
+接下来基本上是一路回车既可以了，但是需要注意的是：执行命令的过程中是会提示呢输入密钥的密码的（输入两次相同的，即是又一次确认密码），如果不需要密码直接连续回车就行。
 
-执行密钥生成命令，基本上是一路回车既可以了，但是需要注意的是：执行命令的过程中是会提示呢输入密钥的密码的（输入两次相同的，即是又一次确认密码），如果不需要密码直接连续回车就行。
+密钥生成后会在在 `~/.ssh` 目录（Windows在`C:\Users\{User}\.ssh`）下多出两个文件，id_rsa 和 id_rsa.pub，其中 id_rsa 是私钥，不能外泄，id_rsa.pub 则是公钥。
 
-密钥生成后会在当前目录下多出两个文件，id_rsa 和 id_rsa.pub，其中 id_rsa 是私钥（敲黑板：这个很重要，不能外泄），id_rsa.pub 这个是公钥，
+
 
 ![](https://img-blog.csdn.net/20180114211740064?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbmFoYW5jeQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
-## 拷贝密钥
+### 2. 拷贝密钥
 
-### 情形一：本机要远程登陆另一台linux
+把公钥拷贝到**需要登录的远程服务器或 Linux 系统上**，这里可以使用 ssh-copy-id 自动完成
 
-把公钥拷贝到**需要登录的远程服务器或 Linux 系统上**，这里可以使用 ssh-copy-id 自动完成，也可以手动追加秘钥到远程服务器。
-
-**方法一（推荐）**：
+**方法一：ssh-copy-id 自动上传**
 
 ```sh
-ssh-copy-id -i /root/.ssh/id_rsa.pub root@192.168.100.10
+ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.100.10
 ```
 
 执行命令了会要求输入远程机器的密码，输入密码即可。
 
 注：ssh-copy-id 默认端口是 22，如果您的 SSH 端口不是 22，也就是远程服务器端口修改成其他的了，那就要得加上 -p + 端口。
 
-**方法二**：
+**方法二：手动添加**
 
-进入远程服务器需要 SSH 登录的用户的目录下，这里仍然用 root 用户，cd /root/.ssh，**执行 ls 看看目录下是否有 authorized_keys 文件**, 没有的话则执行以下命令创建：
+将公钥通过 ftp 或者其他方式上传到目标服务器，进入服务器需要 SSH 登录的用户的目录下，这里以 root 用户为例：
+
+```sh
+cd /root/.ssh
+```
+
+**执行 ls 看看目录下是否有 authorized_keys 文件**, 没有的话则执行以下命令创建：
 
 ```sh
 touch authorized_keys
@@ -80,47 +68,84 @@ chmod 600 /root/.ssh/authorized_keys
 
 如果已经有了 authorized_keys 文件，这直接执行以下的密钥追加工作。
 
-将上面生成的公钥 id_rsa.pub 追加到 authorized_keys 文件中：
+将手动上传的公钥 id_rsa.pub 文件内容追加到 authorized_keys 文件中：
 
 ```sh
 cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 ```
 
-**注意是 >> 而不是 >，双尖括号 >> 表示像向文件中追加**；单尖括号 > 表示将文件内容全部替换掉；也就是说使用单尖括号 >，authorized_keys 文件里面如果原来有内容的话就全部不在了。
+> **注意是 >> 而不是 >**，双尖括号 >> 表示像向文件中追加。
+>
+> 单尖括号 > 表示将文件内容全部替换掉，也就是说使用单尖括号 >，authorized_keys 文件里面如果原来有内容的话就全部不在了。
 
-### 情形二：另一台主机远程登陆本机
-
-- 将**公钥**id_rsa.pub 追加到本机的authorized_keys 文件中，步骤同上面情形一的方法二，直接在本机执行以上命令即可。
-
-- 然后将**私钥**id_rsa 拷贝到另一台机器上，保存路径随意。
-
-## 测试登陆
-
-### 命令行
+### 3. 测试登陆
 
 密钥准备好了接下来就可以使用密钥登录了，
 
 ```sh
-ssh -i ./id_rsa root@192.168.100.39
-或者
-ssh root@192.168.100.39 -i ./id_rsa
+ssh root@192.168.100.39
+或者指定私钥位置
+ssh root@192.168.100.39 -i ~/.ssh/id_rsa -p 22
 ```
 
-注意：id_rsa 是私钥，笔者这里是进入私钥的目录下操作的，如果没在私钥的目录下，请写全目录，比如 / mnt/id_rsa，也可以是您自定义的目录。执行命令过程中，如果创建密钥对的时候设置了密码，则会提示您输入密码，没有的话会直接登录。
+## 修改端口、关闭密码登录、关闭root登录
 
-### Xshell
+修改ssh配置文件： `/etc/ssh/sshd_config`
 
-在 Windows 系统上使用密钥的话要看您使用的工具是否支持密钥登录， 笔者这里使用 Xshell 5 演示，
+```sh
+# 更改 SSH 默认端口为 2022
+Port 2022
+# 禁用 SSH 密码登录
+PasswordAuthentication no
+# 指定允许的密码尝试次数
+MaxAuthTries 3
+# 禁用 root 用户直接登录 SSH
+PermitRootLogin no
+# 关闭 SSH DNS 查询，提升连接速度
+UseDNS no
+# 关闭X11转发功能
+X11Forwarding no 
+```
 
-![](https://img-blog.csdn.net/20180114215437372?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbmFoYW5jeQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+重启 SSH 服务以应用更改
 
-在输入密码处选择 Public key，可以在浏览处添加密钥，这里添加的是私钥 id_rsa, 如果创建密钥对的时候设置密码了，需要在下方的密码框中输入密码，没有密码直接确定登录。
-<!-- #endregion -->
+```sh
+systemctl restart sshd
+```
 
-<!-- #region -->
-## 小贴士
+> 注意：修改ssh配置文件需要 root 权限；
+>
+> 如果关闭了 root 用户直接登录，请保证你有其他可以使用的用户，如果没有，可以执行 `sudo adduser xxx` 创建一个新用户，别忘了将密钥传到该用户目录下的 `.ssh` 目录
 
-### ssh-keygen
+## 开放防火墙端口
+
+如果 Linux 安装并开启了防火墙，更改 ssh 端口后需要开放新设置的端口，否则连接不上
+
+### CentOS
+
+```sh
+sudo firewall-cmd --add-port=2022/tcp --permanent
+
+firewall-cmd --reload
+firewall-cmd --list-all
+```
+
+> [Linux Centos7 防火墙使用](https://blog.csdn.net/m0_47087822/article/details/123179648)
+
+### Ubuntu
+
+```sh
+# 开放端口
+sudo ufw allow 2022/tcp
+# 查看状态
+sudo ufw status verbose
+```
+
+> [如何在 Ubuntu 20.04 上使用 UFW 来设置防火墙](https://zhuanlan.zhihu.com/p/139381645)
+
+## 其他
+
+#### ssh-keygen
 
 ```sh
 ssh-keygen可用的参数选项有：
@@ -208,7 +233,7 @@ ssh-keygen可用的参数选项有：
      -y      读取OpenSSH专有格式的公钥文件，并将OpenSSH公钥显示在 stdout 上。
 ```
 
-### ssh-copy-id
+#### ssh-copy-id
 
 ```
 ssh-copy-id的参数有：
@@ -221,6 +246,3 @@ ssh-copy-id的参数有：
     -n: dry run    -- no keys are actually copied
     -h|-?: 显示帮助
 ```
-<!-- #endregion -->
-
-- [Linux 创建新的用户并设置密钥SSH远程登录](https://my.oschina.net/u/2935389/blog/3025137)
