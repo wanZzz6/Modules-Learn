@@ -1,19 +1,3 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.13.8
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
-<!-- #region -->
-
 wsl 是微软对 Windows Linux Subsystem 的官方叫法。安装 wsl 后，通过 bash 来启动这个子系统，然后可以安装 ssh。在我的 windows 发行版上，启用了 wsl 以后，ssh 就默认存在了。但要真正使用起来，还要注意以下几点。  
 
 最重要的配置是这两项：  
@@ -92,4 +76,3 @@ $username ALL=(ALL) NOPASSWD: /usr/sbin/sshd -D
 ```
 
 这里的 $username 即 wsl 子系统中的一个用户名。我使用了安装 wsl 时给出的一个用户名。
-<!-- #endregion -->

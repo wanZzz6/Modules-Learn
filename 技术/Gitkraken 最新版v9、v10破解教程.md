@@ -12,7 +12,7 @@
 
 此工具支持破解 Gitkraken V8.2.0 ~ V10.x(最新版)，直接从官网下载最新的安装包即可，如后续破解工具失效，可先回退到旧版进行激活
 
-(亲测 **v9~10.1.1** 可用)
+(亲测 **v9.x~v10.5.0** 都可用)
 
 官网下载地址：[Gitkraken](https://www.gitkraken.com/download)
 
@@ -192,27 +192,31 @@ yarn gitcracken patcher     # Mac/Linux 用户可能需要root权限，需在前
 rm -r ~/.gitkraken
 ```
 
-
-
 ### 6.3 查询所有历史版本
 
-可能需要梯子
+（如无法直接打开可借助梯子）
 
-[GitKraken Client v7.x 更新记录](https://help.gitkraken.com/gitkraken-client/7x/)
-
-[GitKraken Client v8.x 更新记录](https://help.gitkraken.com/gitkraken-client/8x/)
-
-[GitKraken Client v9.x 更新记录](https://help.gitkraken.com/gitkraken-client/current/)
+- [GitKraken Client v7.x 更新记录](https://help.gitkraken.com/gitkraken-client/7x/)
+- [GitKraken Client v8.x 更新记录](https://help.gitkraken.com/gitkraken-client/8x/)
+- [GitKraken Client v9.x 更新记录](https://help.gitkraken.com/gitkraken-desktop/9x/)
+- [GitKraken Client当前最新版本更新记录](https://help.gitkraken.com/gitkraken-client/current/)
 
 ### 6.4 历史版本下载
 
-改改版本号就行
+改改版本号就行，例如7.7.0版本：
 
 - Linux-deb : https://release.axocdn.com/linux/GitKraken-v7.7.0.deb
+
 - Linux-rpm : https://release.axocdn.com/linux/GitKraken-v7.7.0.rpm
+
 - Linux-tar.gz : https://release.axocdn.com/linux/GitKraken-v7.7.0.tar.gz
+
 - Win64： https://release.axocdn.com/win64/GitKrakenSetup-7.7.0.exe
+
+  或者 https://release.axocdn.com/windows/GitKrakenSetup-10.1.1.exe
+
 - Mac (Intel) : https://release.axocdn.com/darwin/GitKraken-v7.7.0.zip
+
 - Mac (Apple Silicon) 从v9.0.0开始支持：https://release.axocdn.com/darwin-arm64/GitKraken-v9.0.0.zip
 
 ### 6.5 旧版7.5|6.0百度云下载地址（备用）

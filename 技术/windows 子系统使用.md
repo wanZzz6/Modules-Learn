@@ -1,19 +1,3 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.13.8
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
->原文地址 [mp.weixin.qq.com](https://mp.weixin.qq.com/s/P8UcthCDlOa-CoUZlrNJrQ)
-
 `Linux`在程序员中属于高逼格的存在，当然安装了图形界面的程序员要减分，毕竟你需要用鼠标了！程序员的桌面不能比谁的更酷更炫，要比谁的屏幕多，桌面颜色少！
 
 Windows 向来是没有这种光圈的，因为它的目标是白痴用户。当然它的 cmd 命令从始至终充满了科技的味道，一直都是黑白两色。

@@ -27,6 +27,8 @@
 - [PixPin(截图、贴图、OCR工具) ](https://www.ghxi.com/pixpin.html)
 - [Bilidown(B站视频下载工具) ](https://www.ghxi.com/bilidown.html)
 - [水豚鼠标助手-屏幕画笔 | 放大镜](https://shuitunapp.com/)
+- [Wiztree - 显示磁盘空间占用比例](https://www.ghxi.com/wiztree.html)
+- [Geek Uninstaller(卸载工具)](https://www.ghxi.com/geek.html)
 
 ## 油猴脚本
 

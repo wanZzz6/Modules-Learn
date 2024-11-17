@@ -1,18 +1,3 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.13.8
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
-<!-- #region -->
 参考：
 - [WSL搭建Java开发环境](https://blog.csdn.net/c13232906050/article/details/83025020?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task)
 - [Windows Subsystem for Linux入门：安装+配置图形界面+中文环境+工作环境（vscode](https://blog.csdn.net/w_weilan/article/details/82862913?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task)
@@ -102,9 +87,6 @@ deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted unive
 $ sudo apt-get update
 $ sudo apt-get upgrade
 ```
-<!-- #endregion -->
-
-<!-- #region -->
 * * *
 
 Install xfce desktop
@@ -207,9 +189,6 @@ export XMODIFIERS=@im=fcitx
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 ```
-<!-- #endregion -->
-
-<!-- #region -->
 * * *
 
 安装开发软件
@@ -294,10 +273,6 @@ strip rdm
 export RDM_HOME=/opt/redis-desktop-manager
 export PATH=$RDM_HOME:$PATH
 ```
-<!-- #endregion -->
-
-<!-- #region -->
-
 其他
 ==
 
@@ -380,4 +355,3 @@ alias tar='tar -zxvf'
 [wsl-tutorial](https://github.com/QMonkey/wsl-tutorial)  
 [redisdesktop linux](http://docs.redisdesktop.com/en/latest/install/#ubuntu-debian-fedora-centos-opensuse-archlinux-other-linux-di)  
 [redisdesktop build fail](https://github.com/uglide/RedisDesktopManager/issues/4118)
-<!-- #endregion -->

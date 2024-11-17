@@ -292,7 +292,6 @@ Preferences > Package Settings > Package Control > Settings - User
 - `TrailingSpaces`: 高亮显示多余的空格和Tab
 - `jQuery`: 支持jQuery规范的插件包
 - `css3`
-
 - `Compact​Expand​Css`:
   使用说明：css 横竖向排列切换
   快捷键：
@@ -304,25 +303,27 @@ Preferences > Package Settings > Package Control > Settings - User
   使用说明：对不符合规则 js 代码进行提示
 - `View In Browser`:
   使用说明：sublime 以本地服务器方式打开网页 为了使用插件，你需要建立一个 sublime-project 文件，点击 Project->Edit Project 粘贴以下代码(这是我的相关配置),并保存到 user 目录下
-  ```json
+
+```json
+{
+  "folders":
+  [
+      {
+          "path": "D:\\wamp\\www"
+      }
+  ],
+  "settings":
   {
-    "folders":
-    [
-        {
-            "path": "D:\\wamp\\www"
-        }
-    ],
-    "settings":
-    {
-        "sublime-view-in-browser":
-        {
-            "baseUrl": "http://localhost"
-            "basePath": "D:\\wamp\\www",   //本地虚拟主机根目录
-        }
-    }
+      "sublime-view-in-browser":
+      {
+          "baseUrl": "http://localhost"
+          "basePath": "D:\\wamp\\www",   //本地虚拟主机根目录
+      }
   }
+}
 ```
-- `SublimeLinter`:  
+
+`SublimeLinter`: 
   使用说明：它可以帮你找出错误或编写不规范的代码 需要安装 nodejs,jshint,csslint
 
 
@@ -441,7 +442,3 @@ Preferences > Package Settings > Package Control > Settings - User
 
 - <https://blog.csdn.net/samenmoer/article/details/89740271>
 - https://github.com/Jesse121/SublimeText3
-
-```python
-
-```

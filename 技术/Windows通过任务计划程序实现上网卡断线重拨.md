@@ -1,17 +1,3 @@
----
-jupyter:
-  jupytext:
-    text_representation:
-      extension: .md
-      format_name: markdown
-      format_version: '1.3'
-      jupytext_version: 1.13.8
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
-
 > 原文地址 [www.cnblogs.com](https://www.cnblogs.com/zhangshuyx/p/5383582.html)
 
 由于工作中需要做一些服务器维护，为方便维护，在服务器上安装了一个 4G 无线上网卡。但是由于网络不稳定，经常在使用一两天后就断开，无法远程连接，甚是苦恼。在网上找了挺久也没有发现什么好的解决办法。

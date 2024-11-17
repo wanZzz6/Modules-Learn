@@ -97,7 +97,6 @@ apt install python automake libtool flex texinfo libcppunit-dev make libncurses5
 *   clion 的 WSL 是通过 ssh 连接到 ubuntu 的，同理你也可以自己用 ssh 工具（比如 putty、secureCRT 等）连接到 ubuntu，这里给一个 ubuntu 下面开启 sshd 的方法，参考：[https://hbaaron.github.io/blog_2017/%E5%9C%A8wsl%E4%B8%8B%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8sshd%E5%85%A8%E6%94%BB%E7%95%A5/](https://hbaaron.github.io/blog_2017/%E5%9C%A8wsl%E4%B8%8B%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8sshd%E5%85%A8%E6%94%BB%E7%95%A5/)
 *   代码可以通过 svn checkout 到 D E 盘等，编译的时候如果需要用到 / 目录之类的，可以通过软链接实现
 
-<!-- #region -->
 # VS Code 插件
 
 1. 首先确保安装了1.35或者以上版本的 VS Code，然后在拓展界面搜索`Remote - WSL`安装即可。
@@ -107,4 +106,3 @@ apt install python automake libtool flex texinfo libcppunit-dev make libncurses5
 
 
 参考：[在 Windows 上将 Python 用于 Web 开发](https://docs.microsoft.com/zh-cn/windows/python/web-frameworks)
-<!-- #endregion -->
